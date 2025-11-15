@@ -1,26 +1,40 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #f9fafb;
   --foreground: #171717;
+  --primary-main: #4caf50;
+  --primary-dark: #388e3c;
+  --primary-light: #c8e6c9;
+  --primary-muted: #e9f5ec;
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --accent-yellow: #ffeb3b;
+  --accent-mint: #dcfce7;
+  --accent-sky: #81d4fa;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --col-background: var(--background);
+  --col-foreground: var(--foreground);
+  --col-primary-main: var(--primary-main);
+  --col-primary-dark: var(--primary-dark);
+  --col-primary-light: var(--primary-light);
+  --col-primary-muted: var(--primary-muted);
+  --col-text-primary: var(--text-primary);
+  --col-text-secondary: var(--text-secondary);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer components {
+  .formLayout {
+    @apply bg-(--col-primary-light) w-32 h-24 absolute left-1/2 top-1/2 shadow-xl transform -translate-x-1/2 -translate-y-1/2;
+  }
 }
