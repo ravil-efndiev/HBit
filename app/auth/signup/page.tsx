@@ -1,4 +1,14 @@
+import { Metadata } from "next";
+import SignupForm from "@/components/SignupForm";
 
-export default function Signup() {
-    return <div>Sign up</div>
-}
+export const metadata: Metadata = {
+  title: "Sign Up - Habit tracker",
+};
+
+const Signup = () => {
+  return (
+    <SignupForm />
+  );
+};
+
+export default Signup;

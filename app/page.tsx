@@ -1,7 +1,14 @@
 import Image from "next/image";
+import Dashboard from "./components/Dashboard";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Link from "next/link";
 
-export default function Home() {
+const Home = () => {
   return (
-    <div></div>
+    <main>
+      <Link href="/dashboard">Dashboard</Link>
+    </main>
   );
-}
+};
+
+export default Home;
