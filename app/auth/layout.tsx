@@ -10,7 +10,7 @@ const FormLayout = async ({
   children: React.ReactNode;
 }>) => {
   return (
-    <div className="absolute left-0 top-0 w-full h-full bg-linear-to-tl from-(--col-accent-mint) to-(--col-primary-light)">
+    <div className="absolute left-0 top-0 w-full h-full bg-linear-to-tl from-(--col-primary-muted) to-(--col-primary-light)">
       <div
         className="
           bg-(--col-background) w-1/2 h-3/4 absolute left-1/2 top-1/2 rounded-xl

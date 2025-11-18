@@ -6,7 +6,7 @@ const FormInput = ({ name }: Props) => {
   return (
     <input
       required
-      className="input input-secondary"
+      className="input input-secondary mb-3"
       type={name === "name" ? "text" : name}
       name={name}
       placeholder={name[0].toUpperCase() + name.slice(1)}

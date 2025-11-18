@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import SigninForm from "@/components/SigninForm";
+import SigninForm from "@/auth/components/SigninForm";
 
 export const metadata: Metadata = {
   title: "Sign In - Habit tracker",

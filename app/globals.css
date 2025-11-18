@@ -34,6 +34,7 @@
   --accent-yellow: #ffeb3b;
   --accent-mint: #dcfce7;
   --accent-sky: #81d4fa;
+  --peach: #ec9378;
 }
 
 @theme inline {
@@ -45,16 +46,14 @@
   --col-primary-muted: var(--primary-muted);
   --col-text-primary: var(--text-primary);
   --col-text-secondary: var(--text-secondary);
+  --col-accent-mint: var(--accent-mint);
+  --col-peach: var(--peach);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 body {
   font-family: Arial, Helvetica, sans-serif;
-}
-
-p, h1, h2, h3, h4, h5, h6 {
-  color: var(--text-primary)
 }
 
 a {
@@ -69,12 +68,16 @@ a {
   @apply font-normal;
 }
 
+@utility btn-secondary {
+  @apply font-normal text-(--col-text-primary)
+}
+
 @utility input {
-  @apply rounded-lg w-full mb-3;
+  @apply rounded-lg w-full;
 }
 
 @utility input-secondary {
-  @apply rounded-lg w-full mb-3;
+  @apply rounded-lg w-full;
 }
 
 @layer components {

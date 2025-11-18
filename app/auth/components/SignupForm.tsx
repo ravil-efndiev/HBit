@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import FormInput from "./FormInput";
 import { post } from "@/lib/requests";
 
-const SigninForm = () => {
+const SignupForm = () => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
@@ -15,11 +15,12 @@ const SigninForm = () => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
 
+    const name = formData.get("name") as string;
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
-    
+
     try {
-      const result = await post("/api/auth/signin", { email, password });
+      const result = await post("/api/auth/signup", { name, email, password });
       console.log(result);
       router.push("/dashboard");
     } catch (err) {
@@ -29,16 +30,17 @@ const SigninForm = () => {
 
   return (
     <form className={formStyles.content} onSubmit={handleSubmit}>
-      <h2 className={formStyles.title}>Wellcome Back</h2>
+      <h2 className={formStyles.title}>Create an account</h2>
+      <FormInput name="name" />
       <FormInput name="email" />
       <FormInput name="password" />
-      <input className={formStyles.button} type="submit" value="Sign In" />
+      <input className={formStyles.button} type="submit" value="Sign Up" />
       <p>
-        Don't have an accout yet? <Link href="/auth/signup">Sign up</Link>.
+        Already have an accout? <Link href="/auth/signin">Sign In</Link>.
       </p>
-      {error && <p>{error}</p>}
+      {error && <p className="text-(--col-peach)">{error}</p>}
     </form>
   );
 };
 
-export default SigninForm;
+export default SignupForm;

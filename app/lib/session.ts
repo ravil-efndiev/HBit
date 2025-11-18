@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { prisma } from "./prisma";
 
-const getSessionUser = async () => {
+export const getSessionUser = async () => {
   const cookieStorage = await cookies();
   const sessionCookie = cookieStorage.get("session");
 
@@ -22,4 +22,12 @@ const getSessionUser = async () => {
   return session.user;
 };
 
-export default getSessionUser;
+export const requireSessionUser = async () => {
+  const user = await getSessionUser();
+
+  if (!user) {
+    throw new Error("User is logged out or session has expired");
+  }
+
+  return user;
+}

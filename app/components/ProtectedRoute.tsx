@@ -1,4 +1,4 @@
-import getSessionUser from "@/lib/getSessionUser";
+import { getSessionUser } from "@/lib/session";
 import { redirect } from "next/navigation";
 import { PropsWithChildren } from "react";
 

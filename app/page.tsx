@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Dashboard from "./components/Dashboard";
+import Dashboard from "./dashboard/components/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Link from "next/link";
 
