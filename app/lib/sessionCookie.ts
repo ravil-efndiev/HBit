@@ -3,16 +3,18 @@ import { NextResponse } from "next/server";
 
 export const sessionMaxAge = 1000 * 60 * 60 * 24 * 5;
 
-export const setSessionCookie = async (sessionId: string, res: NextResponse) => {
-  res.cookies.set("session", sessionId, {
+export const setSessionCookie = async (sessionId: string) => {
+  const cookieStorage = await cookies();
+  cookieStorage.set("session", sessionId, {
     sameSite: "lax",
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     maxAge: sessionMaxAge,
-    path: "/"
+    path: "/",
   });
 };
 
-export const clearSessionCookie = async (res: NextResponse) => {
-  res.cookies.delete("session");
-}
+export const clearSessionCookie = async () => {
+  const cookieStorage = await cookies();
+  cookieStorage.delete("session");
+};

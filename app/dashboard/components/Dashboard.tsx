@@ -1,7 +1,7 @@
 import { requireSessionUser } from "@/lib/session";
 import SignoutButton from "@/components/SignoutButton";
 import { prisma } from "@/lib/prisma";
-import DailyHabitsDisplay from "./DailyHabitsDisplay";
+import DailyHabitsDisplay from "./daily/DailyHabitsDisplay";
 import getHabitIconPaths from "@/lib/getHabitIconPaths";
 import IconPathsProvider from "./context/IconPathsContext";
 

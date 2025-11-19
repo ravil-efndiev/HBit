@@ -2,11 +2,12 @@
 
 import { ChangeEvent, useRef, useState } from "react";
 import Image from "next/image";
-import ModalWrapper from "./ModalWrapper";
-import IconSelect from "./IconSelect";
-import { useIconPaths } from "./context/IconPathsContext";
+import ModalWrapper from "../ModalWrapper";
+import IconSelect from "../IconSelect";
+import { useIconPaths } from "../context/IconPathsContext";
 import { post } from "@/lib/requests";
 import { DailyHabit } from "@prisma/client";
+import AddHabitPanelInput from "../AddHabitPanelInput";
 
 interface Props {
   onHabitAdd: (habit: DailyHabit) => void;
@@ -54,14 +55,16 @@ const AddDailyHabitModal = ({ onHabitAdd }: Props) => {
       timeGoal.minutes * 60 * 1000 + timeGoal.hours * 60 * 60 * 1000;
 
     try {
-      const newHabit = await post("/api/habits/daily", {
+      const resData = await post("/api/habits/daily", {
         name,
         desc,
         iconPath,
         timeGoal: timeGoalMs,
       });
 
-      onHabitAdd(newHabit);
+      const createdHabit = resData.newHabit;
+
+      onHabitAdd(createdHabit);
       modalRef.current?.close();
     } catch (err) {
       console.error(err);
@@ -72,19 +75,15 @@ const AddDailyHabitModal = ({ onHabitAdd }: Props) => {
     <>
       <ModalWrapper dialogRef={modalRef}>
         <h4 className="text-2xl mb-3">Add a new daily habit</h4>
-        <input
-          type="text"
-          className="input input-primary mb-1.5 bg-(--col-primary-muted) shadow-xs"
-          placeholder="Habit name *"
-          onChange={(e) => setName(e.target.value)}
+        <AddHabitPanelInput
           value={name}
+          onChange={(e) => setName(e.target.value)}
+          type="name"
         />
-        <input
-          type="text"
-          className="input input-primary mb-2 bg-(--col-primary-muted) shadow-xs"
-          placeholder="Habit description"
-          onChange={(e) => setDesc(e.target.value)}
+        <AddHabitPanelInput
           value={desc}
+          onChange={(e) => setDesc(e.target.value)}
+          type="desc"
         />
         <IconSelect onSelect={(path) => setIconPath(path)} />
         <p>How much time do you want to spend a day?</p>
@@ -97,7 +96,7 @@ const AddDailyHabitModal = ({ onHabitAdd }: Props) => {
             value={appendTimeZero(timeGoal.hours)}
             className="w-20 input input-secondary shadow-sm"
           />
-          <p className="text-(--col-text-secondary) mr-3 ml-1">m</p>
+          <p className="text-(--col-text-secondary) mr-3 ml-1">h</p>
           <input
             type="number"
             min="0"
@@ -106,7 +105,7 @@ const AddDailyHabitModal = ({ onHabitAdd }: Props) => {
             value={appendTimeZero(timeGoal.minutes)}
             className="w-20 input input-secondary shadow-sm"
           />
-          <p className="text-(--col-text-secondary) mr-3 ml-1">h</p>
+          <p className="text-(--col-text-secondary) mr-3 ml-1">m</p>
         </div>
         <button className="btn btn-primary" onClick={handleAddBtnClick}>
           Add

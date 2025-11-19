@@ -14,12 +14,8 @@ export const POST = async (req: NextRequest) => {
 
     await prisma.session.delete({ where: { id: sessionId } });
 
-    const res = NextResponse.json(
-      { message: "logout successful" },
-      { status: 200 }
-    );
-    clearSessionCookie(res);
-    return res;
+    await clearSessionCookie();
+    return NextResponse.json({ message: "logout successful" }, { status: 200 });
   } catch (err) {
     console.error(err);
     return NextResponse.json(
