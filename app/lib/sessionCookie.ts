@@ -1,5 +1,4 @@
 import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
 
 export const sessionMaxAge = 1000 * 60 * 60 * 24 * 5;
 

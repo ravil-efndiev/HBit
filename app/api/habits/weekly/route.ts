@@ -1,3 +1,4 @@
+import { routeError } from "@/api/routeError";
 import { prisma } from "@/lib/prisma";
 import { requireSessionUser } from "@/lib/session";
 import { NextResponse } from "next/server";
@@ -19,10 +20,6 @@ export const POST = async (req: Request) => {
 
     return NextResponse.json({ newHabit }, { status: 201 });
   } catch (err) {
-    console.error(err);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return routeError(err);
   }
 };

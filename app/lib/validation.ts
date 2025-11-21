@@ -1,7 +1,3 @@
-import { NextResponse } from "next/server";
-
-const responseStatus = { status: 400 };
-
 export const validatePassword = (password: string) => {
   const spaceRegex = /^[^\s]+$/;
   if (password.length < 6) return "Password has to be 6 characters or longer";

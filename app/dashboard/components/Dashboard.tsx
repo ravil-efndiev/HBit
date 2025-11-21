@@ -1,7 +1,7 @@
 import { requireSessionUser } from "@/lib/session";
 import SignoutButton from "@/components/SignoutButton";
 import { prisma } from "@/lib/prisma";
-import DailyHabitsDisplay from "./daily/DailyHabitsDisplay";
+import DailyHabitsPanel from "./daily/DailyHabitsPanel";
 import getHabitIconPaths from "@/lib/getHabitIconPaths";
 import IconPathsProvider from "./context/IconPathsContext";
 
@@ -20,10 +20,10 @@ const Dashboard = async () => {
   const habitIconPaths = getHabitIconPaths();
 
   return (
-    <div>
+    <div className="flex-4">
       <SignoutButton />
       <IconPathsProvider iconPaths={habitIconPaths}>
-        <DailyHabitsDisplay initialDailyHabits={initialDailyHabits} />
+        <DailyHabitsPanel initialDailyHabits={initialDailyHabits} />
       </IconPathsProvider>
     </div>
   );

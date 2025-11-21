@@ -1,5 +1,4 @@
 import ProtectedRoute from "@/components/ProtectedRoute";
-import type { Metadata } from "next";
 
 const DashboardLayout = ({
   children,
@@ -8,7 +7,9 @@ const DashboardLayout = ({
 }>) => {
   return (
     <ProtectedRoute>
-      {children}
+      <div className="flex min-h-screen w-full overflow-hidden">
+        {children}
+      </div>
     </ProtectedRoute>
   );
 };

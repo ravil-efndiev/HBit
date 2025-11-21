@@ -1,3 +1,4 @@
+import { routeError } from "@/api/routeError";
 import { prisma } from "@/lib/prisma";
 import { clearSessionCookie } from "@/lib/sessionCookie";
 import { NextRequest, NextResponse } from "next/server";
@@ -17,10 +18,6 @@ export const POST = async (req: NextRequest) => {
     await clearSessionCookie();
     return NextResponse.json({ message: "logout successful" }, { status: 200 });
   } catch (err) {
-    console.error(err);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return routeError(err);
   }
 };

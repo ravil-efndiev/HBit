@@ -1,8 +1,18 @@
 import Dashboard from "@/dashboard/components/Dashboard";
-import React from "react";
+import { type Metadata } from "next";
+import Sidebar from "./components/Sidebar";
+
+export const metadata: Metadata = {
+  title: "Sign Up - Habit tracker",
+};
 
 const DashboardPage = () => {
-  return <Dashboard />;
+  return (
+    <>
+      <Sidebar />
+      <Dashboard />
+    </>
+  );
 };
 
 export default DashboardPage;

@@ -6,13 +6,14 @@ import Image from "next/image";
 import ModalWrapper from "./ModalWrapper";
 
 interface Props {
+  initialIconPath?: string;
   onSelect: (iconPath: string) => void;
 }
 
-const IconSelect = ({ onSelect }: Props) => {
+const IconSelect = ({ initialIconPath, onSelect }: Props) => {
   const iconPaths = useIconPaths();
   const iconSelectRef = useRef<HTMLDialogElement>(null);
-  const [selectedPath, setSelectedPath] = useState(iconPaths[0]);
+  const [selectedPath, setSelectedPath] = useState(initialIconPath || iconPaths[0]);
 
   const handleIconSelect = (path: string) => {
     setSelectedPath(path);

@@ -1,6 +1,6 @@
-export const post = async (endpoint: string, body: Object) => {
+const request = async (endpoint: string, body: Object, method: string) => {
   const res = await fetch(endpoint, {
-    method: "POST",
+    method,
     body: JSON.stringify(body),
     headers: { "Content-Type": "application/json" },
     credentials: "include",
@@ -14,3 +14,15 @@ export const post = async (endpoint: string, body: Object) => {
 
   return data;
 };
+
+export const post = async (endpoint: string, body: Object) => {
+  return request(endpoint, body, "POST");
+}
+
+export const patch = async (endpoint: string, body: Object) => {
+  return request(endpoint, body, "PATCH");
+}
+
+export const deleteReq = async (endpoint: string, body: Object) => {
+  return request(endpoint, body, "DELETE");
+}
