@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { DailyHabit } from "@prisma/client";
-import AddOrEditModal from "./AddOrEditModal";
+import AddOrEditModal from "../AddOrEditModal";
 
 interface Props {
   onHabitAdd: (habit: DailyHabit) => void;

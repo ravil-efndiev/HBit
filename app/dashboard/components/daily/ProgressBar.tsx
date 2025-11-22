@@ -36,8 +36,14 @@ const ProgressBar = ({ habitId, timeGoalMs, initialTimeSpentMs }: Props) => {
       <p className="text-[1rem]">
         Daily progress{" "}
         <span className="text-(--col-text-secondary)">
-          ({parseInt(timeSpent.hours) > 0 && `${timeSpent.hours}h `}
-          {timeSpent.minutes}m)
+          {timeSpentMs < timeGoalMs ? (
+            <>
+              ({parseInt(timeSpent.hours) > 0 && `${timeSpent.hours}h `}
+              {timeSpent.minutes}m)
+            </>
+          ) : (
+            "(Done)"
+          )}
         </span>
       </p>
       <progress

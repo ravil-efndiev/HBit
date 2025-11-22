@@ -20,7 +20,7 @@ const Dashboard = async () => {
   const habitIconPaths = getHabitIconPaths();
 
   return (
-    <div className="flex-4">
+    <div className="flex-7">
       <SignoutButton />
       <IconPathsProvider iconPaths={habitIconPaths}>
         <DailyHabitsPanel initialDailyHabits={initialDailyHabits} />

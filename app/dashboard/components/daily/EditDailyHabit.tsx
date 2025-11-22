@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { DailyHabit } from "@prisma/client";
-import AddOrEditModal from "./AddOrEditModal";
+import AddOrEditModal from "../AddOrEditModal";
 import { deleteReq } from "@/lib/requests";
 
 interface Props {
@@ -28,7 +28,11 @@ const EditDailyHabit = ({ onHabitEdit, initialHabit }: Props) => {
         onAddOrEdit={onHabitEdit}
         onDelete={handleDelete}
         openTrigger={openTrigger}
-        initialHabit={initialHabit}
+        initialHabitId={initialHabit.id}
+        initialName={initialHabit.name}
+        initialDetails={initialHabit.details}
+        initialIconPath={initialHabit.iconPath}
+        initialTimeGoal={initialHabit.timeGoal}
       />
       <div className="flex-1 flex justify-end">
         <button

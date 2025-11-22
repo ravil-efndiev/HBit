@@ -35,6 +35,7 @@
   --accent-yellow: #ffeb3b;
   --accent-mint: #dcfce7;
   --accent-sky: #81d4fa;
+  --accent-sky-dark: #38b8f3;
   --peach: #ec9378;
 }
 
@@ -48,6 +49,8 @@
   --col-text-primary: var(--text-primary);
   --col-text-secondary: var(--text-secondary);
   --col-accent-mint: var(--accent-mint);
+  --col-accent-sky: var(--accent-sky);
+  --col-accent-sky-dark: var(--accent-sky-dark);
   --col-peach: var(--peach);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -84,5 +87,14 @@ a {
 @layer components {
   .form {
     @apply flex flex-col;
+  }
+  .sidebar-title {
+    @apply text-lg bg-(--col-primary-light) rounded-2xl p-3 shadow-xs text-center
+  }
+  .sidebar-li {
+    @apply flex items-center border-b border-b-(--col-text-secondary) py-1
+  }
+  .sidebar-li-text {
+    @apply flex-1 ml-3 text-(--col-text-secondary) mr-1
   }
 }

@@ -1,25 +1,16 @@
-import { routeError } from "@/api/routeError";
 import { prisma } from "@/lib/prisma";
-import { requireSessionUser } from "@/lib/session";
-import { NextResponse } from "next/server";
+import { HabitCrud } from "../habitsCrud";
 
-export const POST = async (req: Request) => {
-  try {
-    const user = await requireSessionUser();
-    const { name, desc, iconPath, days } = await req.json();
+const DailyHabitsCrud = new HabitCrud({
+  prismaModel: prisma.weeklyHabit,
+  setPostData: (body) => ({
+    days: body.days,
+  }),
+  setPatchData: (body) => ({
+    days: body.days,
+  }),
+});
 
-    const newHabit = await prisma.weeklyHabit.create({
-      data: {
-        name,
-        details: desc,
-        iconPath,
-        days,
-        userId: user.id,
-      },
-    });
-
-    return NextResponse.json({ newHabit }, { status: 201 });
-  } catch (err) {
-    return routeError(err);
-  }
-};
+export const POST = DailyHabitsCrud.POST;
+export const PATCH = DailyHabitsCrud.PATCH;
+export const DELETE = DailyHabitsCrud.DELETE;

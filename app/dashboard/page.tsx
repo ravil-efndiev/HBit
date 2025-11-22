@@ -3,7 +3,7 @@ import { type Metadata } from "next";
 import Sidebar from "./components/Sidebar";
 
 export const metadata: Metadata = {
-  title: "Sign Up - Habit tracker",
+  title: "Dashboard - Habit tracker",
 };
 
 const DashboardPage = () => {

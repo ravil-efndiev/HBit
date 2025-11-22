@@ -22,7 +22,7 @@ const DailyHabitDisplay = ({ habit }: Props) => {
   return (
     <div className="flex w-[90%] py-2 px-5 bg-(--col-background) items-center mx-auto rounded-xl shadow-xs my-1">
       <Image src={habit.iconPath} alt="icon" width={50} height={50} />
-      <div className="flex-2 ml-5">
+      <div className="flex-2 ml-5 pr-2">
         <p className="text-lg">{habit.name}</p>
         <p className="text-(--col-text-secondary)">{habit.details}</p>
       </div>
