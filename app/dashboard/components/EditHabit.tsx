@@ -2,40 +2,39 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { DailyHabit } from "@prisma/client";
-import AddOrEditModal from "../AddOrEditModal";
-import {
-  DailyHabitUpdateRequestBody,
-  habitDelete,
-  habitUpdate,
-} from "@/lib/requests";
+import { DailyHabit, WeeklyHabit } from "@prisma/client";
+import AddOrEditModal from "./AddOrEditModal";
+import { habitDelete, habitUpdate } from "@/lib/requests";
 
 interface Props {
-  initialHabit: DailyHabit;
+  type: "daily" | "weekly";
+  initialHabit: DailyHabit | WeeklyHabit;
 }
 
-const EditDailyHabit = ({ initialHabit }: Props) => {
+const EditHabit = ({ type, initialHabit }: Props) => {
   const [openTrigger, setOpenTrigger] = useState(0);
 
   const handleDelete = async () => {
-    await habitDelete(initialHabit.id);
-  };
-
-  const handleEdit = async (reqBody: DailyHabitUpdateRequestBody) => {
-    await habitUpdate(reqBody);
+    await habitDelete(initialHabit.id, type);
   };
 
   return (
     <>
       <AddOrEditModal
-        onEdit={handleEdit}
+        type={type}
+        onEdit={habitUpdate}
         onDelete={handleDelete}
         openTrigger={openTrigger}
         initialHabitId={initialHabit.id}
         initialName={initialHabit.name}
         initialDetails={initialHabit.details}
         initialIconPath={initialHabit.iconPath}
-        initialTimeGoal={initialHabit.timeGoal}
+        initialTimeGoal={
+          type === "daily" ? (initialHabit as DailyHabit).timeGoal : undefined
+        }
+        initialDays={
+          type === "weekly" ? (initialHabit as WeeklyHabit).days : undefined
+        }
       />
       <div className="ml-auto flex">
         <button
@@ -49,4 +48,4 @@ const EditDailyHabit = ({ initialHabit }: Props) => {
   );
 };
 
-export default EditDailyHabit;
+export default EditHabit;

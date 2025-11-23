@@ -35,8 +35,10 @@
   --accent-yellow: #ffeb3b;
   --accent-mint: #dcfce7;
   --accent-sky: #81d4fa;
+  --accent-sky-light: #b7e1f5;
   --accent-sky-dark: #38b8f3;
   --peach: #ec9378;
+  --peach-light: #ffe7df;
 }
 
 @theme inline {
@@ -51,7 +53,10 @@
   --col-accent-mint: var(--accent-mint);
   --col-accent-sky: var(--accent-sky);
   --col-accent-sky-dark: var(--accent-sky-dark);
+  --col-accent-sky-light: var(--accent-sky-light);
+  --col-accent-yellow: var(--accent-yellow);
   --col-peach: var(--peach);
+  --col-peach-light: var(--peach-light);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -73,7 +78,7 @@ a {
 }
 
 @utility btn-secondary {
-  @apply font-normal text-(--col-text-primary)
+  @apply font-normal text-(--col-text-primary);
 }
 
 @utility input {
@@ -89,12 +94,18 @@ a {
     @apply flex flex-col;
   }
   .sidebar-title {
-    @apply text-lg bg-(--col-primary-light) rounded-2xl p-3 shadow-xs text-center
+    @apply text-lg bg-(--col-primary-light) rounded-2xl p-3 shadow-xs text-center;
   }
   .sidebar-li {
-    @apply flex items-center border-b border-b-(--col-text-secondary) py-1
+    @apply flex items-center border-b border-b-(--col-text-secondary) py-1;
   }
   .sidebar-li-text {
-    @apply flex-1 ml-3 text-(--col-text-secondary) mr-1
+    @apply flex-1 ml-3 text-(--col-text-secondary) mr-1;
+  }
+  .habit-display {
+    @apply flex py-2 px-5 bg-(--col-background) items-center rounded-xl shadow-xs my-1;
+  }
+  #safeguard {
+    @apply bg-(--col-accent-sky-light)
   }
 }

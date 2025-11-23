@@ -4,6 +4,7 @@ import { useState } from "react";
 import IncrementTimeButton from "./IncrementTimeButton";
 import { getFormattedTime } from "./DailyHabitDisplay";
 import { habitUpdate } from "@/lib/requests";
+import { DailyHabitUpdateRequestBody } from "@/lib/requestBody";
 
 interface Props {
   habitId: number;
@@ -18,10 +19,10 @@ const ProgressBar = ({ habitId, timeGoalMs, initialTimeSpentMs }: Props) => {
     setTimeSpentMs(newValue);
 
     await habitUpdate(
-      {
+      new DailyHabitUpdateRequestBody({
         habitId,
         timeSpent: newValue,
-      },
+      }),
       false
     );
   };

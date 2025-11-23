@@ -21,7 +21,7 @@ const IconSelect = ({ initialIconPath, onSelect }: Props) => {
 
   return (
     <>
-      <ModalWrapper dialogRef={iconSelectRef} top="50vh" width={450}>
+      <ModalWrapper dialogRef={iconSelectRef} top="54vh" width={450}>
         <h5 className="text-xl mb-3">Pick an icon</h5>
         <ul className="grid grid-cols-[repeat(auto-fit,minmax(35px,1fr))] max-w-[90%] gap-3">
           {iconPaths.map((path, index) => (

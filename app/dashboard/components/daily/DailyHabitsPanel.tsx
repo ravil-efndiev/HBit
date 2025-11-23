@@ -1,4 +1,4 @@
-import AddDailyHabit from "./AddDailyHabit";
+import AddHabit from "@/dashboard/components/AddHabit";
 import DailyHabitDisplay from "./DailyHabitDisplay";
 import { requireSessionUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
@@ -11,10 +11,10 @@ const DailyHabitsPanel = async () => {
   });
 
   return (
-    <div className="bg-gray-200">
+    <section>
       <div className="flex">
         <h3>Daily Habits</h3>
-        <AddDailyHabit />
+        <AddHabit type="daily" />
       </div>
       <ul className="list">
         {dailyHabits.map((habit) => (
@@ -23,7 +23,7 @@ const DailyHabitsPanel = async () => {
           </li>
         ))}
       </ul>
-    </div>
+    </section>
   );
 };
 

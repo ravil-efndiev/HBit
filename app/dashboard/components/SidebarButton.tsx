@@ -1,26 +1,23 @@
 "use client";
 
-import { DailyHabitPreset } from "@/lib/habitPresets";
-import React, { useState } from "react";
+import { HabitPreset } from "@/lib/habitPresets";
+import { useState } from "react";
 import AddOrEditModal from "./AddOrEditModal";
-import { DailyHabitCreateRequestBody, habitCreate } from "@/lib/requests";
+import { habitCreate } from "@/lib/requests";
 
 interface Props {
-  preset: DailyHabitPreset;
+  preset: HabitPreset;
 }
 
 const SidebarButton = ({ preset }: Props) => {
   const [openTrigger, setOpenTrigger] = useState(0);
 
-  const handleAdd = async (body: DailyHabitCreateRequestBody) => {
-    await habitCreate(body);
-  }
-
   return (
     <>
       <AddOrEditModal
+        type="daily"
         openTrigger={openTrigger}
-        onAdd={handleAdd}
+        onAdd={habitCreate}
         initialName={preset.name}
         initialDetails={preset.detials}
         initialIconPath={preset.iconPath}

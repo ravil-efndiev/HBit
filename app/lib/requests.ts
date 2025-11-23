@@ -1,3 +1,11 @@
+import {
+  DailyHabitCreateRequestBody,
+  WeeklyHabitCreateRequestBody,
+  DailyHabitUpdateRequestBody,
+  WeeklyHabitUpdateRequestBody,
+  chooseHabitEndpoint,
+} from "./requestBody";
+
 const request = async (endpoint: string, body: Object, method: string) => {
   const res = await fetch(endpoint, {
     method,
@@ -27,42 +35,11 @@ export const reqDelete = async (endpoint: string, body: Object) => {
   return request(endpoint, body, "DELETE");
 };
 
-export interface DailyHabitCreateRequestBody {
-  name: string;
-  details: string;
-  iconPath: string;
-  timeGoal: number;
-}
-
-export interface DailyHabitUpdateRequestBody {
-  name?: string;
-  details?: string;
-  iconPath?: string;
-  timeGoal?: number;
-  timeSpent?: number;
-  habitId?: number;
-}
-
-export interface WeeklyHabitCreateRequestBody {
-  name: string;
-  details: string;
-  iconPath: string;
-  days: string[];
-}
-
-export interface WeeklyHabitUpdateRequestBody {
-  name?: string;
-  details?: string;
-  iconPath?: string;
-  days?: string[];
-  habitId?: number;
-}
-
 export const habitCreate = async (
   body: DailyHabitCreateRequestBody | WeeklyHabitCreateRequestBody
 ) => {
   try {
-    const resData = await reqPost("/api/habits/daily", body);
+    const resData = await reqPost(chooseHabitEndpoint(body), body);
     console.log(resData.newHabit);
     window.location.reload();
   } catch (err) {
@@ -75,9 +52,9 @@ export const habitUpdate = async (
   reloadPage: boolean = true
 ) => {
   try {
-    const resData = await reqPatch("/api/habits/daily", body);
+    const resData = await reqPatch(chooseHabitEndpoint(body), body);
     console.log(resData.patchedHabit);
-    
+
     if (reloadPage) {
       window.location.reload();
     }
@@ -86,9 +63,12 @@ export const habitUpdate = async (
   }
 };
 
-export const habitDelete = async (habitId: number) => {
+export const habitDelete = async (
+  habitId: number,
+  type: "daily" | "weekly"
+) => {
   try {
-    const data = await reqDelete("/api/habits/daily", { habitId });
+    const data = await reqDelete(`/api/habits/${type}`, { habitId });
     console.log(data);
     window.location.reload();
   } catch (err) {

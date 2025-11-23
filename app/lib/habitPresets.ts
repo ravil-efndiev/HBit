@@ -1,10 +1,10 @@
-export interface DailyHabitPreset {
+export interface HabitPreset {
   name: string;
   detials: string;
   iconPath: string;
 }
 
-export const dailyHabitPresets: DailyHabitPreset[] = [
+export const dailyHabitPresets: HabitPreset[] = [
   {
     name: "Study",
     detials: "train your mind and get more knowledge",
@@ -21,7 +21,7 @@ export const dailyHabitPresets: DailyHabitPreset[] = [
     iconPath: "/habitIcons/book-svgrepo-com.svg",
   },
   {
-    name: "Music",
+    name: "Play an instrument",
     detials: "learn or improve at a musical instrument",
     iconPath: "/habitIcons/guitar-solid-svgrepo-com.svg",
   },
