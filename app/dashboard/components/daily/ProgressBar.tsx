@@ -1,7 +1,9 @@
+"use client";
+
 import { useState } from "react";
 import IncrementTimeButton from "./IncrementTimeButton";
-import { patch } from "@/lib/requests";
 import { getFormattedTime } from "./DailyHabitDisplay";
+import { habitUpdate } from "@/lib/requests";
 
 interface Props {
   habitId: number;
@@ -15,16 +17,13 @@ const ProgressBar = ({ habitId, timeGoalMs, initialTimeSpentMs }: Props) => {
   const handleIncrement = async (newValue: number) => {
     setTimeSpentMs(newValue);
 
-    try {
-      const data = await patch("/api/habits/daily", {
+    await habitUpdate(
+      {
         habitId,
         timeSpent: newValue,
-      });
-
-      console.log(data);
-    } catch (err) {
-      console.error(err);
-    }
+      },
+      false
+    );
   };
 
   const calcProgress = () => (timeSpentMs / timeGoalMs) * 100;

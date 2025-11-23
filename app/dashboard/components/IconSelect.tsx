@@ -1,5 +1,3 @@
-"use client";
-
 import { useRef, useState } from "react";
 import { useIconPaths } from "./context/IconPathsContext";
 import Image from "next/image";

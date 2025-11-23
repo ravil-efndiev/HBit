@@ -6,9 +6,9 @@ export interface DailyHabitPreset {
 
 export const dailyHabitPresets: DailyHabitPreset[] = [
   {
-    name: "Read a book",
-    detials: "learn something and improve your free-time quality",
-    iconPath: "/habitIcons/book-svgrepo-com.svg",
+    name: "Study",
+    detials: "train your mind and get more knowledge",
+    iconPath: "/habitIcons/study-university-svgrepo-com.svg",
   },
   {
     name: "Daily workout",
@@ -16,8 +16,13 @@ export const dailyHabitPresets: DailyHabitPreset[] = [
     iconPath: "/habitIcons/dumbbell-gym-svgrepo-com.svg",
   },
   {
-    name: "Learn a musical instrument",
-    detials: "improve your creativity and spend some time getting better",
+    name: "Read a book",
+    detials: "learn something and improve your free-time quality",
+    iconPath: "/habitIcons/book-svgrepo-com.svg",
+  },
+  {
+    name: "Music",
+    detials: "learn or improve at a musical instrument",
     iconPath: "/habitIcons/guitar-solid-svgrepo-com.svg",
   },
   {

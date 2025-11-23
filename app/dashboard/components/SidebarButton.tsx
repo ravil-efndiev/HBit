@@ -3,6 +3,7 @@
 import { DailyHabitPreset } from "@/lib/habitPresets";
 import React, { useState } from "react";
 import AddOrEditModal from "./AddOrEditModal";
+import { DailyHabitCreateRequestBody, habitCreate } from "@/lib/requests";
 
 interface Props {
   preset: DailyHabitPreset;
@@ -11,11 +12,15 @@ interface Props {
 const SidebarButton = ({ preset }: Props) => {
   const [openTrigger, setOpenTrigger] = useState(0);
 
+  const handleAdd = async (body: DailyHabitCreateRequestBody) => {
+    await habitCreate(body);
+  }
+
   return (
     <>
       <AddOrEditModal
         openTrigger={openTrigger}
-        onAddOrEdit={() => window.location.reload()}
+        onAdd={handleAdd}
         initialName={preset.name}
         initialDetails={preset.detials}
         initialIconPath={preset.iconPath}

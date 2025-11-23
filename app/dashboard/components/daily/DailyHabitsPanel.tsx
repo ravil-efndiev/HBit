@@ -1,23 +1,20 @@
-"use client";
-
-import { DailyHabit } from "@prisma/client";
-import { useState } from "react";
 import AddDailyHabit from "./AddDailyHabit";
 import DailyHabitDisplay from "./DailyHabitDisplay";
+import { requireSessionUser } from "@/lib/session";
+import { prisma } from "@/lib/prisma";
 
-interface Props {
-  initialDailyHabits: DailyHabit[];
-}
+const DailyHabitsPanel = async () => {
+  const currentUser = await requireSessionUser();
+  const dailyHabits = await prisma.dailyHabit.findMany({
+    where: { userId: currentUser.id },
+    orderBy: { createdAt: "asc" },
+  });
 
-const DailyHabitsPanel = ({ initialDailyHabits }: Props) => {
-  const [dailyHabits, setDailyHabits] = useState(initialDailyHabits);
   return (
     <div className="bg-gray-200">
       <div className="flex">
         <h3>Daily Habits</h3>
-        <AddDailyHabit
-          onHabitAdd={(habit) => setDailyHabits((prev) => [...prev, habit])}
-        />
+        <AddDailyHabit />
       </div>
       <ul className="list">
         {dailyHabits.map((habit) => (

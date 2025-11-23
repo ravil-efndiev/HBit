@@ -1,31 +1,34 @@
+"use client";
+
 import { useState } from "react";
 import Image from "next/image";
 import { DailyHabit } from "@prisma/client";
 import AddOrEditModal from "../AddOrEditModal";
-import { deleteReq } from "@/lib/requests";
+import {
+  DailyHabitUpdateRequestBody,
+  habitDelete,
+  habitUpdate,
+} from "@/lib/requests";
 
 interface Props {
-  onHabitEdit: (habit: DailyHabit) => void;
   initialHabit: DailyHabit;
 }
 
-const EditDailyHabit = ({ onHabitEdit, initialHabit }: Props) => {
+const EditDailyHabit = ({ initialHabit }: Props) => {
   const [openTrigger, setOpenTrigger] = useState(0);
 
   const handleDelete = async () => {
-    try {
-      const data = await deleteReq("/api/habits/daily", { habitId: initialHabit.id });
-      window.location.reload();
-      console.log(data);
-    } catch (err) {
-      console.error(err);
-    }
+    await habitDelete(initialHabit.id);
+  };
+
+  const handleEdit = async (reqBody: DailyHabitUpdateRequestBody) => {
+    await habitUpdate(reqBody);
   };
 
   return (
     <>
       <AddOrEditModal
-        onAddOrEdit={onHabitEdit}
+        onEdit={handleEdit}
         onDelete={handleDelete}
         openTrigger={openTrigger}
         initialHabitId={initialHabit.id}
@@ -34,7 +37,7 @@ const EditDailyHabit = ({ onHabitEdit, initialHabit }: Props) => {
         initialIconPath={initialHabit.iconPath}
         initialTimeGoal={initialHabit.timeGoal}
       />
-      <div className="flex-1 flex justify-end">
+      <div className="ml-auto flex">
         <button
           className="btn btn-ghost"
           onClick={() => setOpenTrigger((prev) => prev + 1)}

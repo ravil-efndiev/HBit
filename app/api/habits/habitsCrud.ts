@@ -33,11 +33,11 @@ export class HabitCrud {
     try {
       const user = await requireSessionUser();
       const body = await req.json();
-      const { name, desc, iconPath } = body;
+      const { name, details, iconPath } = body;
 
       const data = {
         name,
-        details: desc,
+        details,
         iconPath,
         userId: user.id,
         ...this.setPostData(body),
@@ -55,12 +55,12 @@ export class HabitCrud {
     try {
       const user = await requireSessionUser();
       const body = await req.json();
-      const { habitId, name, desc, iconPath } = body;
+      const { habitId, name, details, iconPath } = body;
 
       const editFields = Object.fromEntries(
         Object.entries({
           name,
-          details: desc,
+          details,
           iconPath,
           ...this.setPatchData(body),
         }).filter(([_, v]) => v !== undefined)

@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useIconPaths } from "./context/IconPathsContext";
-import { patch, post } from "@/lib/requests";
+import { DailyHabitCreateRequestBody, DailyHabitUpdateRequestBody } from "@/lib/requests";
 import {
   minutesHoursToMs,
   appendTimeZero,
@@ -9,21 +9,22 @@ import {
 import AddHabitPanelInput from "./AddHabitPanelInput";
 import IconSelect from "./IconSelect";
 import ModalWrapper from "./ModalWrapper";
-import { DailyHabit } from "@prisma/client";
 
 interface Props {
   openTrigger: number;
-  onAddOrEdit: (newHabit: DailyHabit) => void;
+  onAdd?: (body: DailyHabitCreateRequestBody) => void;
+  onEdit?: (body: DailyHabitUpdateRequestBody) => void;
+  onDelete?: () => void;
   initialName?: string;
   initialDetails?: string;
   initialIconPath?: string;
   initialTimeGoal?: number;
   initialHabitId?: number;
-  onDelete?: () => void;
 }
 
 const AddOrEditModal = ({
-  onAddOrEdit,
+  onAdd,
+  onEdit,
   onDelete,
   openTrigger,
   initialName,
@@ -32,10 +33,10 @@ const AddOrEditModal = ({
   initialTimeGoal,
   initialHabitId,
 }: Props) => {
+  const editMode = initialHabitId !== undefined;
+
   const defaultIconPath = useIconPaths()[0];
-  const [iconPath, setIconPath] = useState(
-    initialIconPath || defaultIconPath
-  );
+  const [iconPath, setIconPath] = useState(initialIconPath || defaultIconPath);
   const [name, setName] = useState(initialName || "");
   const [desc, setDesc] = useState(initialDetails || "");
   const [timeGoal, setTimeGoal] = useState(
@@ -60,44 +61,36 @@ const AddOrEditModal = ({
 
   const handleAddBtnClick = async () => {
     if (!name) {
-      setError("Please enter a habit name");
-      return;
+      return setError("Please enter a habit name");
     }
 
     if (timeGoal.minutes === 0 && timeGoal.hours === 0) {
-      setError("Please enter your time goal");
-      return;
+      return setError("Please set your time goal");
     }
 
-    try {
-      const body = {
-        name,
-        desc,
-        iconPath,
-        timeGoal: minutesHoursToMs(timeGoal),
-        ...(initialHabitId && {
-          habitId: initialHabitId,
-        }),
-      };
-      const resData = !initialHabitId
-        ? await post("/api/habits/daily", body)
-        : await patch("/api/habits/daily", body);
+    const body = {
+      name,
+      details: desc,
+      iconPath,
+      timeGoal: minutesHoursToMs(timeGoal),
+      ...(editMode && {
+        habitId: initialHabitId,
+      }),
+    };
 
-      const createdOrPatched = initialHabitId
-        ? resData.patchedHabit
-        : resData.newHabit;
-
-      onAddOrEdit(createdOrPatched);
-      modalRef.current?.close();
-    } catch (err) {
-      console.error(err);
+    if (editMode && onEdit) {
+      onEdit(body);
+    } else if (!editMode && onAdd) {
+      onAdd(body);
     }
+
+    modalRef.current?.close();
   };
 
   return (
     <ModalWrapper dialogRef={modalRef}>
       <h4 className="text-2xl mb-3">
-        {!initialHabitId ? "Add a new daily habit" : "Edit your habit"}
+        {!editMode ? "Add a new daily habit" : "Edit your habit"}
       </h4>
       <AddHabitPanelInput
         value={name}
@@ -135,9 +128,9 @@ const AddOrEditModal = ({
         <p className="text-(--col-text-secondary) mr-3 ml-1">m</p>
       </div>
       <button className="btn btn-primary" onClick={handleAddBtnClick}>
-        {!initialHabitId ? "Add" : "Edit"}
+        {!editMode ? "Add" : "Edit"}
       </button>
-      {initialHabitId && onDelete && (
+      {editMode && onDelete && (
         <button className="btn btn-warning ml-3" onClick={() => onDelete()}>
           Delete
         </button>

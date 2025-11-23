@@ -1,6 +1,6 @@
 "use client";
 
-import { post } from "@/lib/requests";
+import { reqPost } from "@/lib/requests";
 import { useRouter } from "next/navigation";
 
 const SignoutButton = () => {
@@ -8,7 +8,7 @@ const SignoutButton = () => {
 
   const handleClick = async () => {
     try {
-      await post("/api/auth/signout", {});
+      await reqPost("/api/auth/signout", {});
       router.push("/auth/signin");
     } catch (err) {
       console.error(err);

@@ -38,7 +38,7 @@ const DailyHabitDisplay = ({ habit }: Props) => {
           {parseInt(timeGoal.minutes) > 0 && `${timeGoal.minutes}m`}
         </span>
       </div>
-      <EditDailyHabit initialHabit={habit} onHabitEdit={() => window.location.reload()} />
+      <EditDailyHabit initialHabit={habit} />
     </div>
   );
 };
