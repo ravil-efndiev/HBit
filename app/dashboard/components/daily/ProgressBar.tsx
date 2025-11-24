@@ -33,8 +33,8 @@ const ProgressBar = ({ habitId, timeGoalMs, initialTimeSpentMs }: Props) => {
 
   return (
     <div className="flex-5">
-      <p className="text-[1rem]">
-        Daily progress{" "}
+      <p className="text-[1rem] font-light">
+        <span className="">Daily progress{" "}</span>
         <span className="text-(--col-text-secondary)">
           {timeSpentMs < timeGoalMs ? (
             <>

@@ -31,3 +31,21 @@ export const dailyHabitPresets: HabitPreset[] = [
     iconPath: "/habitIcons/sleep-svgrepo-com.svg",
   },
 ];
+
+export const weeklyHabitPresets: HabitPreset[] = [
+  {
+    name: "Gym",
+    detials: "Build muscle and bench press a lot of weight",
+    iconPath: "/habitIcons/dumbbell-gym-svgrepo-com.svg",
+  },
+  {
+    name: "Study programme",
+    detials: "Go to school or university on schedule",
+    iconPath: "/habitIcons/study-university-svgrepo-com.svg",
+  },
+    {
+    name: "Hobby",
+    detials: "A fun free-time activity of your choice",
+    iconPath: "/habitIcons/gamepad-svgrepo-com.svg",
+  },
+];

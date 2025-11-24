@@ -20,13 +20,10 @@ const WeeklyHabitsPanel = async () => {
   });
 
   return (
-    <section>
-      <div className="flex">
-        <h3>Weekly habits</h3>
-        <AddHabit type="weekly" />
-      </div>
-      <h3>Today!</h3>
-      <ul className="flex flex-wrap gap-3">
+    <section className="mb-5">
+      <h3 className="panel-title">Weekly habits</h3>
+      <h3 className="text-2xl">Today!</h3>
+      <ul className="flex flex-wrap gap-3 mb-5">
         {today.map((habit) => (
           <li key={habit.id}>
             <a href={`#${habit.id}`}>
@@ -34,14 +31,13 @@ const WeeklyHabitsPanel = async () => {
                 <Image src={habit.iconPath} alt="icon" width={40} height={40} />
                 <div className="flex-2 mx-5">
                   <p className="text-lg">{habit.name}</p>
-                  <p className="text-(--col-text-secondary)">{habit.details}</p>
                 </div>
               </div>
             </a>
           </li>
         ))}
       </ul>
-      <h3>All weekly habits</h3>
+      <h3 className="text-2xl">All weekly habits</h3>
       <ul className="list">
         {weeklyHabits.map((habit) => (
           <li key={habit.id}>
@@ -49,6 +45,7 @@ const WeeklyHabitsPanel = async () => {
           </li>
         ))}
       </ul>
+      <AddHabit type="weekly" />
     </section>
   );
 };

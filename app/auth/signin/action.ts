@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { sessionMaxAge, setSessionCookie } from "@/lib/sessionCookie";
 import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
-import { redirectWithError } from "@/lib/redirectWithError";
+import { redirectWithError } from "@/lib/misc";
 
 export const signinAction = async (formData: FormData) => {
   const email = formData.get("email") as string;

@@ -8,6 +8,16 @@ export const dayNames = [
   "Saturday",
 ];
 
+export const shortDayNames: { [longName: string]: string } = {
+  Sunday: "Sun",
+  Monday: "Mon",
+  Tuesday: "Tue",
+  Wednesday: "Wed",
+  Thursday: "Thu",
+  Friday: "Fri",
+  Saturday: "Sat",
+};
+
 export const dateToDayName = (date: Date) => {
   const day = date.getDay();
   return dayNames[day];

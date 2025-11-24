@@ -12,10 +12,7 @@ const DailyHabitsPanel = async () => {
 
   return (
     <section>
-      <div className="flex">
-        <h3>Daily Habits</h3>
-        <AddHabit type="daily" />
-      </div>
+      <h3 className="panel-title">Daily Habits</h3>
       <ul className="list">
         {dailyHabits.map((habit) => (
           <li key={habit.id}>
@@ -23,6 +20,7 @@ const DailyHabitsPanel = async () => {
           </li>
         ))}
       </ul>
+      <AddHabit type="daily" />
     </section>
   );
 };

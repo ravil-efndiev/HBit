@@ -61,10 +61,6 @@
   --font-mono: var(--font-geist-mono);
 }
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
-}
-
 a {
   color: var(--primary-dark);
 }
@@ -100,10 +96,13 @@ a {
     @apply flex items-center border-b border-b-(--col-text-secondary) py-1;
   }
   .sidebar-li-text {
-    @apply flex-1 ml-3 text-(--col-text-secondary) mr-1;
+    @apply flex-1 ml-3 mr-1 font-light text-(--col-text-primary);
   }
   .habit-display {
     @apply flex py-2 px-5 bg-(--col-background) items-center rounded-xl shadow-xs my-1;
+  }
+  .panel-title {
+    @apply text-4xl my-4 text-center font-medium bg-gray-100 py-4 rounded-full max-w-3/4 mx-auto shadow-sm;
   }
   #safeguard {
     @apply bg-(--col-accent-sky-light)

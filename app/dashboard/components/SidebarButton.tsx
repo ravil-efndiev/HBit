@@ -6,16 +6,17 @@ import AddOrEditModal from "./AddOrEditModal";
 import { habitCreate } from "@/lib/requests";
 
 interface Props {
+  type: "daily" | "weekly";
   preset: HabitPreset;
 }
 
-const SidebarButton = ({ preset }: Props) => {
+const SidebarButton = ({ type, preset }: Props) => {
   const [openTrigger, setOpenTrigger] = useState(0);
 
   return (
     <>
       <AddOrEditModal
-        type="daily"
+        type={type}
         openTrigger={openTrigger}
         onAdd={habitCreate}
         initialName={preset.name}

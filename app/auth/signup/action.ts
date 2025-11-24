@@ -9,7 +9,7 @@ import {
 } from "@/lib/validation";
 import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
-import { redirectWithError } from "../../lib/redirectWithError";
+import { redirectWithError } from "@/lib/misc";
 
 export const signupAction = async (formData: FormData) => {
   const name = formData.get("name") as string;

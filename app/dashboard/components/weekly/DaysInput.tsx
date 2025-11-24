@@ -2,18 +2,12 @@ import { useRef } from "react";
 import ModalWrapper from "../ModalWrapper";
 import { dayNames } from "@/lib/dayNames";
 import Image from "next/image";
+import { formatDays } from "@/lib/misc";
 
 interface Props {
   days: string[];
   onChange: (newDays: string[]) => void;
 }
-
-const formatDays = (days: string[]) => {
-  if (days.length < 7) return;
-  const formatted = [...days];
-  formatted.push(formatted.shift()!);
-  return formatted;
-};
 
 const DaysInput = ({ days, onChange }: Props) => {
   const daySelectRef = useRef<HTMLDialogElement>(null);

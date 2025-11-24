@@ -1,7 +1,7 @@
-import { dailyHabitPresets } from "@/lib/habitPresets";
+import { dailyHabitPresets, weeklyHabitPresets } from "@/lib/habitPresets";
 import Image from "next/image";
 import SidebarButton from "./SidebarButton";
-import getHabitIconPaths from "@/lib/getHabitIconPaths";
+import { getHabitIconPaths } from "@/lib/iconPaths";
 import IconPathsProvider from "./context/IconPathsContext";
 import { requireSessionUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
@@ -38,12 +38,22 @@ const Sidebar = async () => {
           )}
         </ul>
         <h3 className="sidebar-title">Any daily habit you'd like to add?</h3>
-        <ul>
+        <ul className="mb-8">
           {dailyHabitPresets.map((preset, index) => (
             <li key={index} className="sidebar-li">
               <Image src={preset.iconPath} alt="icon" width={30} height={30} />
               <p className="sidebar-li-text">{preset.name}</p>
-              <SidebarButton preset={preset} />
+              <SidebarButton type="daily" preset={preset} />
+            </li>
+          ))}
+        </ul>
+        <h3 className="sidebar-title">Any weekly habit you'd like to add?</h3>
+        <ul>
+          {weeklyHabitPresets.map((preset, index) => (
+            <li key={index} className="sidebar-li">
+              <Image src={preset.iconPath} alt="icon" width={30} height={30} />
+              <p className="sidebar-li-text">{preset.name}</p>
+              <SidebarButton type="weekly" preset={preset} />
             </li>
           ))}
         </ul>

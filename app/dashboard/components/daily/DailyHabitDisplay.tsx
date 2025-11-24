@@ -24,14 +24,14 @@ const DailyHabitDisplay = ({ habit }: Props) => {
       <Image src={habit.iconPath} alt="icon" width={50} height={50} />
       <div className="flex-2 ml-5 pr-2">
         <p className="text-lg">{habit.name}</p>
-        <p className="text-(--col-text-secondary)">{habit.details}</p>
+        <p className="text-(--col-text-secondary) max-w-[85%]">{habit.details}</p>
       </div>
       <ProgressBar
         habitId={habit.id}
         timeGoalMs={habit.timeGoal}
         initialTimeSpentMs={habit.timeSpent}
       />
-      <div className="ml-10 text-[1rem] flex-1">
+      <div className="ml-10 text-[1rem] flex-1 font-light">
         goal:{" "}
         <span className="text-(--col-text-secondary)">
           {parseInt(timeGoal.hours) > 0 && `${timeGoal.hours}h `}
