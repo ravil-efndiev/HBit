@@ -41,7 +41,7 @@ const EditHabit = ({ type, initialHabit }: Props) => {
           className="btn btn-ghost"
           onClick={() => setOpenTrigger((prev) => prev + 1)}
         >
-          <Image src="three-dots.svg" alt="edit" width={30} height={30} />
+          <Image src="/three-dots.svg" alt="edit" width={30} height={30} />
         </button>
       </div>
     </>

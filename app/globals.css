@@ -65,6 +65,10 @@ a {
   color: var(--primary-dark);
 }
 
+::-moz-color-swatch {
+  border: 0px;
+}
+
 @utility btn {
   @apply rounded-full font-normal;
 }
@@ -99,12 +103,15 @@ a {
     @apply flex-1 ml-3 mr-1 font-light text-(--col-text-primary);
   }
   .habit-display {
-    @apply flex py-2 px-5 bg-(--col-background) items-center rounded-xl shadow-xs my-1;
+    @apply flex py-2 px-5 bg-(--col-background) items-center rounded-xl shadow-xs my-1 border border-gray-200;
   }
   .panel-title {
-    @apply text-4xl my-4 text-center font-medium bg-gray-100 py-4 rounded-full max-w-3/4 mx-auto shadow-sm;
+    @apply text-2xl my-4 text-center font-medium bg-(--col-primary-muted) py-4 rounded-full max-w-3/4 mx-auto shadow-sm;
+  }
+  .habit-placeholder {
+    @apply items-center text-center py-4 justify-center text-xl font-light;
   }
   #safeguard {
-    @apply bg-(--col-accent-sky-light)
+    @apply bg-(--col-accent-sky-light);
   }
 }

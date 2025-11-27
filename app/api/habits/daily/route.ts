@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { HabitCrud } from "../habitsCrud";
 
-const DailyHabitsCrud = new HabitCrud({
+const dailyHabitsCrud = new HabitCrud({
   prismaModel: prisma.dailyHabit,
   setPostData: (body) => ({
     timeGoal: body.timeGoal,
@@ -12,6 +12,6 @@ const DailyHabitsCrud = new HabitCrud({
   }),
 });
 
-export const POST = DailyHabitsCrud.POST;
-export const PATCH = DailyHabitsCrud.PATCH;
-export const DELETE = DailyHabitsCrud.DELETE;
+export const POST = dailyHabitsCrud.POST;
+export const PATCH = dailyHabitsCrud.PATCH;
+export const DELETE = dailyHabitsCrud.DELETE;

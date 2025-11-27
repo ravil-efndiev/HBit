@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useIconPaths } from "./context/IconPathsContext";
 import { minutesHoursToMs, msToMinutesHours } from "@/lib/timeConverts";
-import AddHabitPanelInput from "./AddHabitPanelInput";
+import TextInput from "./TextInput";
 import IconSelect from "./IconSelect";
 import ModalWrapper from "./ModalWrapper";
 import TimeGoalInput from "./daily/TimeGoalInput";
@@ -141,15 +141,15 @@ const AddOrEditModal = ({
       <h4 className="text-2xl mb-3">
         {!editMode ? uiData.mainTitleAdd : uiData.mainTitleEdit}
       </h4>
-      <AddHabitPanelInput
+      <TextInput
         value={name}
-        onChange={(e) => setName(e.target.value)}
-        type="name"
+        onChange={(newName) => setName(newName)}
+        placeholder="Habit name *"
       />
-      <AddHabitPanelInput
+      <TextInput
         value={desc}
-        onChange={(e) => setDesc(e.target.value)}
-        type="desc"
+        onChange={(newDesc) => setDesc(newDesc)}
+        placeholder="Habit details"
       />
       <IconSelect
         onSelect={(path) => setIconPath(path)}

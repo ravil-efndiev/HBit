@@ -1,14 +1,7 @@
 import { requireSessionUser } from "@/lib/session";
 import { NextResponse } from "next/server";
 import { routeError } from "@/api/routeError";
-
-interface PrismaModel {
-  create: (args: any) => Promise<any>;
-  findMany: (args: any) => Promise<any[]>;
-  findUnique: (args: any) => Promise<any>;
-  update: (args: any) => Promise<any>;
-  delete: (args: any) => Promise<any>;
-}
+import { PrismaModel } from "../prismaModel";
 
 type DataSetter = (body: { [key: string]: any }) => Object;
 
@@ -57,7 +50,7 @@ export class HabitCrud {
       const body = await req.json();
       const { habitId, name, details, iconPath } = body;
 
-      const editFields = Object.fromEntries(
+      const updateData = Object.fromEntries(
         Object.entries({
           name,
           details,
@@ -68,7 +61,7 @@ export class HabitCrud {
 
       const patchedHabit = await this.prismaModel.update({
         where: { userId: user.id, id: habitId },
-        data: editFields,
+        data: updateData,
       });
 
       return NextResponse.json({ patchedHabit }, { status: 200 });

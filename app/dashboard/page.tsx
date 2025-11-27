@@ -1,6 +1,7 @@
 import Dashboard from "@/dashboard/components/Dashboard";
 import { type Metadata } from "next";
 import Sidebar from "./components/Sidebar";
+import TopBar from "./components/TopBar";
 
 export const metadata: Metadata = {
   title: "Dashboard - Habit tracker",
@@ -9,8 +10,10 @@ export const metadata: Metadata = {
 const DashboardPage = () => {
   return (
     <>
-      <Sidebar />
-      <Dashboard />
+      <div className="flex w-full overflow-hidden">
+        <Sidebar />
+        <Dashboard />
+      </div>
     </>
   );
 };

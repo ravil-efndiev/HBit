@@ -6,10 +6,11 @@ import useClickAwayListener from "./hooks/useClickAwayListener";
 interface Props extends PropsWithChildren {
   dialogRef: RefObject<HTMLDialogElement | null>;
   top?: string | number;
+  left?: string | number;
   width?: string | number;
 }
 
-const ModalWrapper = ({ dialogRef, top, width, children }: Props) => {
+const ModalWrapper = ({ dialogRef, top, left, width, children }: Props) => {
   const contentBoxRef = useRef<HTMLDivElement>(null);
 
   useClickAwayListener<HTMLDivElement>(contentBoxRef, () => {
@@ -21,7 +22,7 @@ const ModalWrapper = ({ dialogRef, top, width, children }: Props) => {
       <div
         className="modal-box absolute"
         ref={contentBoxRef}
-        style={{ top, width }}
+        style={{ top, left, width }}
       >
         <button
           className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-lg"

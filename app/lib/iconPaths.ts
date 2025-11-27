@@ -5,5 +5,5 @@ export const getHabitIconPaths = () => {
   const dir = path.join(process.cwd(), "public/habitIcons");
   const filenames = fs.readdirSync(dir);
 
-  return filenames.map((filename) => `habitIcons/${filename}`);
+  return filenames.map((filename) => `/habitIcons/${filename}`);
 };
