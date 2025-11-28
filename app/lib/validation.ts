@@ -10,7 +10,7 @@ export const validateName = (name: string) => {
   if (name.length > 24) return "Name has to be shorter than 24 characters";
 };
 
-export function validateEmail(email: string) {
+export const validateEmail = (email: string) => {
   const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   if (!regex.test(email)) return "Invalid email!";
 }

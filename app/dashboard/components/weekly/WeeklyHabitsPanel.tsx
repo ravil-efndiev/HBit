@@ -22,7 +22,7 @@ const WeeklyHabitsPanel = async () => {
   return (
     <section className="my-7">
       <h3 className="panel-title">Weekly habits</h3>
-      <div className="bg-[#ffffff64] p-3 rounded-lg">
+      <div className="panel">
         {today.length > 0 && (
           <>
             <h3 className="text-2xl">Today!</h3>
@@ -30,7 +30,7 @@ const WeeklyHabitsPanel = async () => {
               {today.map((habit) => (
                 <li key={habit.id}>
                   <a href={`#${habit.id}`}>
-                    <div className="habit-display hover:scale-[1.05] transition">
+                    <div className="display hover:scale-[1.05] transition">
                       <Image
                         src={habit.iconPath}
                         alt="icon"

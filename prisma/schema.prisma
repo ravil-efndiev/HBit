@@ -56,7 +56,7 @@ model ActivityType {
   name      String
   details   String
   color     String
-  iconPath  String?
+  iconPath  String
   userId    String
   user      User       @relation(fields: [userId], references: [id])
   entries   ActivityEntry[]

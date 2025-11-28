@@ -9,7 +9,7 @@ const Dashboard = async () => {
   const habitIconPaths = getHabitIconPaths();
 
   return (
-    <main className="flex-7 overflow-y-auto bg-[#e4e5e4]">
+    <main className="flex-7 overflow-y-auto bg-gray-100">
       {/* <SignoutButton /> */}
       <IconPathsProvider iconPaths={habitIconPaths}>
         <div className="max-w-[90%] mx-auto min-h-screen">

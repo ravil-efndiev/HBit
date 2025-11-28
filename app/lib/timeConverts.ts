@@ -1,3 +1,5 @@
+import { ReadableTime } from "./types";
+
 export const msToMinutesHours = (ms: number | undefined) => {
   if (ms === undefined) return undefined;
   const totalMinutes = Math.floor(ms / 60000);
@@ -7,7 +9,7 @@ export const msToMinutesHours = (ms: number | undefined) => {
   return { minutes, hours };
 };
 
-export const minutesHoursToMs = (time: { minutes: number; hours: number }) => {
+export const minutesHoursToMs = (time: ReadableTime) => {
   return time.minutes * 60 * 1000 + time.hours * 60 * 60 * 1000;
 };
 

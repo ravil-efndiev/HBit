@@ -1,8 +1,7 @@
 import { requireSessionUser } from "@/lib/session";
 import Breadcrumbs from "../components/Breadcrumbs";
-import IconPathsProvider from "../components/context/IconPathsContext";
-import { getHabitIconPaths } from "@/lib/iconPaths";
 import { prisma } from "@/lib/prisma";
+import { orderDataByDate } from "@/lib/misc";
 
 const StatisticsPage = async () => {
   const user = await requireSessionUser();
@@ -11,22 +10,33 @@ const StatisticsPage = async () => {
     include: { habit: true },
   });
 
+  const statsByDate = orderDataByDate(stats, false);
+
   return (
-    <>
+    <div className="w-full">
       <Breadcrumbs subpage="statistics" />
       <main>
         <div>
-          {stats.map((stat) => (
-            <div key={stat.id}>
-              <p>{stat.habit.name}</p>
-              <p>{stat.habit.details}</p>
-              <p>{stat.timeSpent}</p>
-              <p>{stat.completed ? "Completed" : "Not completed"}</p>
+          {statsByDate.map((stats, index) => (
+            <div
+              key={index}
+              className="collapse collapse-arrow border-base-300"
+            >
+              <input type="radio" name="my-accordion-1" />
+              <div className="collapse-title flex">
+                <p>{stats[0].date.toLocaleDateString("cs-CZ")}</p>
+                <p>{stats.filter((stat) => stat.completed).length} completed</p>
+              </div>
+              <div className="collapse-content">
+                {stats.map((stat) => (
+                  <p key={stat.id}>{stat.habit.name}</p>
+                ))}
+              </div>
             </div>
           ))}
         </div>
       </main>
-    </>
+    </div>
   );
 };
 

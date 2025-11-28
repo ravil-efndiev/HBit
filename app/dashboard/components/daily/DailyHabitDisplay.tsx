@@ -20,7 +20,7 @@ const DailyHabitDisplay = ({ habit }: Props) => {
   const timeGoal = getFormattedTime(habit.timeGoal);
 
   return (
-    <div className="habit-display">
+    <div className="display">
       <Image src={habit.iconPath} alt="icon" width={50} height={50} />
       <div className="flex-2 ml-5 pr-2">
         <p className="text-lg">{habit.name}</p>

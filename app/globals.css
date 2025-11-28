@@ -89,6 +89,14 @@ a {
   @apply rounded-lg w-full;
 }
 
+@utility display {
+  @apply flex py-2 px-5 bg-(--col-background) items-center rounded-lg shadow-xs my-1 border border-gray-300;
+}
+
+@utility panel {
+  @apply border p-3 border-gray-300 rounded-sm shadow-sm bg-(--col-background);
+}
+
 @layer components {
   .form {
     @apply flex flex-col;
@@ -102,11 +110,11 @@ a {
   .sidebar-li-text {
     @apply flex-1 ml-3 mr-1 font-light text-(--col-text-primary);
   }
-  .habit-display {
-    @apply flex py-2 px-5 bg-(--col-background) items-center rounded-xl shadow-xs my-1 border border-gray-200;
+  .display-no-p {
+    @apply display p-0!;
   }
   .panel-title {
-    @apply text-2xl my-4 text-center font-medium bg-(--col-primary-muted) py-4 rounded-full max-w-3/4 mx-auto shadow-sm;
+    @apply text-2xl my-4 text-center font-medium bg-(--col-primary-muted) border border-gray-400 py-4 rounded-full max-w-3/4 mx-auto shadow-sm;
   }
   .habit-placeholder {
     @apply items-center text-center py-4 justify-center text-xl font-light;

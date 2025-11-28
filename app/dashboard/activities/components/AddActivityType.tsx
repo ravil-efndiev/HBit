@@ -9,7 +9,7 @@ const AddActivityType = () => {
   const [name, setName] = useState("");
   const [details, setDetails] = useState("");
   const [iconPath, setIconPath] = useState("");
-  const [color, setColor] = useState("#c8e6c9");
+  const [color, setColor] = useState("#7ab5fc");
   const [error, setError] = useState<string | null>(null);
 
   const handleAddBtnClick = async () => {
@@ -18,7 +18,7 @@ const AddActivityType = () => {
     if (details.length > 80) return setError("Details are too long");
 
     try {
-      await reqPost("/api/activities/", {
+      await reqPost("/api/activities/type/", {
         name,
         details,
         iconPath,
@@ -32,7 +32,7 @@ const AddActivityType = () => {
   };
 
   return (
-    <div className="flex-1 border p-3 border-gray-300 rounded-sm shadow-sm sticky">
+    <div className="panel max-w-1/5 max-h-[35vh] sticky top-5">
       <p className="mb-3">Add a new activity</p>
       <TextInput
         value={name}
@@ -66,6 +66,7 @@ const AddActivityType = () => {
       >
         Add
       </button>
+      {error && <p className="text-(--col-peach) mt-1">{error}</p>}
     </div>
   );
 };

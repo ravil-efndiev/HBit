@@ -1,9 +1,10 @@
 import { appendTimeZero } from "@/lib/timeConverts";
+import { ReadableTime } from "@/lib/types";
 import { ChangeEvent } from "react";
 
 interface Props {
-  timeGoal: { hours: number; minutes: number };
-  onChange: (newTimeGoal: { hours: number; minutes: number }) => void;
+  timeGoal: ReadableTime;
+  onChange: (newTimeGoal: ReadableTime) => void;
 }
 
 const TimeGoalInput = ({ timeGoal, onChange }: Props) => {

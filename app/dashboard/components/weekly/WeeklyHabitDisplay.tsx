@@ -10,7 +10,7 @@ interface Props {
 
 const WeeklyHabitDisplay = ({ habit }: Props) => {
   return (
-    <div className="habit-display" id={habit.id.toString()}>
+    <div className="display" id={habit.id.toString()}>
       <Image src={habit.iconPath} alt="icon" width={50} height={50} />
       <div className="flex-2 ml-5 pr-2">
         <p className="text-lg">{habit.name}</p>

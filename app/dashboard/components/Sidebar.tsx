@@ -20,7 +20,7 @@ const Sidebar = async () => {
 
   return (
     <IconPathsProvider iconPaths={habitIconPaths}>
-      <div className="flex-2 p-3 overflow-auto">
+      <div className="flex-2 p-3 overflow-auto border-r shadow-lg z-10 border-gray-300">
         <h3 className="sidebar-title bg-(--col-accent-sky)">
           {dailyNotDone.length > 0
             ? "Not yet finished"
