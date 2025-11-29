@@ -15,7 +15,7 @@ const ModalWrapper = ({ dialogRef, top, left, width, children }: Props) => {
 
   useClickAwayListener<HTMLDivElement>(contentBoxRef, () => {
     dialogRef.current?.close();
-  });
+  }, []);
 
   return (
     <dialog ref={dialogRef} className="modal">

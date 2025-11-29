@@ -11,8 +11,8 @@ interface Props {
 
 const ActivityTypeList = async ({ activityTypes, latestEntries }: Props) => {
   return (
-    <div className="panel">
-      <h1 className="text-xl">Your activities</h1>
+    <section className="panel">
+      <h1 className="panel-title">Your activities</h1>
       <ul>
         {activityTypes.map((actType, index) => (
           <li className="display flex-col items-start" key={actType.id}>
@@ -23,7 +23,7 @@ const ActivityTypeList = async ({ activityTypes, latestEntries }: Props) => {
           </li>
         ))}
       </ul>
-    </div>
+    </section>
   );
 };
 

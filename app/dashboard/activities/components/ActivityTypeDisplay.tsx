@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useEntries } from "./context/EntriesProvider";
 import { EntryWithType } from "@/lib/types";
 import BookmarkIcon from "./BookmarkIcon";
+import Link from "next/link";
 
 interface Props {
   activityType: ActivityType;
@@ -28,7 +29,13 @@ const ActivityTypeDisplay = ({ activityType, latestEntry }: Props) => {
         <div className="absolute -top-2">
           <BookmarkIcon color={activityType.color} />
         </div>
-        <Image src={activityType.iconPath} className="my-auto" alt="icon" width={50} height={50} />
+        <Image
+          src={activityType.iconPath}
+          className="my-auto"
+          alt="icon"
+          width={50}
+          height={50}
+        />
         <div className="flex-3 ml-5 my-auto">
           <p className="text-lg">{activityType.name}</p>
           <p className="text-(--col-text-secondary) max-w-3/4">
@@ -55,11 +62,20 @@ const ActivityTypeDisplay = ({ activityType, latestEntry }: Props) => {
           )}
         </p>
       </div>
-      <LogEntryButton
-        activityType={activityType}
-        note={note}
-        onLog={handleEntryLog}
-      />
+      <div className="flex gap-3">
+        <LogEntryButton
+          activityType={activityType}
+          note={note}
+          onLog={handleEntryLog}
+        />
+        <Link
+          className="btn btn-outline border-gray-700 hover:bg-gray-300 flex"
+          href={`/dashboard/activities/${activityType.id}`}
+        >
+          <Image src="/stats.svg" alt="statistics" width={20} height={20} />
+          <p className="text-(--col-text-primary)">Stats</p>
+        </Link>
+      </div>
     </>
   );
 };

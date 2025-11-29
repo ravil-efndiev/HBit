@@ -8,16 +8,8 @@ import { prisma } from "@/lib/prisma";
 import { requireSessionUser } from "@/lib/session";
 import EntriesProvider from "./components/context/EntriesProvider";
 
-interface Props {
-  searchParams: Promise<{
-    activityId?: number;
-  }>;
-}
-
-const ActivitiesPage = async ({ searchParams }: Props) => {
-  const { activityId } = await searchParams;
+const ActivitiesPage = async () => {
   const habitIconPaths = getHabitIconPaths();
-  console.log(habitIconPaths);
 
   const user = await requireSessionUser();
 
@@ -31,8 +23,6 @@ const ActivitiesPage = async ({ searchParams }: Props) => {
     include: { type: true },
   });
 
-  console.log(allEntries);
-
   const latestEntries = (
     await Promise.all(
       activityTypes.map((type) =>
@@ -45,11 +35,8 @@ const ActivitiesPage = async ({ searchParams }: Props) => {
   ).filter((entry) => entry !== null);
 
   return (
-    <div className="bg-gray-100">
-      <Breadcrumbs
-        subpage="activities"
-        extra={activityId ? `Some activity` : undefined}
-      />
+    <>
+      <Breadcrumbs subpage="activities" />
       <main className="flex-1">
         <div className="max-w-[96%] flex mx-auto">
           <IconPathsProvider iconPaths={habitIconPaths}>
@@ -66,7 +53,7 @@ const ActivitiesPage = async ({ searchParams }: Props) => {
           </IconPathsProvider>
         </div>
       </main>
-    </div>
+    </>
   );
 };
 

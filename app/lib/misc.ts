@@ -11,8 +11,13 @@ export const redirectWithError = (to: string, error: string) => {
   redirect(`${to}?error=${encodeURIComponent(error)}`);
 };
 
-export const orderDataByDate = <T>(data: T[], compareDatesOnly: boolean) => {
-  const dates: Date[] = Array.from(
+export const compareDates = (a: Date, b: Date, compareDatesOnly: boolean) =>
+  compareDatesOnly
+    ? a.toISOString().split("T")[0] === b.toISOString().split("T")[0]
+    : a.toISOString() === b.toISOString();
+
+export const getObjectUniqueDates = <T>(data: T[], compareDatesOnly: boolean) =>
+  Array.from(
     new Map(
       data
         .map((item: any) => item.date)
@@ -25,12 +30,9 @@ export const orderDataByDate = <T>(data: T[], compareDatesOnly: boolean) => {
     ).values()
   );
 
+export const orderDataByDate = <T>(data: T[], compareDatesOnly: boolean) => {
+  const dates = getObjectUniqueDates(data, compareDatesOnly);
   return dates.map((date: Date) =>
-    data.filter((item: any) =>
-      compareDatesOnly
-        ? item.date.toISOString().split("T")[0] ===
-          date.toISOString().split("T")[0]
-        : item.date.toISOString() === date.toISOString()
-    )
+    data.filter((item: any) => compareDates(item.date, date, compareDatesOnly))
   );
 };
