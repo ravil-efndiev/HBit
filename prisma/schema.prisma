@@ -52,21 +52,22 @@ model WeeklyHabit {
 }
 
 model ActivityType {
-  id        Int        @id @default(autoincrement())
-  name      String
-  details   String
-  color     String
-  iconPath  String
-  userId    String
-  user      User       @relation(fields: [userId], references: [id])
-  entries   ActivityEntry[]
+  id         String    @id @default(cuid())
+  name       String
+  details    String
+  color      String
+  iconPath   String
+  userId     String
+  user       User      @relation(fields: [userId], references: [id])
+  createdAt  DateTime  @default(now())
+  entries    ActivityEntry[]
 }
 
 model ActivityEntry {
   id      Int          @id @default(autoincrement())
   date    DateTime     @default(now())
   note    String
-  typeId  Int  
+  typeId  String  
   type    ActivityType @relation(fields: [typeId], references: [id] , onDelete: Cascade)
 }
 

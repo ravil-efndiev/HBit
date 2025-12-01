@@ -7,6 +7,8 @@ import ActivityTypeList from "./components/ActivityTypeList";
 import { prisma } from "@/lib/prisma";
 import { requireSessionUser } from "@/lib/session";
 import EntriesProvider from "./components/context/EntriesProvider";
+import ActivityPieChart from "./components/ActivityPieChart";
+import { getPieData } from "./math/pieData";
 
 const ActivitiesPage = async () => {
   const habitIconPaths = getHabitIconPaths();
@@ -15,6 +17,8 @@ const ActivitiesPage = async () => {
 
   const activityTypes = await prisma.activityType.findMany({
     where: { userId: user.id },
+    orderBy: { createdAt: "asc" },
+    include: { entries: true },
   });
 
   const allEntries = await prisma.activityEntry.findMany({
@@ -34,6 +38,8 @@ const ActivitiesPage = async () => {
     )
   ).filter((entry) => entry !== null);
 
+  const pieData = getPieData(activityTypes);
+
   return (
     <>
       <Breadcrumbs subpage="activities" />
@@ -47,6 +53,7 @@ const ActivitiesPage = async () => {
                   activityTypes={activityTypes}
                   latestEntries={latestEntries}
                 />
+                <ActivityPieChart data={pieData} />
                 <ActivitiesHistory />
               </div>
             </EntriesProvider>

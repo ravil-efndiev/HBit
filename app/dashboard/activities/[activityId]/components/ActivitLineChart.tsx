@@ -14,7 +14,7 @@ interface Props {
   color: string;
 }
 
-const ActivityCountChart = ({ data, color }: Props) => {
+const ActivityLineChart = ({ data, color }: Props) => {
   const maxN = Math.max(...data.map((entry) => entry.n));
 
   return (
@@ -33,7 +33,7 @@ const ActivityCountChart = ({ data, color }: Props) => {
         margin={{ top: 10, right: 0, left: 0, bottom: 0 }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="date" tickCount={3} type="category" max={3} />
+        <XAxis dataKey="date" type="category"  />
         <YAxis
           width="auto"
           domain={[0, maxN + 2]}
@@ -54,4 +54,4 @@ const ActivityCountChart = ({ data, color }: Props) => {
   );
 };
 
-export default ActivityCountChart;
+export default ActivityLineChart;

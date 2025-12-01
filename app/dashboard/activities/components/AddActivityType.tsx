@@ -1,14 +1,17 @@
 "use client";
 
+import { useIconPaths } from "@/dashboard/components/context/IconPathsContext";
 import IconSelect from "@/dashboard/components/IconSelect";
 import TextInput from "@/dashboard/components/TextInput";
 import { reqPost } from "@/lib/requests";
 import { useState } from "react";
+import ActivityTypeFormInputs from "./ActivityTypeFormInputs";
 
 const AddActivityType = () => {
+  const defaultIconPath = useIconPaths()[0];
   const [name, setName] = useState("");
   const [details, setDetails] = useState("");
-  const [iconPath, setIconPath] = useState("");
+  const [iconPath, setIconPath] = useState(defaultIconPath);
   const [color, setColor] = useState("#7ab5fc");
   const [error, setError] = useState<string | null>(null);
 
@@ -34,32 +37,19 @@ const AddActivityType = () => {
   return (
     <div className="panel max-w-1/5 max-h-[35vh] sticky top-5">
       <p className="mb-3">Add a new activity</p>
-      <TextInput
-        value={name}
-        onChange={(newName) => setName(newName)}
-        placeholder="Activity name *"
+      <ActivityTypeFormInputs
+        name={name}
+        details={details}
+        iconPath={iconPath}
+        color={color}
+        setName={setName}
+        setDetails={setDetails}
+        setIconPath={setIconPath}
+        setColor={setColor}
+        iconSelectClasses="mb-0! mr-2"
+        iconSelectLeft="2%"
+        iconSelectTop="32%"
       />
-      <TextInput
-        value={details}
-        onChange={(newDetes) => setDetails(newDetes)}
-        placeholder="Activity details"
-      />
-      <div className="flex items-center">
-        <IconSelect
-          initialIconPath={iconPath}
-          onSelect={(path) => setIconPath(path)}
-          left="2%"
-          top="32%"
-          selectClasses="mb-0! mr-2"
-        />
-        <input
-          type="color"
-          onChange={(e) => setColor(e.target.value)}
-          value={color}
-          className="rounded-full w-10 border border-(--col-text-secondary) h-10 cursor-pointer"
-        />
-      </div>
-      <br />
       <button
         className="btn btn-outline btn-primary mt-3"
         onClick={handleAddBtnClick}

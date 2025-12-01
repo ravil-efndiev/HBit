@@ -13,7 +13,9 @@ export const redirectWithError = (to: string, error: string) => {
 
 export const compareDates = (a: Date, b: Date, compareDatesOnly: boolean) =>
   compareDatesOnly
-    ? a.toISOString().split("T")[0] === b.toISOString().split("T")[0]
+    ? a.getFullYear() === b.getFullYear() &&
+      a.getMonth() === b.getMonth() &&
+      a.getDate() === b.getDate()
     : a.toISOString() === b.toISOString();
 
 export const getObjectUniqueDates = <T>(data: T[], compareDatesOnly: boolean) =>

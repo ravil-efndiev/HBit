@@ -13,7 +13,7 @@ const ActivitiesHistory = () => {
     setEntries((prev) => {
       const newEntries = [...prev];
       newEntries.splice(newEntries.indexOf(entry), 1);
-      return newEntries;
+      return newEntries.sort((a, b) => b.date.getTime() - a.date.getTime());
     });
 
     try {
@@ -36,10 +36,10 @@ const ActivitiesHistory = () => {
       if (hm) {
         newEntries[currentIndex].date.setHours(hm[0], hm[1]);
       }
-      if (note) {
+      if (note !== undefined) {
         newEntries[currentIndex].note = note;
       }
-      return newEntries;
+      return newEntries.sort((a, b) => b.date.getTime() - a.date.getTime());
     });
 
     try {
@@ -63,21 +63,25 @@ const ActivitiesHistory = () => {
   return (
     <section className="panel">
       <h1 className="panel-title">Activity history</h1>
-      <ul>
-        {entriesByDate.map((dateEntries, index) => (
-          <li key={index}>
-            <p>{dateEntries[0].date.toLocaleDateString("cs-CZ")}</p>
-            {dateEntries.map((entry) => (
-              <EntryDisplay
-                key={entry.id}
-                entry={entry}
-                onDelete={() => handleDelete(entry)}
-                onEdit={(note, time) => handleEdit(entry, note, time)}
-              />
-            ))}
-          </li>
-        ))}
-      </ul>
+      {entries.length !== 0 ? (
+        <ul>
+          {entriesByDate.map((dateEntries, index) => (
+            <li key={index}>
+              <p>{dateEntries[0].date.toLocaleDateString("cs-CZ")}</p>
+              {dateEntries.map((entry) => (
+                <EntryDisplay
+                  key={entry.id}
+                  entry={entry}
+                  onDelete={() => handleDelete(entry)}
+                  onEdit={(note, time) => handleEdit(entry, note, time)}
+                />
+              ))}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="text-center mt-5 mb-3">No activity entries yet</p>
+      )}
     </section>
   );
 };
