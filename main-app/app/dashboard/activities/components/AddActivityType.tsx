@@ -1,8 +1,6 @@
 "use client";
 
 import { useIconPaths } from "@/dashboard/components/context/IconPathsContext";
-import IconSelect from "@/dashboard/components/IconSelect";
-import TextInput from "@/dashboard/components/TextInput";
 import { reqPost } from "@/lib/requests";
 import { useState } from "react";
 import ActivityTypeFormInputs from "./ActivityTypeFormInputs";

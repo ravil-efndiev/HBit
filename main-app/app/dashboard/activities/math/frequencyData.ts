@@ -7,13 +7,14 @@ export const getFrequencyData = (activityType: TypeWithEntries) => {
       ? activityType.entries.map((e) => new Date(e.date))
       : [new Date()];
   const minDate = new Date(Math.min(...dates.map((d) => d.getTime())));
-  const maxDate = new Date(Math.max(...dates.map((d) => d.getTime())));
+  let maxDate = new Date(Math.max(...dates.map((d) => d.getTime())));
   minDate.setHours(0, 0, 0, 0);
   maxDate.setHours(0, 0, 0, 0);
 
-  const today = new Date().getDate();
-  if (maxDate.getDate() < today) {
-    maxDate.setDate(today);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  if (maxDate < today) {
+    maxDate = new Date(today);
   }
 
   let allDates: Date[] = [];
@@ -21,7 +22,9 @@ export const getFrequencyData = (activityType: TypeWithEntries) => {
     allDates.push(new Date(d));
   }
 
-  minDate.setDate(minDate.getDate() - (8 - allDates.length));
+  minDate.setDate(
+    minDate.getDate() - (8 - allDates.length > 0 ? 8 - allDates.length : 0)
+  );
   const blankDates: Date[] = [];
   for (let d = new Date(minDate); d < allDates[0]; d.setDate(d.getDate() + 1)) {
     blankDates.push(new Date(d));
