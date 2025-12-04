@@ -6,14 +6,20 @@ import {
   chooseHabitEndpoint,
 } from "./requestBody";
 
-const request = async (endpoint: string, body: Object, method: string) => {
-  const res = await fetch(endpoint, {
+export const request = async (
+  endpoint: string,
+  method: string,
+  headers: Object = {},
+  body?: Object
+) => {
+  const fetchData: { [key: string]: any } = {
     method,
-    body: JSON.stringify(body),
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...headers },
     credentials: "include",
-  });
+  };
+  if (body) fetchData.body = JSON.stringify(body);
 
+  const res = await fetch(endpoint, fetchData);
   const data = await res.json();
 
   if (!res.ok) {
@@ -23,16 +29,29 @@ const request = async (endpoint: string, body: Object, method: string) => {
   return data;
 };
 
+export const publicServiceRequest = async (
+  endpoint: string,
+  method: string,
+  body?: Object
+) => {
+  return request(
+    `http://localhost:5000${endpoint}`,
+    method,
+    { "x-api-key": process.env.PUBLIC_SERVICE_API_KEY || "" },
+    body
+  );
+};
+
 export const reqPost = async (endpoint: string, body: Object) => {
-  return request(endpoint, body, "POST");
+  return request(endpoint, "POST", {}, body);
 };
 
 export const reqPatch = async (endpoint: string, body: Object) => {
-  return request(endpoint, body, "PATCH");
+  return request(endpoint, "PATCH", {}, body);
 };
 
 export const reqDelete = async (endpoint: string, body: Object) => {
-  return request(endpoint, body, "DELETE");
+  return request(endpoint, "DELETE", {}, body);
 };
 
 export const habitCreate = async (

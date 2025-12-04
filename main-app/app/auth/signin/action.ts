@@ -5,12 +5,24 @@ import { sessionMaxAge, setSessionCookie } from "@/lib/sessionCookie";
 import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
 import { redirectWithError } from "@/lib/misc";
+import { emailRegex, usernameRegex } from "@/lib/validation";
 
 export const signinAction = async (formData: FormData) => {
-  const email = formData.get("email") as string;
+  const emailOrUsername = formData.get("emailOrUsername") as string;
   const password = formData.get("password") as string;
 
-  const user = await prisma.user.findUnique({ where: { email } });
+  const isUsername = usernameRegex.test(emailOrUsername);
+  const isEmail = emailRegex.test(emailOrUsername);
+
+  if (!isEmail && !isUsername) {
+    return redirectWithError("/auth/signin", "Invalid email or username");
+  }
+
+  const user = await prisma.user.findUnique({
+    where: isUsername
+      ? { username: emailOrUsername }
+      : { email: emailOrUsername },
+  });
   if (!user) {
     return redirectWithError("/auth/signin", "Account doesn't exist");
   }

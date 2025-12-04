@@ -16,11 +16,17 @@ interface Props {
 
 const Signin = async ({ searchParams }: Props) => {
   const { error } = await searchParams;
-  
+
   return (
     <form className={formStyles.content} action={signinAction}>
       <h2 className={formStyles.title}>Wellcome Back</h2>
-      <FormInput name="email" />
+      <input
+        required
+        className="input input-secondary mb-3"
+        type="text"
+        name="emailOrUsername"
+        placeholder="Email or username"
+      />
       <FormInput name="password" />
       <input className={formStyles.button} type="submit" value="Sign In" />
       <p>

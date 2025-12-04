@@ -20,6 +20,7 @@ const Signup = async ({ searchParams }: Props) => {
   return (
     <form className={formStyles.content} action={signupAction}>
       <h2 className={formStyles.title}>Create an account</h2>
+      <FormInput name="username" />
       <FormInput name="name" />
       <FormInput name="email" />
       <FormInput name="password" />

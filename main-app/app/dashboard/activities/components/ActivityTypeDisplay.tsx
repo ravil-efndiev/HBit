@@ -3,7 +3,7 @@
 import { ActivityEntry, ActivityType } from "@prisma/client";
 import Image from "next/image";
 import LogEntryButton from "./LogEntryButton";
-import { useState } from "react";
+import { PropsWithChildren, useState } from "react";
 import { useEntries } from "./context/EntriesProvider";
 import { EntryWithType } from "@/lib/types";
 import BookmarkIcon from "./BookmarkIcon";
