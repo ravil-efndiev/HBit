@@ -34,12 +34,15 @@ export const publicServiceRequest = async (
   method: string,
   body?: Object
 ) => {
-  return request(
-    `http://localhost:5000${endpoint}`,
-    method,
-    { "x-api-key": process.env.PUBLIC_SERVICE_API_KEY || "" },
-    body
-  );
+  if (process.env.PUBLIC_SERVICE_ONLINE === "true") {
+    return request(
+      `${process.env.PUBLIC_SERVICE_URL}${endpoint}`,
+      method,
+      { "x-api-key": process.env.PUBLIC_SERVICE_API_KEY || "" },
+      body
+    );
+  }
+  return null;
 };
 
 export const reqPost = async (endpoint: string, body: Object) => {

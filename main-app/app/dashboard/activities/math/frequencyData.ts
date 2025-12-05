@@ -1,11 +1,10 @@
 import { compareDates } from "@/lib/misc";
 import { TypeWithEntries } from "@/lib/types";
+import { ActivityEntry } from "@prisma/client";
 
-export const getFrequencyData = (activityType: TypeWithEntries) => {
+export const getMinMaxDateFromEntries = (entries: ActivityEntry[]) => {
   const dates =
-    activityType.entries.length > 0
-      ? activityType.entries.map((e) => new Date(e.date))
-      : [new Date()];
+    entries.length > 0 ? entries.map((e) => new Date(e.date)) : [new Date()];
   const minDate = new Date(Math.min(...dates.map((d) => d.getTime())));
   let maxDate = new Date(Math.max(...dates.map((d) => d.getTime())));
   minDate.setHours(0, 0, 0, 0);
@@ -17,13 +16,23 @@ export const getFrequencyData = (activityType: TypeWithEntries) => {
     maxDate = new Date(today);
   }
 
+  return { minDate, maxDate };
+};
+
+export const fillAllDates = (
+  minDate: Date,
+  maxDate: Date,
+  blankAmount: "weekAndLess" | "month"
+) => {
   let allDates: Date[] = [];
   for (let d = new Date(minDate); d <= maxDate; d.setDate(d.getDate() + 1)) {
     allDates.push(new Date(d));
   }
 
   minDate.setDate(
-    minDate.getDate() - (8 - allDates.length > 0 ? 8 - allDates.length : 0)
+    blankAmount === "weekAndLess"
+      ? minDate.getDate() - (8 - allDates.length > 0 ? 8 - allDates.length : 0)
+      : 1
   );
   const blankDates: Date[] = [];
   for (let d = new Date(minDate); d < allDates[0]; d.setDate(d.getDate() + 1)) {
@@ -31,8 +40,15 @@ export const getFrequencyData = (activityType: TypeWithEntries) => {
   }
 
   allDates = blankDates.concat(allDates);
+  return allDates;
+};
 
-  const splitDate = (date: Date) => date.toLocaleDateString().split("/");
+export const splitDate = (date: Date) => date.toLocaleDateString().split("/");
+
+export const getFrequencyData = (activityType: TypeWithEntries) => {
+  const { minDate, maxDate } = getMinMaxDateFromEntries(activityType.entries);
+
+  const allDates = fillAllDates(minDate, maxDate, "weekAndLess");
 
   const data = allDates.map((date) => ({
     date: splitDate(date)[1] + "." + splitDate(date)[0],

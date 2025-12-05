@@ -48,12 +48,12 @@ export const signupAction = async (formData: FormData) => {
   });
 
   try {
-    const { publicUser } = await publicServiceRequest("/users", "POST", {
+    const resData = await publicServiceRequest("/users", "POST", {
       privateId: newUser.id,
       username: newUser.username,
       name: newUser.name,
     });
-    console.log(publicUser);
+    console.log(resData?.publicUser);
   } catch (err) {
     await prisma.user.delete({ where: { id: newUser.id } });
     return redirectWithError("/auth/signup", (err as Error).message);

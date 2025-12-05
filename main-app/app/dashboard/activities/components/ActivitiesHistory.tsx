@@ -61,10 +61,10 @@ const ActivitiesHistory = () => {
   const entriesByDate = orderDataByDate(entries, true);
 
   return (
-    <section className="panel">
+    <section className="panel ">
       <h1 className="panel-title">Activity history</h1>
       {entries.length !== 0 ? (
-        <ul>
+        <ul className="max-h-[80vh] overflow-y-auto px-3">
           {entriesByDate.map((dateEntries, index) => (
             <li key={index}>
               <p>{dateEntries[0].date.toLocaleDateString("cs-CZ")}</p>
