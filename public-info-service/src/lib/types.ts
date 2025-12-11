@@ -10,3 +10,10 @@ export interface UserPostRequestBody {
   username: string;
   name: string;
 }
+
+export interface UserPatchRequestBody {
+  privateId: string;
+  username?: string;
+  name?: string;
+  pfpUrl?: string;
+}

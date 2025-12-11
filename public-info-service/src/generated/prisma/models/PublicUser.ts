@@ -29,6 +29,7 @@ export type PublicUserMinAggregateOutputType = {
   privateId: string | null
   username: string | null
   name: string | null
+  pfpUrl: string | null
 }
 
 export type PublicUserMaxAggregateOutputType = {
@@ -36,6 +37,7 @@ export type PublicUserMaxAggregateOutputType = {
   privateId: string | null
   username: string | null
   name: string | null
+  pfpUrl: string | null
 }
 
 export type PublicUserCountAggregateOutputType = {
@@ -43,6 +45,7 @@ export type PublicUserCountAggregateOutputType = {
   privateId: number
   username: number
   name: number
+  pfpUrl: number
   _all: number
 }
 
@@ -52,6 +55,7 @@ export type PublicUserMinAggregateInputType = {
   privateId?: true
   username?: true
   name?: true
+  pfpUrl?: true
 }
 
 export type PublicUserMaxAggregateInputType = {
@@ -59,6 +63,7 @@ export type PublicUserMaxAggregateInputType = {
   privateId?: true
   username?: true
   name?: true
+  pfpUrl?: true
 }
 
 export type PublicUserCountAggregateInputType = {
@@ -66,6 +71,7 @@ export type PublicUserCountAggregateInputType = {
   privateId?: true
   username?: true
   name?: true
+  pfpUrl?: true
   _all?: true
 }
 
@@ -146,6 +152,7 @@ export type PublicUserGroupByOutputType = {
   privateId: string
   username: string
   name: string
+  pfpUrl: string | null
   _count: PublicUserCountAggregateOutputType | null
   _min: PublicUserMinAggregateOutputType | null
   _max: PublicUserMaxAggregateOutputType | null
@@ -174,6 +181,7 @@ export type PublicUserWhereInput = {
   privateId?: Prisma.StringFilter<"PublicUser"> | string
   username?: Prisma.StringFilter<"PublicUser"> | string
   name?: Prisma.StringFilter<"PublicUser"> | string
+  pfpUrl?: Prisma.StringNullableFilter<"PublicUser"> | string | null
 }
 
 export type PublicUserOrderByWithRelationInput = {
@@ -181,6 +189,7 @@ export type PublicUserOrderByWithRelationInput = {
   privateId?: Prisma.SortOrder
   username?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  pfpUrl?: Prisma.SortOrderInput | Prisma.SortOrder
 }
 
 export type PublicUserWhereUniqueInput = Prisma.AtLeast<{
@@ -191,6 +200,7 @@ export type PublicUserWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.PublicUserWhereInput[]
   NOT?: Prisma.PublicUserWhereInput | Prisma.PublicUserWhereInput[]
   name?: Prisma.StringFilter<"PublicUser"> | string
+  pfpUrl?: Prisma.StringNullableFilter<"PublicUser"> | string | null
 }, "id" | "privateId" | "username">
 
 export type PublicUserOrderByWithAggregationInput = {
@@ -198,6 +208,7 @@ export type PublicUserOrderByWithAggregationInput = {
   privateId?: Prisma.SortOrder
   username?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  pfpUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.PublicUserCountOrderByAggregateInput
   _max?: Prisma.PublicUserMaxOrderByAggregateInput
   _min?: Prisma.PublicUserMinOrderByAggregateInput
@@ -211,6 +222,7 @@ export type PublicUserScalarWhereWithAggregatesInput = {
   privateId?: Prisma.StringWithAggregatesFilter<"PublicUser"> | string
   username?: Prisma.StringWithAggregatesFilter<"PublicUser"> | string
   name?: Prisma.StringWithAggregatesFilter<"PublicUser"> | string
+  pfpUrl?: Prisma.StringNullableWithAggregatesFilter<"PublicUser"> | string | null
 }
 
 export type PublicUserCreateInput = {
@@ -218,6 +230,7 @@ export type PublicUserCreateInput = {
   privateId: string
   username: string
   name: string
+  pfpUrl?: string | null
 }
 
 export type PublicUserUncheckedCreateInput = {
@@ -225,6 +238,7 @@ export type PublicUserUncheckedCreateInput = {
   privateId: string
   username: string
   name: string
+  pfpUrl?: string | null
 }
 
 export type PublicUserUpdateInput = {
@@ -232,6 +246,7 @@ export type PublicUserUpdateInput = {
   privateId?: Prisma.StringFieldUpdateOperationsInput | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  pfpUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type PublicUserUncheckedUpdateInput = {
@@ -239,6 +254,7 @@ export type PublicUserUncheckedUpdateInput = {
   privateId?: Prisma.StringFieldUpdateOperationsInput | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  pfpUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type PublicUserCreateManyInput = {
@@ -246,6 +262,7 @@ export type PublicUserCreateManyInput = {
   privateId: string
   username: string
   name: string
+  pfpUrl?: string | null
 }
 
 export type PublicUserUpdateManyMutationInput = {
@@ -253,6 +270,7 @@ export type PublicUserUpdateManyMutationInput = {
   privateId?: Prisma.StringFieldUpdateOperationsInput | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  pfpUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type PublicUserUncheckedUpdateManyInput = {
@@ -260,6 +278,7 @@ export type PublicUserUncheckedUpdateManyInput = {
   privateId?: Prisma.StringFieldUpdateOperationsInput | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  pfpUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type PublicUserCountOrderByAggregateInput = {
@@ -267,6 +286,7 @@ export type PublicUserCountOrderByAggregateInput = {
   privateId?: Prisma.SortOrder
   username?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  pfpUrl?: Prisma.SortOrder
 }
 
 export type PublicUserMaxOrderByAggregateInput = {
@@ -274,6 +294,7 @@ export type PublicUserMaxOrderByAggregateInput = {
   privateId?: Prisma.SortOrder
   username?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  pfpUrl?: Prisma.SortOrder
 }
 
 export type PublicUserMinOrderByAggregateInput = {
@@ -281,10 +302,15 @@ export type PublicUserMinOrderByAggregateInput = {
   privateId?: Prisma.SortOrder
   username?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  pfpUrl?: Prisma.SortOrder
 }
 
 export type StringFieldUpdateOperationsInput = {
   set?: string
+}
+
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
 }
 
 
@@ -294,6 +320,7 @@ export type PublicUserSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   privateId?: boolean
   username?: boolean
   name?: boolean
+  pfpUrl?: boolean
 }, ExtArgs["result"]["publicUser"]>
 
 export type PublicUserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -301,6 +328,7 @@ export type PublicUserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   privateId?: boolean
   username?: boolean
   name?: boolean
+  pfpUrl?: boolean
 }, ExtArgs["result"]["publicUser"]>
 
 export type PublicUserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -308,6 +336,7 @@ export type PublicUserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   privateId?: boolean
   username?: boolean
   name?: boolean
+  pfpUrl?: boolean
 }, ExtArgs["result"]["publicUser"]>
 
 export type PublicUserSelectScalar = {
@@ -315,9 +344,10 @@ export type PublicUserSelectScalar = {
   privateId?: boolean
   username?: boolean
   name?: boolean
+  pfpUrl?: boolean
 }
 
-export type PublicUserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "privateId" | "username" | "name", ExtArgs["result"]["publicUser"]>
+export type PublicUserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "privateId" | "username" | "name" | "pfpUrl", ExtArgs["result"]["publicUser"]>
 
 export type $PublicUserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "PublicUser"
@@ -327,6 +357,7 @@ export type $PublicUserPayload<ExtArgs extends runtime.Types.Extensions.Internal
     privateId: string
     username: string
     name: string
+    pfpUrl: string | null
   }, ExtArgs["result"]["publicUser"]>
   composites: {}
 }
@@ -754,6 +785,7 @@ export interface PublicUserFieldRefs {
   readonly privateId: Prisma.FieldRef<"PublicUser", 'String'>
   readonly username: Prisma.FieldRef<"PublicUser", 'String'>
   readonly name: Prisma.FieldRef<"PublicUser", 'String'>
+  readonly pfpUrl: Prisma.FieldRef<"PublicUser", 'String'>
 }
     
 

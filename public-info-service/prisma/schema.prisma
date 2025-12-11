@@ -15,9 +15,9 @@ generator client {
 }
 
 model PublicUser {
-  id        String @id @default(cuid())
-  privateId String @unique
-  username  String @unique
+  id        String  @id @default(cuid())
+  privateId String  @unique
+  username  String  @unique
   name      String
+  pfpUrl    String?
 }
-

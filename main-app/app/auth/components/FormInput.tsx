@@ -7,7 +7,7 @@ const FormInput = ({ name }: Props) => {
     <input
       required
       className="input input-secondary mb-3"
-      type={name === "name" || "username" ? "text" : name}
+      type={name === "name" || name === "username" ? "text" : name}
       name={name}
       placeholder={name[0].toUpperCase() + name.slice(1)}
     />

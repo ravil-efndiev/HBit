@@ -6,55 +6,95 @@ import {
   chooseHabitEndpoint,
 } from "./requestBody";
 
-export const request = async (
-  endpoint: string,
-  method: string,
-  headers: Object = {},
-  body?: Object
-) => {
+interface RequestArgs {
+  endpoint: string;
+  method: string;
+  headers?: Object;
+  body?: Object;
+  params?: { [key: string]: string };
+  stringifyBody?: boolean;
+}
+
+export interface RequestError {
+  error: Error;
+  status: number;
+}
+
+export const request = async ({
+  endpoint,
+  method,
+  headers = {},
+  body,
+  params,
+  stringifyBody = true,
+}: RequestArgs) => {
   const fetchData: { [key: string]: any } = {
     method,
     headers: { "Content-Type": "application/json", ...headers },
     credentials: "include",
   };
-  if (body) fetchData.body = JSON.stringify(body);
+  if (body) fetchData.body = stringifyBody ? JSON.stringify(body) : body;
 
-  const res = await fetch(endpoint, fetchData);
+  const paramsStr = params && new URLSearchParams(params).toString();
+  const endpointWithParams = paramsStr ? `${endpoint}?${paramsStr}` : endpoint;
+
+  const res = await fetch(endpointWithParams, fetchData);
   const data = await res.json();
 
   if (!res.ok) {
-    throw new Error(data.error);
+    throw { error: new Error(data.error), status: res.status };
   }
 
   return data;
 };
 
-export const publicServiceRequest = async (
+interface PublicServiceRequestArgs {
+  endpoint: string;
+  method: string;
+  body?: Object;
+  params?: { [key: string]: string };
+}
+
+export const publicServiceRequest = async ({
+  endpoint,
+  method,
+  body,
+  params,
+}: PublicServiceRequestArgs) => {
+  return request({
+    endpoint: `${process.env.PUBLIC_SERVICE_URL}${endpoint}`,
+    headers: { "x-api-key": process.env.PUBLIC_SERVICE_API_KEY || "" },
+    method,
+    body,
+    params,
+  });
+};
+
+export const reqPost = async (
   endpoint: string,
-  method: string,
-  body?: Object
+  body: Object,
+  headers?: Object,
+  stringifyBody?: boolean
 ) => {
-  if (process.env.PUBLIC_SERVICE_ONLINE === "true") {
-    return request(
-      `${process.env.PUBLIC_SERVICE_URL}${endpoint}`,
-      method,
-      { "x-api-key": process.env.PUBLIC_SERVICE_API_KEY || "" },
-      body
-    );
-  }
-  return null;
+  return request({ endpoint, method: "POST", body, headers, stringifyBody });
 };
 
-export const reqPost = async (endpoint: string, body: Object) => {
-  return request(endpoint, "POST", {}, body);
+export const reqPatch = async (
+  endpoint: string,
+  body: Object,
+  headers?: Object,
+  stringifyBody?: boolean
+) => {
+  return request({ endpoint, method: "PATCH", body, headers, stringifyBody });
 };
 
-export const reqPatch = async (endpoint: string, body: Object) => {
-  return request(endpoint, "PATCH", {}, body);
-};
-
-export const reqDelete = async (endpoint: string, body: Object) => {
-  return request(endpoint, "DELETE", {}, body);
+export const reqDelete = async (
+  endpoint: string,
+  body: Object,
+  headers?: Object,
+  stringifyBody?: boolean
+) => {
+  return request({ endpoint, method: "DELETE", body, headers, stringifyBody });
 };
 
 export const habitCreate = async (

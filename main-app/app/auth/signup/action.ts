@@ -11,7 +11,7 @@ import {
 import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
 import { redirectWithError } from "@/lib/misc";
-import { publicServiceRequest } from "@/lib/requests";
+import { createPublicUser, isPublicServiceOnline } from "@/lib/publicService";
 
 export const signupAction = async (formData: FormData) => {
   const username = formData.get("username") as string;
@@ -47,16 +47,20 @@ export const signupAction = async (formData: FormData) => {
     data: { username, name: nameTrimmed, email, password: hashedPassword },
   });
 
-  try {
-    const resData = await publicServiceRequest("/users", "POST", {
-      privateId: newUser.id,
-      username: newUser.username,
-      name: newUser.name,
-    });
-    console.log(resData?.publicUser);
-  } catch (err) {
-    await prisma.user.delete({ where: { id: newUser.id } });
-    return redirectWithError("/auth/signup", (err as Error).message);
+  const psOnline = await isPublicServiceOnline();
+  if (psOnline) {
+    try {
+      const publicUser = await createPublicUser(
+        newUser.id,
+        newUser.username,
+        newUser.name,
+        null
+      );
+      console.log(publicUser);
+    } catch (err) {
+      await prisma.user.delete({ where: { id: newUser.id } });
+      return redirectWithError("/auth/signup", (err as Error).message);
+    }
   }
 
   const session = await prisma.session.create({

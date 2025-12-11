@@ -4,7 +4,6 @@ import { compareDates } from "@/lib/misc";
 import { splitDate } from "../activities/math/frequencyData";
 import { useState } from "react";
 import { ActivityEntry } from "@prisma/client";
-import Image from "next/image";
 import ArrowIcon from "./ArrowIcon";
 
 interface Props {

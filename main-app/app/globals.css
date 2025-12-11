@@ -120,7 +120,7 @@ a {
     @apply items-center text-center py-4 justify-center text-xl font-light;
   }
   .calendar-hover {
-    @apply absolute bg-(--col-background) min-w-40 text-center shadow-sm min-h-10 z-10 rounded-sm border border-gray-300 px-3 py-1
+    @apply absolute bg-(--col-background) min-w-40 text-center shadow-sm min-h-10 z-10 rounded-sm border border-gray-300 px-3 py-1;
   }
   #safeguard {
     @apply bg-(--col-accent-sky-light);
@@ -128,9 +128,9 @@ a {
 }
 
 .appear-on-hover {
-    display: none;
+  display: none;
 }
-    
+
 .hover-master:hover + .appear-on-hover {
-    display: block;
+  display: block;
 }

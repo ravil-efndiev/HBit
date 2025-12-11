@@ -521,7 +521,8 @@ export const PublicUserScalarFieldEnum = {
   id: 'id',
   privateId: 'privateId',
   username: 'username',
-  name: 'name'
+  name: 'name',
+  pfpUrl: 'pfpUrl'
 } as const
 
 export type PublicUserScalarFieldEnum = (typeof PublicUserScalarFieldEnum)[keyof typeof PublicUserScalarFieldEnum]
@@ -541,6 +542,14 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
 
