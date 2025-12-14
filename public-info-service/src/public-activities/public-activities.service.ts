@@ -1,18 +1,34 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { ActivityPostRequestBody } from "src/lib/types";
+import { PrismaService } from "src/prisma/prisma.service";
 
 @Injectable()
 export class PublicActivitiesService {
+  constructor(private prisma: PrismaService) {}
 
-  getAllActivities() {
-    return [];
+  async getAllActivities() {
+    const allActivities = await this.prisma.publicActivity.findMany();
+    const activityData = allActivities.map((activity) => {
+      const { privateId, ...data } = activity;
+      return data;
+    });
+    return { activities: activityData };
   }
 
-  getActivity(id: string) {
-    return id;
+  async getActivity(id: string) {
+    const activity = await this.prisma.publicActivity.findUnique({
+      where: { id },
+    });
+
+    if (!activity) {
+      throw new NotFoundException("Activity not found");
+    }
+
+    const { privateId, ...data } = activity;
+    return { activity: data };
   }
 
-  postActivity(body: ActivityPostRequestBody) {
-    return {  };
+  async createActivity(body: ActivityPostRequestBody) {
+    return {};
   }
 }

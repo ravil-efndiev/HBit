@@ -39,9 +39,9 @@ export const request = async ({
   const endpointWithParams = paramsStr ? `${endpoint}?${paramsStr}` : endpoint;
 
   const res = await fetch(endpointWithParams, fetchData);
-  const data = await res.json();
+  const data = res.status !== 304 ? await res.json() : null;
 
-  if (!res.ok) {
+  if (!res.ok && res.status !== 304) {
     throw { error: new Error(data.error), status: res.status };
   }
 

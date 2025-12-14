@@ -3,6 +3,7 @@ import { requireSessionUser } from "@/lib/session";
 import ProfilePicture from "../components/ProfilePicture";
 import PfpInput from "./components/PfpInput";
 import { isPublicServiceOnline } from "@/lib/publicService";
+import PfpRemoveButton from "./components/PfpRemoveButton";
 
 const ProfilePage = async () => {
   const user = await requireSessionUser();
@@ -24,18 +25,19 @@ const ProfilePage = async () => {
           <p className="text-center text-md text-(--col-text-secondary)">
             {user.email}
           </p>
-          <fieldset className="fieldset my-10">
-            <legend className="fieldset-legend">
-              Select a profile picture
-            </legend>
-            {publicServiceOnline ? (
-              <PfpInput />
-            ) : (
-              <p>
-                Profile updates are disabled while public service is offline
-              </p>
-            )}
-          </fieldset>
+          {publicServiceOnline ? (
+            <>
+              <fieldset className="fieldset my-10">
+                <legend className="fieldset-legend">
+                  Select a profile picture
+                </legend>
+                <PfpInput />
+              </fieldset>
+              <PfpRemoveButton />
+            </>
+          ) : (
+            <p>Profile updates are disabled while public service is offline</p>
+          )}
         </section>
       </main>
     </div>

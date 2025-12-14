@@ -31,7 +31,7 @@ export const fillAllDates = (
 
   minDate.setDate(
     blankAmount === "weekAndLess"
-      ? minDate.getDate() - (8 - allDates.length > 0 ? 8 - allDates.length : 0)
+      ? minDate.getDate() - (8 - allDates.length > 0 ? 8 - allDates.length : 0) - 1
       : 1
   );
   const blankDates: Date[] = [];

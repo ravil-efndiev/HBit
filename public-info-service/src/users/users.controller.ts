@@ -7,11 +7,14 @@ import {
   Patch,
   Post,
   Query,
+  UseInterceptors,
 } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import type { UserPatchRequestBody, UserPostRequestBody } from "src/lib/types";
+import { CacheInterceptor, CacheTTL } from "@nestjs/cache-manager";
 
 @Controller("users")
+@UseInterceptors(CacheInterceptor)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -26,6 +29,7 @@ export class UsersController {
   }
 
   @Get()
+  @CacheTTL(60 * 1000)
   getUserDataByPublicId(
     @Query("publicId") publicId?: string,
     @Query("privateId") privateId?: string,
@@ -41,6 +45,7 @@ export class UsersController {
   }
 
   @Get("/search/:usernamePart")
+  @CacheTTL(20 * 1000)
   findUserIdsByUsernamePart(@Param("usernamePart") usernamePart: string) {
     return this.usersService.findUserIds(usernamePart);
   }

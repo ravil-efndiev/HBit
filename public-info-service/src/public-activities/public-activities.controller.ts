@@ -20,6 +20,6 @@ export class PublicActivitiesController {
 
   @Post()
   postActivity(@Body() body: ActivityPostRequestBody) {
-    return this.publicActivitiesService.postActivity(body);
+    return this.publicActivitiesService.createActivity(body);
   }
 }

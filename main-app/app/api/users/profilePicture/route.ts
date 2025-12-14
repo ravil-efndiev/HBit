@@ -31,14 +31,22 @@ const uploadPfp = async (publicUserId: string, imgBuffer: Buffer) => {
 
 const updateUserAndPublicIdentity = async (
   privateId: string,
-  pfpUrl: string
+  pfpUrl: string | null,
+  prevPfpUrl: string | null
 ) => {
   await prisma.user.update({ where: { id: privateId }, data: { pfpUrl } });
-  await publicServiceRequest({
-    endpoint: "/users",
-    method: "PATCH",
-    body: { privateId, pfpUrl },
-  });
+  try {
+    await publicServiceRequest({
+      endpoint: "/users",
+      method: "PATCH",
+      body: { privateId, pfpUrl },
+    });
+  } catch (err) {
+    await prisma.user.update({
+      where: { id: privateId },
+      data: { pfpUrl: prevPfpUrl },
+    });
+  }
 };
 
 export const POST = async (req: Request) => {
@@ -57,7 +65,7 @@ export const POST = async (req: Request) => {
       });
 
       url = await uploadPfp(publicUser.id, compressedImage);
-      await updateUserAndPublicIdentity(user.id, url);
+      await updateUserAndPublicIdentity(user.id, url, user.pfpUrl);
     } catch (err) {
       const error = err as RequestError;
       if (error.status === 404) {
@@ -69,13 +77,40 @@ export const POST = async (req: Request) => {
         );
 
         url = await uploadPfp(newPublicIdentity.id, compressedImage);
-        await updateUserAndPublicIdentity(user.id, url);
+        await updateUserAndPublicIdentity(user.id, url, user.pfpUrl);
       } else {
         return routeError(err);
       }
     }
 
-    return NextResponse.json({ pfpUrl: url });
+    return NextResponse.json({ pfpUrl: url }, { status: 200 });
+  } catch (err) {
+    return routeError(err);
+  }
+};
+
+export const DELETE = async (req: Request) => {
+  try {
+    const user = await requireSessionUser();
+    if (!user.pfpUrl) {
+      return new Response(null, { status: 304 });
+    }
+
+    const { publicUser } = await publicServiceRequest({
+      endpoint: "/users",
+      method: "GET",
+      params: { privateId: user.id },
+    });
+
+    await supabase.storage
+      .from("profile-pictures")
+      .remove([`${publicUser.id}.webp`]);
+
+    await updateUserAndPublicIdentity(user.id, null, user.pfpUrl);
+    return NextResponse.json(
+      { message: "Profile picture deleted sucessfully" },
+      { status: 200 }
+    );
   } catch (err) {
     return routeError(err);
   }

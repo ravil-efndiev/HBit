@@ -1,7 +1,8 @@
 import { cookies } from "next/headers";
 import { prisma } from "./prisma";
+import { cache } from "react";
 
-export const getSessionUser = async () => {
+export const getSessionUser = cache(async () => {
   const cookieStorage = await cookies();
   const sessionCookie = cookieStorage.get("session");
 
@@ -20,7 +21,7 @@ export const getSessionUser = async () => {
   }
 
   return session.user;
-};
+});
 
 export const requireSessionUser = async () => {
   const user = await getSessionUser();

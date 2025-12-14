@@ -1,7 +1,13 @@
-import { ActivityEntry, ActivityType } from "@prisma/client";
+import {
+  ActivityEntry,
+  ActivityType,
+  DailyHabit,
+  DailyHabitStat,
+} from "@prisma/client";
 
 export type EntryWithType = ActivityEntry & { type: ActivityType };
 export type TypeWithEntries = ActivityType & { entries: ActivityEntry[] };
+export type HabitStatWithHabit = DailyHabitStat & { habit: DailyHabit };
 
 export interface ReadableTime {
   minutes: number;

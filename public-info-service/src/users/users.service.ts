@@ -1,10 +1,11 @@
 import {
   ConflictException,
   Injectable,
+  Logger,
   NotFoundException,
 } from "@nestjs/common";
 import { UserPatchRequestBody, UserPostRequestBody } from "src/lib/types";
-import { PrismaService } from "src/prisma.service";
+import { PrismaService } from "src/prisma/prisma.service";
 
 @Injectable()
 export class UsersService {
@@ -49,6 +50,8 @@ export class UsersService {
   }
 
   async findUserIds(usernamePart: string) {
+    Logger.log("db hit");
+    
     const found = await this.prisma.publicUser.findMany({
       where: { username: { startsWith: usernamePart } },
     });
@@ -57,6 +60,8 @@ export class UsersService {
   }
 
   async getUserDataById(id: string, type: "public" | "private") {
+    Logger.log("db hit");
+    
     const user = await this.prisma.publicUser.findUnique({
       where: type === "public" ? { id } : { privateId: id },
     });

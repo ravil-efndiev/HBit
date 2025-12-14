@@ -20,7 +20,7 @@ const WeeklyHabitsPanel = async () => {
   });
 
   return (
-    <section className="panel">
+    <section className="panel mb-5">
       <h1 className="panel-title">Weekly habits</h1>
       {today.length > 0 && (
         <>
