@@ -2,6 +2,11 @@ import { compareDates } from "@/lib/misc";
 import { TypeWithEntries } from "@/lib/types";
 import { ActivityEntry } from "@prisma/client";
 
+export interface GraphDataEntry {
+  n: number;
+  date: string;
+}
+
 export const getMinMaxDateFromEntries = (entries: ActivityEntry[]) => {
   const dates =
     entries.length > 0 ? entries.map((e) => new Date(e.date)) : [new Date()];
@@ -31,7 +36,9 @@ export const fillAllDates = (
 
   minDate.setDate(
     blankAmount === "weekAndLess"
-      ? minDate.getDate() - (8 - allDates.length > 0 ? 8 - allDates.length : 0) - 1
+      ? minDate.getDate() -
+          (8 - allDates.length > 0 ? 8 - allDates.length : 0) -
+          1
       : 1
   );
   const blankDates: Date[] = [];
@@ -45,6 +52,23 @@ export const fillAllDates = (
 
 export const splitDate = (date: Date) => date.toLocaleDateString().split("/");
 
+const leaveOnlyLast30Entries = (array: GraphDataEntry[]) => {
+  if (array.length > 30) {
+    const toRemove = array.length - 30;
+    return array.slice(toRemove);
+  }
+  return array;
+}
+
+const splitArrToChunks = (array: GraphDataEntry[], size: number) => {
+  const chunks = [];
+  for (let i = 0; i < array.length; i += size) {
+    chunks.push(array.slice(i, i + size));
+  }
+
+  return chunks;
+};
+
 export const getFrequencyData = (activityType: TypeWithEntries) => {
   const { minDate, maxDate } = getMinMaxDateFromEntries(activityType.entries);
 
@@ -57,5 +81,8 @@ export const getFrequencyData = (activityType: TypeWithEntries) => {
     ).length,
   }));
 
-  return data;
+  const dataLast30 = leaveOnlyLast30Entries(data);
+  const chunkedData = splitArrToChunks(dataLast30, 10);
+
+  return chunkedData;
 };

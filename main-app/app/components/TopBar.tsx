@@ -2,8 +2,8 @@ import Image from "next/image";
 import { Allerta_Stencil } from "next/font/google";
 import Link from "next/link";
 import Notifications from "./Notifications";
-import ProfilePicture from "./ProfilePicture";
 import { requireSessionUser } from "@/lib/session";
+import ProfileNav from "./ProfileNav";
 
 const font = Allerta_Stencil({ weight: ["400"] });
 
@@ -25,9 +25,7 @@ const TopBar = async () => {
         </Link>
         <div className="flex gap-3 items-center">
           <Notifications />
-          <Link href="/dashboard/profile">
-            <ProfilePicture url={user.pfpUrl} size={24} />
-          </Link>
+          <ProfileNav user={user} />
         </div>
       </div>
     </div>

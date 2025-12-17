@@ -1,10 +1,21 @@
 import { routeError } from "@/api/routeError";
 import { prisma } from "@/lib/prisma";
-import { redis } from "@/lib/redis";
+import { makeStatsKey, redis } from "@/lib/redis";
 import { HabitStatWithHabit } from "@/lib/types";
+import { DailyHabitStat } from "@prisma/client";
 import { NextResponse } from "next/server";
 
-const makeStatsKey = (id: string) => `habit-stats:${id}`;
+const calculateStreak = (stats: DailyHabitStat[], completed: boolean) => {
+  const prevStat = stats[0];
+  const currentStreak = completed
+    ? (stats.length > 0 ? prevStat.streakC : 0) + 1
+    : 0;
+
+  const longestStreak =
+    prevStat.streakL <= currentStreak ? currentStreak : prevStat.streakL;
+
+  return [currentStreak, longestStreak];
+};
 
 const setStatsCache = async (allStats: HabitStatWithHabit[]) => {
   const userIds = Array.from(
@@ -34,17 +45,27 @@ export const GET = async (req: Request) => {
       );
     }
 
-    const dailyHabits = await prisma.dailyHabit.findMany();
+    const dailyHabits = await prisma.dailyHabit.findMany({
+      include: { stats: { orderBy: { date: "desc" }, take: 1 } },
+    });
+
     const now = new Date();
 
     const txResults = await prisma.$transaction([
       prisma.dailyHabitStat.createMany({
-        data: dailyHabits.map((habit) => ({
-          habitId: habit.id,
-          completed: habit.timeSpent >= habit.timeGoal,
-          timeSpent: habit.timeSpent,
-          date: now,
-        })),
+        data: dailyHabits.map((habit) => {
+          const completed = habit.timeSpent >= habit.timeGoal;
+          const [streakC, streakL] = calculateStreak(habit.stats, completed);
+
+          return {
+            habitId: habit.id,
+            completed,
+            timeSpent: habit.timeSpent,
+            date: now,
+            streakC,
+            streakL,
+          };
+        }),
       }),
       prisma.dailyHabit.updateMany({
         data: { timeSpent: 0 },

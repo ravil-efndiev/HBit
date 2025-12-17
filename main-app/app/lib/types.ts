@@ -8,6 +8,9 @@ import {
 export type EntryWithType = ActivityEntry & { type: ActivityType };
 export type TypeWithEntries = ActivityType & { entries: ActivityEntry[] };
 export type HabitStatWithHabit = DailyHabitStat & { habit: DailyHabit };
+export type DailyHabitWithStreak = DailyHabit & {
+  stats: { streakC: number }[];
+};
 
 export interface ReadableTime {
   minutes: number;

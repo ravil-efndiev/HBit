@@ -13,6 +13,8 @@
     "@supabase/supabase-js": "^2.86.2",
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.3",
+    "embla-carousel": "^8.6.0",
+    "embla-carousel-react": "^8.6.0",
     "hex-to-hsl": "^1.0.2",
     "ioredis": "^5.8.2",
     "next": "^16.0.7",

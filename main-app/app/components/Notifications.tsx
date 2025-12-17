@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRef, useState } from "react";
-import useClickAwayListener from "./hooks/useClickAwayListener";
+import useClickAwayListener from "../dashboard/components/hooks/useClickAwayListener";
 
 const Notifications = () => {
   const [open, setOpen] = useState(false);

@@ -80,6 +80,8 @@ model DailyHabitStat {
   date      DateTime 
   completed Boolean
   timeSpent Int
+  streakC   Int        @default(0)
+  streakL   Int        @default(0)
 
   @@unique([habitId, date])
 }

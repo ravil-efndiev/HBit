@@ -1,7 +1,4 @@
 import { ActivityEntry, ActivityType } from "@prisma/client";
-import LogEntryButton from "./LogEntryButton";
-import Image from "next/image";
-import { prisma } from "@/lib/prisma";
 import ActivityTypeDisplay from "./ActivityTypeDisplay";
 
 interface Props {
@@ -15,7 +12,7 @@ const ActivityTypeList = async ({ activityTypes, latestEntries }: Props) => {
       <h1 className="panel-title">Your activities</h1>
       {activityTypes.length !== 0 ? (
         <div className="p-1 bg-gray-100 rounded-sm">
-          <ul className="max-h-[70vh] overflow-auto">
+          <ul className="max-h-[90vh] overflow-auto">
             {activityTypes.map((actType, index) => (
               <li className="display flex-col items-start" key={actType.id}>
                 <ActivityTypeDisplay

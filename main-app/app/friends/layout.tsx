@@ -1,7 +1,7 @@
 import ProtectedRoute from "@/components/ProtectedRoute";
 import TopBar from "../components/TopBar";
 
-const DashboardLayout = ({
+const FriendsLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -16,4 +16,4 @@ const DashboardLayout = ({
   );
 };
 
-export default DashboardLayout;
+export default FriendsLayout;

@@ -6,8 +6,10 @@ import { PrismaService } from "src/prisma/prisma.service";
 export class PublicActivitiesService {
   constructor(private prisma: PrismaService) {}
 
-  async getAllActivities() {
-    const allActivities = await this.prisma.publicActivity.findMany();
+  async getAllActivities(userId: string) {
+    const allActivities = await this.prisma.publicActivity.findMany({
+      where: { userId },
+    });
     const activityData = allActivities.map((activity) => {
       const { privateId, ...data } = activity;
       return data;
@@ -29,6 +31,7 @@ export class PublicActivitiesService {
   }
 
   async createActivity(body: ActivityPostRequestBody) {
+    
     return {};
   }
 }

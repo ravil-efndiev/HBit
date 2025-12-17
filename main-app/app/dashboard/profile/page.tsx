@@ -1,9 +1,14 @@
 import Breadcrumbs from "../components/Breadcrumbs";
 import { requireSessionUser } from "@/lib/session";
-import ProfilePicture from "../components/ProfilePicture";
+import ProfilePicture from "../../components/ProfilePicture";
 import PfpInput from "./components/PfpInput";
 import { isPublicServiceOnline } from "@/lib/publicService";
 import PfpRemoveButton from "./components/PfpRemoveButton";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Profile - Habit tracker",
+};
 
 const ProfilePage = async () => {
   const user = await requireSessionUser();
@@ -29,7 +34,7 @@ const ProfilePage = async () => {
             <>
               <fieldset className="fieldset my-10">
                 <legend className="fieldset-legend">
-                  Select a profile picture
+                  Change a profile picture
                 </legend>
                 <PfpInput />
               </fieldset>

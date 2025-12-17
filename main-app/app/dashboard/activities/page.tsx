@@ -9,6 +9,11 @@ import { requireSessionUser } from "@/lib/session";
 import EntriesProvider from "./components/context/EntriesProvider";
 import ActivityPieChart from "./components/ActivityPieChart";
 import { getPieData } from "./math/pieData";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Activities - Habit tracker",
+};
 
 const ActivitiesPage = async () => {
   const habitIconPaths = getHabitIconPaths();

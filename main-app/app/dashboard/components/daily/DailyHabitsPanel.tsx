@@ -8,6 +8,9 @@ const DailyHabitsPanel = async () => {
   const dailyHabits = await prisma.dailyHabit.findMany({
     where: { userId: currentUser.id },
     orderBy: { createdAt: "asc" },
+    include: {
+      stats: { take: 1, select: { streakC: true }, orderBy: { date: "desc" } },
+    },
   });
 
   return (
