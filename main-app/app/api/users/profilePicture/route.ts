@@ -1,7 +1,6 @@
 import { routeError } from "@/api/routeError";
 import { prisma } from "@/lib/prisma";
-import { createPublicUser } from "@/lib/publicService";
-import { publicServiceRequest, RequestError } from "@/lib/requests";
+import { publicServiceRequest } from "@/lib/requests";
 import { requireSessionUser } from "@/lib/session";
 import { supabase } from "@/lib/storage";
 import { NextResponse } from "next/server";
@@ -49,39 +48,14 @@ const updateUserAndPublicIdentity = async (
   }
 };
 
-export const POST = async (req: Request) => {
+export const PUT = async (req: Request) => {
   try {
     const image = await req.blob();
 
     const user = await requireSessionUser();
     const compressedImage = await compressImage(image);
-    let url = "";
-
-    try {
-      const { publicUser } = await publicServiceRequest({
-        endpoint: "/users",
-        method: "GET",
-        params: { privateId: user.id },
-      });
-
-      url = await uploadPfp(publicUser.id, compressedImage);
-      await updateUserAndPublicIdentity(user.id, url, user.pfpUrl);
-    } catch (err) {
-      const error = err as RequestError;
-      if (error.status === 404) {
-        const newPublicIdentity = await createPublicUser(
-          user.id,
-          user.username,
-          user.name,
-          user.pfpUrl
-        );
-
-        url = await uploadPfp(newPublicIdentity.id, compressedImage);
-        await updateUserAndPublicIdentity(user.id, url, user.pfpUrl);
-      } else {
-        return routeError(err);
-      }
-    }
+    const url = await uploadPfp(user.publicId, compressedImage);
+    await updateUserAndPublicIdentity(user.id, url, user.pfpUrl);
 
     return NextResponse.json({ pfpUrl: url }, { status: 200 });
   } catch (err) {
@@ -96,15 +70,9 @@ export const DELETE = async (req: Request) => {
       return new Response(null, { status: 304 });
     }
 
-    const { publicUser } = await publicServiceRequest({
-      endpoint: "/users",
-      method: "GET",
-      params: { privateId: user.id },
-    });
-
     await supabase.storage
       .from("profile-pictures")
-      .remove([`${publicUser.id}.webp`]);
+      .remove([`${user.publicId}.webp`]);
 
     await updateUserAndPublicIdentity(user.id, null, user.pfpUrl);
     return NextResponse.json(

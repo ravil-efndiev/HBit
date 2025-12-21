@@ -11,8 +11,8 @@ const Dashboard = async () => {
     <main className="flex-7 overflow-y-auto bg-gray-100">
       <IconPathsProvider iconPaths={habitIconPaths}>
         <div className="max-w-[90%] mx-auto min-h-screen flex flex-col gap-12">
-          <ActivityCalendar />
           <DailyHabitsPanel />
+          <ActivityCalendar />
           <WeeklyHabitsPanel />
         </div>
       </IconPathsProvider>

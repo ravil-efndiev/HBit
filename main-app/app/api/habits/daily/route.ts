@@ -12,6 +12,6 @@ const dailyHabitsCrud = new HabitCrud({
   }),
 });
 
-export const POST = dailyHabitsCrud.POST;
-export const PATCH = dailyHabitsCrud.PATCH;
-export const DELETE = dailyHabitsCrud.DELETE;
+export const POST = dailyHabitsCrud.getPost();
+export const PATCH = dailyHabitsCrud.getPatch();
+export const DELETE = dailyHabitsCrud.getDelete();

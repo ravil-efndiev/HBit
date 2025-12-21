@@ -4,8 +4,11 @@ import ModalWrapper from "@/dashboard/components/ModalWrapper";
 import { ActivityType } from "@prisma/client";
 import { useRef, useState } from "react";
 import ActivityTypeFormInputs from "../../components/ActivityTypeFormInputs";
-import { reqDelete, reqPatch } from "@/lib/requests";
 import Image from "next/image";
+import {
+  deleteActivityType,
+  updateActivityType,
+} from "@/actions/activityType.action";
 
 interface Props {
   initialActivityType: ActivityType;
@@ -24,30 +27,33 @@ const EditActivityType = ({ initialActivityType }: Props) => {
     if (name.length > 20) return setError("Name is too long");
     if (details.length > 80) return setError("Details are too long");
 
-    try {
-      await reqPatch("/api/activities/type/", {
-        typeId: initialActivityType.id,
-        name,
-        details,
-        iconPath,
-        color,
-      });
+    const fields = { name, details, iconPath, color };
+    const toUpdate = Object.fromEntries(
+      Object.entries(fields).filter(
+        ([key, value]) =>
+          initialActivityType[key as keyof ActivityType] !== value
+      )
+    );
 
-      modalRef.current?.close();
-      window.location.reload();
-    } catch (err) {
-      console.error(err);
+    const res = await updateActivityType({
+      typeId: initialActivityType.id,
+      ...toUpdate,
+    });
+
+    if (!res.ok) {
+      return console.error(res.error);
     }
+    modalRef.current?.close();
+    window.location.reload();
   };
 
   const handleDeleteBtnClick = async () => {
-    try {
-      await reqDelete("/api/activities/type/", { id: initialActivityType.id });
-      modalRef.current?.close();
-      window.location.reload();
-    } catch (err) {
-      console.error(err);
+    const res = await deleteActivityType(initialActivityType.id);
+    if (!res.ok) {
+      return console.error(res.error);
     }
+    modalRef.current?.close();
+    window.location.reload();
   };
 
   return (

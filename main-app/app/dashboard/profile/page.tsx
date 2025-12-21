@@ -21,7 +21,7 @@ const ProfilePage = async () => {
         <section className="panel max-w-1/2 mx-auto flex flex-col items-center">
           <h1 className="panel-title">Your profile</h1>
           <div className="flex mx-auto justify-center gap-7 my-4">
-            <ProfilePicture size={70} url={user.pfpUrl} />
+            <ProfilePicture size={100} url={user.pfpUrl} />
             <div className="my-auto">
               <h2 className="text-3xl font-semibold">{user.name}</h2>
               <h3 className="text-xl">@{user.username}</h3>

@@ -42,7 +42,10 @@ export const request = async ({
   const data = res.status !== 304 ? await res.json() : null;
 
   if (!res.ok && res.status !== 304) {
-    throw { error: new Error(data.error), status: res.status };
+    throw {
+      error: new Error(data.message ? data.message : data.error),
+      status: res.status,
+    };
   }
 
   return data;
@@ -70,32 +73,24 @@ export const publicServiceRequest = async ({
   });
 };
 
-export const reqPost = async (
-  endpoint: string,
-  body: Object,
-  headers?: Object,
-  stringifyBody?: boolean
-) => {
-  return request({ endpoint, method: "POST", body, headers, stringifyBody });
-};
+export const reqGet = async (endpoint: string) =>
+  request({ endpoint, method: "GET" });
 
-export const reqPatch = async (
-  endpoint: string,
-  body: Object,
-  headers?: Object,
-  stringifyBody?: boolean
-) => {
-  return request({ endpoint, method: "PATCH", body, headers, stringifyBody });
-};
+const genericReq =
+  (method: string) =>
+  async (
+    endpoint: string,
+    body: Object,
+    headers?: Object,
+    stringifyBody?: boolean
+  ) => {
+    return request({ endpoint, method, body, headers, stringifyBody });
+  };
 
-export const reqDelete = async (
-  endpoint: string,
-  body: Object,
-  headers?: Object,
-  stringifyBody?: boolean
-) => {
-  return request({ endpoint, method: "DELETE", body, headers, stringifyBody });
-};
+export const reqPost = genericReq("POST");
+export const reqPut = genericReq("PUT");
+export const reqPatch = genericReq("PATCH");
+export const reqDelete = genericReq("DELETE");
 
 export const habitCreate = async (
   body: DailyHabitCreateRequestBody | WeeklyHabitCreateRequestBody
@@ -130,7 +125,7 @@ export const habitDelete = async (
   type: "daily" | "weekly"
 ) => {
   try {
-    const data = await reqDelete(`/api/habits/${type}`, { habitId });
+    const data = await reqDelete(`/api/habits/${type}`, { id: habitId });
     console.log(data);
     window.location.reload();
   } catch (err) {

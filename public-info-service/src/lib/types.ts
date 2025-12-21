@@ -1,5 +1,6 @@
 export interface ActivityPostRequestBody {
-  userId: string;
+  userPublicId: string;
+  activityTypePrivateId: string;
   name: string;
   details: string;
   iconPath: string;
@@ -13,11 +14,17 @@ export interface UserPostRequestBody {
   privateId: string;
   username: string;
   name: string;
+  pfpUrl: string | null;
 }
 
 export interface UserPatchRequestBody {
   privateId: string;
   username?: string;
   name?: string;
-  pfpUrl?: string;
+  pfpUrl?: string | null;
+}
+
+export interface FriendRequestBody {
+  senderId: string;
+  recieverId: string;
 }

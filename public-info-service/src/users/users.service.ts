@@ -1,7 +1,6 @@
 import {
   ConflictException,
   Injectable,
-  Logger,
   NotFoundException,
 } from "@nestjs/common";
 import { UserPatchRequestBody, UserPostRequestBody } from "src/lib/types";
@@ -12,9 +11,10 @@ export class UsersService {
   constructor(private prisma: PrismaService) {}
 
   async createPublicUser(body: UserPostRequestBody) {
-    const { username, name, privateId } = body;
+    const { username, name, privateId, pfpUrl } = body;
     const alreadyExists = await this.prisma.publicUser.findFirst({
       where: { OR: [{ username }, { privateId }] },
+      select: { publicId: true },
     });
 
     if (alreadyExists) {
@@ -24,7 +24,7 @@ export class UsersService {
     }
 
     const publicUser = await this.prisma.publicUser.create({
-      data: { username, name, privateId },
+      data: { username, name, privateId, pfpUrl },
     });
 
     return { publicUser };
@@ -49,26 +49,26 @@ export class UsersService {
     return { publicUser };
   }
 
-  async findUserIds(usernamePart: string) {
-    Logger.log("db hit");
-    
+  async findUsersByUsernamePart(usernamePart: string) {
     const found = await this.prisma.publicUser.findMany({
       where: { username: { startsWith: usernamePart } },
+      omit: { privateId: true },
+      take: 5,
     });
 
-    return { foundIds: found.map((user) => user.id) };
+    return { found };
   }
 
   async getUserDataById(id: string, type: "public" | "private") {
-    Logger.log("db hit");
-    
-    const user = await this.prisma.publicUser.findUnique({
-      where: type === "public" ? { id } : { privateId: id },
+    const publicUser = await this.prisma.publicUser.findUnique({
+      where: type === "public" ? { publicId: id } : { privateId: id },
+      omit: { privateId: true },
     });
-    if (!user) {
+
+    if (!publicUser) {
       throw new NotFoundException("User not found");
     }
-    const { privateId, ...publicUser } = user;
+
     return { publicUser };
   }
 }

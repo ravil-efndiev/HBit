@@ -3,7 +3,12 @@ import {
   ActivityType,
   DailyHabit,
   DailyHabitStat,
+  User,
 } from "@prisma/client";
+
+export interface UserWithPublicId extends User {
+  publicId: string;
+}
 
 export type EntryWithType = ActivityEntry & { type: ActivityType };
 export type TypeWithEntries = ActivityType & { entries: ActivityEntry[] };
@@ -17,8 +22,8 @@ export interface ReadableTime {
   hours: number;
 }
 
-export interface PublicUserResponseType {
-  id: string;
+export interface PublicUser {
+  publicId: string;
   username: string;
   name: string;
   pfpUrl: string | null;

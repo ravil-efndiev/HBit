@@ -4,6 +4,7 @@ import { useIconPaths } from "@/dashboard/components/context/IconPathsContext";
 import { reqPost } from "@/lib/requests";
 import { useState } from "react";
 import ActivityTypeFormInputs from "./ActivityTypeFormInputs";
+import { createActivityType } from "@/actions/activityType.action";
 
 const AddActivityType = () => {
   const defaultIconPath = useIconPaths()[0];
@@ -18,22 +19,22 @@ const AddActivityType = () => {
     if (name.length > 20) return setError("Name is too long");
     if (details.length > 80) return setError("Details are too long");
 
-    try {
-      await reqPost("/api/activities/type/", {
-        name,
-        details,
-        iconPath,
-        color,
-      });
+    const res = await createActivityType({
+      name,
+      details,
+      iconPath,
+      color,
+    });
 
-      window.location.reload();
-    } catch (err) {
-      console.error(err);
+    if (!res.ok) {
+      return console.error(res.error);
     }
+
+    window.location.reload();
   };
 
   return (
-    <div className="panel max-w-1/5 max-h-[35vh] sticky top-5">
+    <div className="panel mt-0! max-w-1/5 max-h-[35vh] sticky top-5">
       <p className="mb-3">Add a new activity</p>
       <ActivityTypeFormInputs
         name={name}

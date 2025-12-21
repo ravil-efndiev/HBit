@@ -3,8 +3,11 @@
 import { orderDataByDate } from "@/lib/misc";
 import { useEntries } from "./context/EntriesProvider";
 import { EntryWithType } from "@/lib/types";
-import { reqDelete, reqPatch } from "@/lib/requests";
 import EntryDisplay from "./EntryDisplay";
+import {
+  deleteActivityEntry,
+  updateActivityEntry,
+} from "@/actions/activityEntry.action";
 
 const ActivitiesHistory = () => {
   const { entries, setEntries } = useEntries();
@@ -16,10 +19,9 @@ const ActivitiesHistory = () => {
       return newEntries.sort((a, b) => b.date.getTime() - a.date.getTime());
     });
 
-    try {
-      await reqDelete("/api/activities/entry", { id: entry.id });
-    } catch (err) {
-      console.error(err);
+    const res = await deleteActivityEntry(entry.id);
+    if (!res.ok) {
+      console.error(res.error);
     }
   };
 
@@ -42,19 +44,19 @@ const ActivitiesHistory = () => {
       return newEntries.sort((a, b) => b.date.getTime() - a.date.getTime());
     });
 
-    try {
-      let newDate: Date | undefined;
-      if (hm) {
-        newDate = new Date(entry.date);
-        newDate.setHours(hm[0], hm[1]);
-      }
-      await reqPatch("/api/activities/entry", {
-        entryId: entry.id,
-        dateStr: newDate?.toISOString(),
-        note,
-      });
-    } catch (err) {
-      console.error(err);
+    let newDate: Date | undefined;
+    if (hm) {
+      newDate = new Date(entry.date);
+      newDate.setHours(hm[0], hm[1]);
+    }
+    
+    const res = await updateActivityEntry({
+      entryId: entry.id,
+      dateStr: newDate?.toISOString(),
+      note,
+    });
+    if (!res.ok) {
+      console.error(res.error);
     }
   };
 

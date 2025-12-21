@@ -7,31 +7,48 @@ export class PublicActivitiesService {
   constructor(private prisma: PrismaService) {}
 
   async getAllActivities(userId: string) {
-    const allActivities = await this.prisma.publicActivity.findMany({
+    const activities = await this.prisma.publicActivity.findMany({
       where: { userId },
+      omit: { privateId: true },
     });
-    const activityData = allActivities.map((activity) => {
-      const { privateId, ...data } = activity;
-      return data;
-    });
-    return { activities: activityData };
+    return { activities };
   }
 
-  async getActivity(id: string) {
+  async getActivity(publicId: string) {
     const activity = await this.prisma.publicActivity.findUnique({
-      where: { id },
+      where: { publicId },
+      omit: { privateId: true },
     });
 
     if (!activity) {
       throw new NotFoundException("Activity not found");
     }
 
-    const { privateId, ...data } = activity;
-    return { activity: data };
+    return { activity };
   }
 
   async createActivity(body: ActivityPostRequestBody) {
-    
-    return {};
+    const { userPublicId, activityTypePrivateId, ...rest } = body;
+
+    const activity = await this.prisma.$transaction(async (tx) => {
+      const userExists = await tx.publicUser.findUnique({
+        where: { publicId: userPublicId },
+        select: { publicId: true },
+      });
+
+      if (!userExists) {
+        throw new NotFoundException("User not found");
+      }
+
+      const activity = await tx.publicActivity.create({
+        data: {
+          userId: userPublicId,
+          privateId: activityTypePrivateId,
+          ...rest,
+        },
+      });
+      return activity;
+    });
+    return { activity };
   }
 }

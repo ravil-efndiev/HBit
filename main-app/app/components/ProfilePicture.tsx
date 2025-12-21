@@ -10,16 +10,17 @@ const ProfilePicture = ({ size, url }: Props) => {
     <div className="avatar">
       <div className=" rounded-full">
         {url ? (
-          <div className="max-w-[86px]">
+          <div style={{maxWidth: size}}>
             <img
               src={url}
               alt="avatar"
               width="10px"
-              style={{ width: size * (5 / 3) }} // was to lazy to make this pretty, makes size of image consistent with placeholder
+              style={{ width: size }} // was to lazy to make this pretty, makes size of image consistent with placeholder
+              className="rounded-full"
             />
           </div>
         ) : (
-          <div className="bg-gray-200 p-2 flex justify-center items-center">
+          <div className="bg-gray-200 p-2 flex justify-center items-center rounded-full" style={{width: size, height: size}}>
             <svg
               width={size}
               height={size}

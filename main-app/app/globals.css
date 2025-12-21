@@ -123,14 +123,16 @@ a {
     @apply absolute bg-(--col-background) min-w-40 text-center shadow-sm min-h-10 z-10 rounded-sm border border-gray-300 px-3 py-1;
   }
   #safeguard {
-    @apply bg-(--col-accent-sky-light);
+    @apply bg-(--col-accent-sky-light) mt-5;
   }
 }
+
+.panel:first-child { margin-top: 1.25rem; }
+.panel:last-child { margin-bottom: 1.25rem; }
 
 .appear-on-hover {
   display: none;
 }
-
 .hover-master:hover + .appear-on-hover {
   display: block;
 }

@@ -31,6 +31,7 @@ export const signupAction = async (formData: FormData) => {
 
   const alreadyExists = await prisma.user.findFirst({
     where: { OR: [{ email: email }, { username: username }] },
+    select: { id: true },
   });
 
   if (alreadyExists) {

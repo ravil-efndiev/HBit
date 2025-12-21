@@ -9,6 +9,14 @@ export class PrismaService extends PrismaClient {
     super({
       adapter,
       log: process.env.NODE_ENV === "production" ? ["query", "error"] : [],
+      omit: {
+        publicUser: {
+          privateId: true,
+        },
+        publicActivity: {
+          privateId: true,
+        },
+      },
     });
   }
 }

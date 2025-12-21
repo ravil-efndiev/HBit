@@ -1,6 +1,6 @@
 "use client";
 
-import { reqPost } from "@/lib/requests";
+import { reqPut } from "@/lib/requests";
 import React from "react";
 
 const PfpInput = () => {
@@ -10,7 +10,7 @@ const PfpInput = () => {
     const files = event.target.files;
     if (files && files[0]) {
       try {
-        const resData = await reqPost(
+        const resData = await reqPut(
           "/api/users/profilePicture",
           files[0],
           {

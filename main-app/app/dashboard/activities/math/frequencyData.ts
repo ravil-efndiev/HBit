@@ -52,18 +52,28 @@ export const fillAllDates = (
 
 export const splitDate = (date: Date) => date.toLocaleDateString().split("/");
 
-const leaveOnlyLast30Entries = (array: GraphDataEntry[]) => {
+const leaveOnlyLast30Entries = (array: Date[]) => {
   if (array.length > 30) {
     const toRemove = array.length - 30;
     return array.slice(toRemove);
   }
   return array;
-}
+};
 
-const splitArrToChunks = (array: GraphDataEntry[], size: number) => {
+const splitArrToChunks = (array: Date[], size: number) => {
   const chunks = [];
   for (let i = 0; i < array.length; i += size) {
-    chunks.push(array.slice(i, i + size));
+    const chunk = array.slice(i, i + size);
+    if (chunk.length < size - 1) {
+      const toFill = size - chunk.length;
+      const firstBlankDate = new Date(chunk[chunk.length - 1]);
+      firstBlankDate.setDate(firstBlankDate.getDate() + 1);
+      for (let d = new Date(firstBlankDate), j = 0; j < toFill; d.setDate(d.getDate() + 1), j++) {
+        chunk.push(new Date(d));
+      }
+    }
+
+    chunks.push(chunk);
   }
 
   return chunks;
@@ -74,15 +84,17 @@ export const getFrequencyData = (activityType: TypeWithEntries) => {
 
   const allDates = fillAllDates(minDate, maxDate, "weekAndLess");
 
-  const data = allDates.map((date) => ({
-    date: splitDate(date)[1] + "." + splitDate(date)[0],
-    n: activityType.entries.filter((entry) =>
-      compareDates(entry.date, date, true)
-    ).length,
-  }));
+  const last30Dates = leaveOnlyLast30Entries(allDates);
+  const chunkedDates = splitArrToChunks(last30Dates, 10);
 
-  const dataLast30 = leaveOnlyLast30Entries(data);
-  const chunkedData = splitArrToChunks(dataLast30, 10);
+  const data = chunkedDates.map((chunk) =>
+    chunk.map((date) => ({
+      date: splitDate(date)[1] + "." + splitDate(date)[0],
+      n: activityType.entries.filter((entry) =>
+        compareDates(entry.date, date, true)
+      ).length,
+    }))
+  );
 
-  return chunkedData;
+  return data;
 };

@@ -3,7 +3,7 @@ import { RefObject, useEffect } from "react";
 const useClickAwayListener = <RefT extends HTMLElement>(
   ref: RefObject<RefT | null>,
   onClickaway: () => void,
-  dependencies: any[],
+  dependencies: any[] = [],
 ) => {
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {

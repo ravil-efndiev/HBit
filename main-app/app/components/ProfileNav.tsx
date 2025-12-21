@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import useClickAwayListener from "../dashboard/components/hooks/useClickAwayListener";
+import useClickAwayListener from "@/hooks/useClickAwayListener";
 import ProfilePicture from "./ProfilePicture";
 import { User } from "@prisma/client";
 import Link from "next/link";
@@ -21,18 +21,18 @@ const ProfileNav = ({ user }: Props) => {
     Friends: "/friends",
   } as const;
 
-  useClickAwayListener(
-    navRef,
-    () => {
-      setOpen(false);
-    },
-    []
-  );
+  useClickAwayListener(navRef, () => {
+    setOpen(false);
+  });
 
   return (
     <div className="relative">
-      <button className="cursor-pointer" onClick={() => setOpen(true)}>
-        <ProfilePicture url={user.pfpUrl} size={24} />
+      <button
+        className="cursor-pointer"
+        onClick={() => setOpen(true)}
+        disabled={open}
+      >
+        <ProfilePicture url={user.pfpUrl} size={40} />
       </button>
       {open && (
         <div className="panel absolute w-64 h-72 right-0" ref={navRef}>
@@ -43,7 +43,7 @@ const ProfileNav = ({ user }: Props) => {
             ✕
           </button>
           <div className="flex gap-3">
-            <ProfilePicture url={user.pfpUrl} size={30} />
+            <ProfilePicture url={user.pfpUrl} size={50} />
             <div>
               <p>{user.name}</p>
               <p className="text-(--col-text-secondary)">@{user.username}</p>

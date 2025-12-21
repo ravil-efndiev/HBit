@@ -8,7 +8,7 @@ interface Props {
 
 const ActivityTypeList = async ({ activityTypes, latestEntries }: Props) => {
   return (
-    <section className="panel">
+    <section className="panel mt-0!">
       <h1 className="panel-title">Your activities</h1>
       {activityTypes.length !== 0 ? (
         <div className="p-1 bg-gray-100 rounded-sm">

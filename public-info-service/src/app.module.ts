@@ -4,8 +4,8 @@ import { ConfigModule } from "@nestjs/config";
 import { PublicActivitiesModule } from "./public-activities/public-activities.module";
 import { ApiKeyMiddleware } from "./middleware/apikey.middleware";
 import { UsersModule } from './users/users.module';
-import { LoggerMiddleware } from "./middleware/logger.middleware";
 import { RedisModule } from './redis/redis.module';
+import { SocialModule } from './social/social.module';
 
 @Module({
   imports: [
@@ -13,11 +13,12 @@ import { RedisModule } from './redis/redis.module';
     PublicActivitiesModule,
     UsersModule,
     RedisModule,
+    SocialModule,
   ],
   controllers: [AppController],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware, ApiKeyMiddleware).forRoutes("*");
+    consumer.apply(ApiKeyMiddleware).forRoutes("*");
   }
 }

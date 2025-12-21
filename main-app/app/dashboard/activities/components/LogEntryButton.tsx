@@ -1,5 +1,6 @@
 "use client";
 
+import { createActivityEntry } from "@/actions/activityEntry.action";
 import { reqPost } from "@/lib/requests";
 import { EntryWithType } from "@/lib/types";
 import { ActivityType } from "@prisma/client";
@@ -12,19 +13,19 @@ interface Props {
 
 const LogEntryButton = ({ activityType, note, onLog }: Props) => {
   const handleClick = async () => {
-    try {
-      const { newActivityEntry } = await reqPost("/api/activities/entry", {
-        typeId: activityType.id,
-        dateStr: new Date().toISOString(),
-        note,
-      });
+    const res = await createActivityEntry({
+      typeId: activityType.id,
+      dateStr: new Date().toISOString(),
+      note,
+    });
 
-      newActivityEntry.date = new Date(newActivityEntry.date);
-
-      onLog(newActivityEntry);
-    } catch (err) {
-      console.error(err);
+    if (!res.ok) {
+      return console.error(res.error);
     }
+
+    const { entry } = res;
+    entry.date = new Date(entry.date);
+    onLog(entry);
   };
 
   return (

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { EntryWithType } from "@/lib/types";
 import { useEffect, useRef, useState } from "react";
-import useClickAwayListener from "@/dashboard/components/hooks/useClickAwayListener";
+import useClickAwayListener from "@/hooks/useClickAwayListener";
 
 const getTime = (date: Date) => {
   const timeArr = date.toLocaleTimeString("cs-CZ").split(":");

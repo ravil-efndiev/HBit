@@ -9,19 +9,21 @@ generator client {
 }
 
 model PublicUser {
-  id         String           @id @default(cuid())
+  publicId   String           @id @default(cuid())
   privateId  String           @unique
   username   String           @unique
   name       String
   pfpUrl     String?
   activities PublicActivity[]
+  friends    Friendship[]     @relation("UserFriends")
+  friendsOf  Friendship[]     @relation("UserFriendOf")
 }
 
 model PublicActivity {
-  id              String      @id @default(cuid())
+  publicId        String      @id @default(cuid())
   privateId       String
   userId          String
-  user            PublicUser  @relation(fields: [userId], references: [id])
+  user            PublicUser  @relation(fields: [userId], references: [publicId])
   name            String
   iconPath        String
   color           String
@@ -29,4 +31,20 @@ model PublicActivity {
   lastEntryTime   DateTime?
   totalEntries    Int
   lastWeekEntries Int
+}
+
+model Friendship {
+  userId    String
+  friendId  String
+  user      PublicUser       @relation("UserFriends", fields: [userId], references: [publicId], onDelete: Cascade)
+  friend    PublicUser       @relation("UserFriendOf", fields: [friendId], references: [publicId], onDelete: Cascade)
+  createdAt DateTime         @default(now())
+  status    FriendshipStatus
+
+  @@id([userId, friendId])
+}
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
 }

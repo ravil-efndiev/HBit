@@ -1,7 +1,7 @@
 "use client";
 
 import { PropsWithChildren, RefObject, useRef } from "react";
-import useClickAwayListener from "./hooks/useClickAwayListener";
+import useClickAwayListener from "../../hooks/useClickAwayListener";
 
 interface Props extends PropsWithChildren {
   dialogRef: RefObject<HTMLDialogElement | null>;

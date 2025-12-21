@@ -1,5 +1,5 @@
 import { publicServiceRequest } from "./requests";
-import { PublicUserResponseType } from "./types";
+import { PublicUser } from "./types";
 
 export const isPublicServiceOnline = async () => {
   try {
@@ -19,7 +19,7 @@ export const createPublicUser = async (
   username: string,
   name: string,
   pfpUrl: string | null
-): Promise<PublicUserResponseType> => {
+): Promise<PublicUser> => {
   const { publicUser } = await publicServiceRequest({
     endpoint: "/users",
     method: "POST",
@@ -27,7 +27,7 @@ export const createPublicUser = async (
       privateId: id,
       username: username,
       name: name,
-      ...(pfpUrl && { pfpUrl }),
+      pfpUrl,
     },
   });
 

@@ -11,6 +11,6 @@ const weeklyHabitsCrud = new HabitCrud({
   }),
 });
 
-export const POST = weeklyHabitsCrud.POST;
-export const PATCH = weeklyHabitsCrud.PATCH;
-export const DELETE = weeklyHabitsCrud.DELETE;
+export const POST = weeklyHabitsCrud.getPost();
+export const PATCH = weeklyHabitsCrud.getPatch();
+export const DELETE = weeklyHabitsCrud.getDelete();
