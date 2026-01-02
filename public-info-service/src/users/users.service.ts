@@ -3,6 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
+import { PublicUserWhereUniqueInput } from "src/generated/prisma/models/PublicUser";
 import { UserPatchRequestBody, UserPostRequestBody } from "src/lib/types";
 import { PrismaService } from "src/prisma/prisma.service";
 
@@ -59,9 +60,9 @@ export class UsersService {
     return { found };
   }
 
-  async getUserDataById(id: string, type: "public" | "private") {
+  async getUserData(whereClause: PublicUserWhereUniqueInput) {
     const publicUser = await this.prisma.publicUser.findUnique({
-      where: type === "public" ? { publicId: id } : { privateId: id },
+      where: whereClause,
       omit: { privateId: true },
     });
 

@@ -1,11 +1,7 @@
 import { TypeWithEntries } from "@/lib/types";
 
 export const getPieData = (activityTypes: TypeWithEntries[]) => {
-  if (
-    activityTypes.length === 0 ||
-    !activityTypes.some((type) => type.entries.length !== 0)
-  )
-    return null;
+  if (activityTypes.length === 0) return null;
 
   const last7DaysFiltered = activityTypes.map((type) => ({
     ...type,
@@ -13,6 +9,8 @@ export const getPieData = (activityTypes: TypeWithEntries[]) => {
       (entry) => entry.date.getTime() > Date.now() - 1000 * 60 * 60 * 24 * 7
     ),
   }));
+
+  if (!last7DaysFiltered.some((type) => type.entries.length !== 0)) return null;
 
   const pieData = last7DaysFiltered
     .filter((type) => type.entries.length)

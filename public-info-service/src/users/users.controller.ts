@@ -31,17 +31,17 @@ export class UsersController {
   @Get()
   @CacheTTL(60 * 1000)
   getUserData(
-    @Query("publicId") publicId?: string,
+    @Query("username") username?: string,
     @Query("privateId") privateId?: string,
   ) {
-    if ((publicId && privateId) || (!publicId && !privateId))
+    if ((username && privateId) || (!username && !privateId))
       throw new BadRequestException(
-        "Invalid url parameters, please provide `publicId` or `privateId` param exclusivly",
+        "Invalid url parameters, please provide `username` or `privateId` param exclusivly",
       );
 
-    return publicId
-      ? this.usersService.getUserDataById(publicId, "public")
-      : this.usersService.getUserDataById(privateId!, "private");
+    return username
+      ? this.usersService.getUserData({ username })
+      : this.usersService.getUserData({ privateId: privateId! });
   }
 
   @Get("/search/:usernamePart")

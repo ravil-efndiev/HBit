@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 const DashboardPage = () => {
   return (
     <>
-      <div className="flex w-full overflow-hidden">
+      <div className="content">
         <Sidebar />
         <Dashboard />
       </div>

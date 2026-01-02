@@ -9,6 +9,7 @@ import { reqGet } from "@/lib/requests";
 import { PublicUser, UserWithPublicId } from "@/lib/types";
 import ProfilePicture from "./ProfilePicture";
 import SendFriendRequestButton from "./SendFriendRequestButton";
+import Link from "next/link";
 
 interface Props {
   user: PublicUser;
@@ -73,14 +74,20 @@ const SearchPanel = ({ user }: Props) => {
             />
             <div className="flex flex-col items-center">
               {foundUsers.map((foundUser) => (
-                <div key={foundUser.publicId} className="display w-md gap-3">
-                  <ProfilePicture size={50} url={foundUser.pfpUrl} />
-                  <div className="text-lg">
-                    <p>{foundUser.name}</p>
-                    <p className="text-(--col-text-secondary)">
-                      @{foundUser.username}
-                    </p>
-                  </div>
+                <div key={foundUser.publicId} className="display w-md justify-between">
+                  <Link
+                    href={`/dashboard/user/${foundUser.username}`}
+                    className="flex text-inherit! gap-3"
+                    onClick={() => setOpen(false)}
+                  >
+                    <ProfilePicture size={50} url={foundUser.pfpUrl} />
+                    <div className="text-lg">
+                      <p>{foundUser.name}</p>
+                      <p className="text-(--col-text-secondary)">
+                        @{foundUser.username}
+                      </p>
+                    </div>
+                  </Link>
                   <SendFriendRequestButton
                     senderId={user.publicId}
                     recieverId={foundUser.publicId}

@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { formStyles } from "@/auth/layout";
-import { signinAction } from "./action";
+import { signin } from "./action";
 import FormInput from "../components/FormInput";
 import Link from "next/link";
 
@@ -18,7 +18,7 @@ const Signin = async ({ searchParams }: Props) => {
   const { error } = await searchParams;
 
   return (
-    <form className={formStyles.content} action={signinAction}>
+    <form className={formStyles.content} action={signin}>
       <h2 className={formStyles.title}>Wellcome Back</h2>
       <input
         required

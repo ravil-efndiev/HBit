@@ -1,4 +1,6 @@
 import { redirect } from "next/navigation";
+import { JSX, ReactNode } from "react";
+import { RequestError } from "./requests";
 
 export const formatDays = (days: string[]) => {
   if (days.length < 7) return;
@@ -37,4 +39,20 @@ export const orderDataByDate = <T>(data: T[], compareDatesOnly: boolean) => {
   return dates.map((date: Date) =>
     data.filter((item: any) => compareDates(item.date, date, compareDatesOnly))
   );
+};
+
+export const requestErrorWrapper = async (
+  errorStatusList: number[],
+  funcBody: () => ReactNode,
+  onErrorReturn: ReactNode
+) => {
+  try {
+    const node = await funcBody();
+    return node;
+  } catch (err) {
+    const error = err as RequestError;
+    if (errorStatusList.includes(error.status)) {
+      return onErrorReturn;
+    }
+  }
 };

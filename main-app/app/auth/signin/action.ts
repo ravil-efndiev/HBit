@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 import { redirectWithError } from "@/lib/misc";
 import { emailRegex, usernameRegex } from "@/lib/validation";
 
-export const signinAction = async (formData: FormData) => {
+export const signin = async (formData: FormData) => {
   const emailOrUsername = formData.get("emailOrUsername") as string;
   const password = formData.get("password") as string;
 

@@ -97,6 +97,10 @@ a {
   @apply border p-3 border-gray-300 rounded-sm shadow-sm bg-(--col-background);
 }
 
+@utility content {
+  @apply flex w-full overflow-hidden;
+}
+
 @layer components {
   .form {
     @apply flex flex-col;

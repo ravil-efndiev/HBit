@@ -13,7 +13,7 @@ import { redirect } from "next/navigation";
 import { redirectWithError } from "@/lib/misc";
 import { createPublicUser, isPublicServiceOnline } from "@/lib/publicService";
 
-export const signupAction = async (formData: FormData) => {
+export const signup = async (formData: FormData) => {
   const username = formData.get("username") as string;
   const name = formData.get("name") as string;
   const email = formData.get("email") as string;

@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { formStyles } from "../layout";
-import { signupAction } from "./action";
+import { signup } from "./action";
 import FormInput from "../components/FormInput";
 import Link from "next/link";
 
@@ -18,7 +18,7 @@ const Signup = async ({ searchParams }: Props) => {
   const { error } = await searchParams;
 
   return (
-    <form className={formStyles.content} action={signupAction}>
+    <form className={formStyles.content} action={signup}>
       <h2 className={formStyles.title}>Create an account</h2>
       <FormInput name="username" />
       <FormInput name="name" />
