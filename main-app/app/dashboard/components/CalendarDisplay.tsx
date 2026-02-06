@@ -18,7 +18,8 @@ const CalendarDisplay = ({ datesByMonth, entries }: Props) => {
   const [currentIndex, setCurrentIndex] = useState(datesByMonth.length - 1);
   const { month, year, dates } = datesByMonth[currentIndex];
 
-  const emptySpaces = new Array(dates[0].getDay() - 1).fill(0);
+  const firstDay = dates[0].getDay();
+  const emptySpaces = firstDay > 0 ? new Array(firstDay - 1).fill(0) : [];
   const dayLabels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
   const handleMonthInc = () => {

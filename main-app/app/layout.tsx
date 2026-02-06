@@ -5,7 +5,7 @@ import "./globals.css";
 const ubuntuFont = Ubuntu({weight: ["300", "400", "500", "700"]});
 
 export const metadata: Metadata = {
-  title: "Habit tracker",
+  title: "HBit",
 };
 
 const RootLayout = ({

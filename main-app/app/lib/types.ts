@@ -28,3 +28,15 @@ export interface PublicUser {
   name: string;
   pfpUrl: string | null;
 }
+
+export interface PublicActivity {
+  name: string;
+  publicId: string;
+  iconPath: string;
+  color: string;
+  details: string;
+  lastEntryTime: Date | null;
+  totalEntries: number;
+  lastWeekEntries: number;
+  userId: string;
+}

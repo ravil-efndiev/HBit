@@ -21,6 +21,7 @@ const EditActivityType = ({ initialActivityType }: Props) => {
   const [iconPath, setIconPath] = useState(initialActivityType.iconPath);
   const [color, setColor] = useState(initialActivityType.color);
   const [error, setError] = useState<string | null>(null);
+  const [isPublic, setIsPublic] = useState(initialActivityType.isPublic);
 
   const handleEditBtnClick = async () => {
     if (!name) return setError("Please enter an activity name");
@@ -65,10 +66,12 @@ const EditActivityType = ({ initialActivityType }: Props) => {
           details={details}
           iconPath={iconPath}
           color={color}
+          isPublic={isPublic}
           setName={setName}
           setDetails={setDetails}
           setIconPath={setIconPath}
           setColor={setColor}
+          setIsPublic={setIsPublic}
           iconSelectClasses="mb-0! mr-2"
         />
         <div className="w-full flex justify-start mt-5">

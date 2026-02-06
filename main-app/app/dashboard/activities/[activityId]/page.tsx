@@ -7,6 +7,11 @@ import EntriesProvider from "../components/context/EntriesProvider";
 import ActivityHeading from "./components/ActivityHeading";
 import { requireSessionUser } from "@/lib/session";
 import { getFrequencyData } from "../math/frequencyData";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Activities - HBit",
+};
 
 interface Props {
   params: Promise<{ activityId: string }>;

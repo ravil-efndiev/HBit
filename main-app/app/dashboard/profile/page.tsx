@@ -7,7 +7,7 @@ import PfpRemoveButton from "./components/PfpRemoveButton";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Profile - Habit tracker",
+  title: "Profile - HBit",
 };
 
 const ProfilePage = async () => {

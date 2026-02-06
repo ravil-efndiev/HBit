@@ -5,7 +5,7 @@ import FormInput from "../components/FormInput";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Sign Up - Habit tracker",
+  title: "Sign Up - HBit",
 };
 
 interface Props {

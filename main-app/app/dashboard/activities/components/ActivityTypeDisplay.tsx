@@ -37,7 +37,12 @@ const ActivityTypeDisplay = ({ activityType, latestEntry }: Props) => {
           height={50}
         />
         <div className="flex-3 ml-5 my-auto">
-          <p className="text-lg">{activityType.name}</p>
+          <p className="text-lg flex gap-3">
+            {activityType.name}
+            {activityType.isPublic && (
+              <Image src="/globe.svg" width={20} height={20} alt="public" />
+            )}
+          </p>
           <p className="text-(--col-text-secondary) max-w-3/4">
             {activityType.details}
           </p>

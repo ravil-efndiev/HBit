@@ -4,7 +4,7 @@ import Sidebar from "./components/Sidebar";
 import TopBar from "../components/TopBar";
 
 export const metadata: Metadata = {
-  title: "Dashboard - Habit tracker",
+  title: "Dashboard - HBit",
 };
 
 const DashboardPage = () => {

@@ -1,16 +1,20 @@
 import { requestErrorWrapper } from "@/lib/misc";
-import { publicServiceRequest, RequestError } from "@/lib/requests";
-import { requireSessionUser } from "@/lib/session";
+import { publicServiceRequest } from "@/lib/requests";
 import { PublicUser } from "@/lib/types";
 import { type Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Friends - Habit tracker",
-};
 
 interface Props {
   params: Promise<{ username: string }>;
 }
+
+export const generateMetadata = async ({
+  params,
+}: Props): Promise<Metadata> => {
+  const { username } = await params;
+  return {
+    title: `@${username} friend list - HBit`,
+  };
+};
 
 const FriendsPage = async ({ params }: Props) => {
   const { username } = await params;
@@ -18,13 +22,11 @@ const FriendsPage = async ({ params }: Props) => {
   return requestErrorWrapper(
     [404],
     async () => {
-      const res = await publicServiceRequest({
+      const { publicUser: user } = (await publicServiceRequest({
         endpoint: "/users",
         method: "GET",
         params: { username },
-      });
-
-      const user = res.publicUser;
+      })) as { publicUser: PublicUser };
 
       const { friends } = (await publicServiceRequest({
         endpoint: `/social/friends/${user.publicId}`,
