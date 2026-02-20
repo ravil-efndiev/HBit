@@ -5,6 +5,10 @@ export type ActivityEntryActionResult =
   | { ok: true; entry: EntryWithType }
   | { ok: false; error: string };
 
+export type AreUsersFriendsActionResult =
+  | { ok: true; areFriends: boolean }
+  | { ok: false; error: string };
+
 export const actionSucess = (): ActionResult => ({ ok: true });
 
 export const actionError = (error: string): ActionResult => {
@@ -24,5 +28,9 @@ export const actionInternalError = (error: any): ActionResult => {
 };
 
 export const actionResultActivityEntry = (
-  entry: EntryWithType
+  entry: EntryWithType,
 ): ActivityEntryActionResult => ({ ok: true, entry });
+
+export const actionResultAreUsersFriends = (
+  areFriends: boolean,
+): AreUsersFriendsActionResult => ({ ok: true, areFriends });

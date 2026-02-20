@@ -46,4 +46,12 @@ export class SocialController {
   ) {
     return this.socialService.getUserFriendRequests(publicId, includeData);
   }
+
+  @Get("are-friends")
+  checkIfAreFriends(
+    @Query("user1PublicId") user1PublicId: string,
+    @Query("user2PublicId") user2PublicId: string,
+  ) {
+    return this.socialService.areUsersFriends(user1PublicId, user2PublicId);
+  }
 }

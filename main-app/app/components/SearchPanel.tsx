@@ -10,6 +10,7 @@ import { PublicUser, UserWithPublicId } from "@/lib/types";
 import ProfilePicture from "./ProfilePicture";
 import SendFriendRequestButton from "./SendFriendRequestButton";
 import Link from "next/link";
+import { areUsersFriends } from "@/actions/friendRequest.action";
 
 interface Props {
   user: PublicUser;
@@ -22,22 +23,45 @@ const SearchPanel = ({ user }: Props) => {
   const [search, setSearch] = useState("");
   const [searchDebounced] = useDebounce(search, 300);
 
-  const [foundUsers, setFoundUsers] = useState<PublicUser[]>([]);
+  const [foundUsers, setFoundUsers] = useState<
+    (PublicUser & { areFriends: boolean })[]
+  >([]);
 
   useClickAwayListener(searchPanelRef, () => setOpen(false));
 
   useKeyDownListener("Escape", () => setOpen(false));
 
   useEffect(() => {
+    const search = async () => {
+      try {
+        const { foundUsers } = (await reqGet(
+          `/api/users/search/${searchDebounced}`,
+        )) as { foundUsers: PublicUser[] };
+
+        const friendshipStatuses = await Promise.all(
+          foundUsers.map((foundUser) =>
+            areUsersFriends(user.publicId, foundUser.publicId),
+          ),
+        );
+
+        const foundUsersWithStatuses = foundUsers.map((foundUser, i) => {
+          if (!friendshipStatuses[i].ok)
+            throw new Error("server action failed");
+          return { ...foundUser, areFriends: friendshipStatuses[i].areFriends };
+        });
+
+        setFoundUsers(foundUsersWithStatuses);
+      } catch (err) {
+        console.error(err);
+        setFoundUsers([]);
+      }
+    };
+
     if (!searchDebounced) {
       return setFoundUsers([]);
     }
 
-    reqGet(`/api/users/search/${searchDebounced}`)
-      .then(({ foundUsers }) => {
-        setFoundUsers(foundUsers);
-      })
-      .catch((err) => console.error(err));
+    search();
   }, [searchDebounced]);
 
   useEffect(() => {
@@ -74,7 +98,10 @@ const SearchPanel = ({ user }: Props) => {
             />
             <div className="flex flex-col items-center">
               {foundUsers.map((foundUser) => (
-                <div key={foundUser.publicId} className="display w-md justify-between">
+                <div
+                  key={foundUser.publicId}
+                  className="display w-md justify-between"
+                >
                   <Link
                     href={`/dashboard/user/${foundUser.username}`}
                     className="flex text-inherit! gap-3"
@@ -91,6 +118,7 @@ const SearchPanel = ({ user }: Props) => {
                   <SendFriendRequestButton
                     senderId={user.publicId}
                     recieverId={foundUser.publicId}
+                    disabled={foundUser.areFriends}
                   />
                 </div>
               ))}

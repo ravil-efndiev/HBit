@@ -3,17 +3,24 @@ import {
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
-import { sql, TransactionClient } from "src/generated/prisma/internal/prismaNamespace";
+import { PrismaClient } from "src/generated/prisma/client";
+import { TransactionClient } from "src/generated/prisma/internal/prismaNamespace";
 import { PrismaService } from "src/prisma/prisma.service";
 
 @Injectable()
 export class SocialService {
+  private FriendshipStatus = {
+    pending: "pending",
+    accepted: "accepted",
+    none: "none",
+  } as const;
+
   constructor(private prisma: PrismaService) {}
 
   async createFriendRequest(senderId: string, recieverId: string) {
     await this.prisma.$transaction(async (tx) => {
       await this.checkIfUsersExist(tx, senderId, recieverId);
-      await this.checkFriendshipStatus(tx, senderId, recieverId);
+      await this.enforceNoFriendshipOrRequest(tx, senderId, recieverId);
 
       await tx.friendship.create({
         data: {
@@ -92,6 +99,15 @@ export class SocialService {
     return { requests };
   }
 
+  async areUsersFriends(user1PublicId: string, user2PublicId: string) {
+    const status = await this.checkFriendshipStatus(
+      this.prisma,
+      user1PublicId,
+      user2PublicId,
+    );
+    return { areFriends: status == this.FriendshipStatus.accepted };
+  }
+
   private async checkIfUsersExist(
     tx: TransactionClient,
     senderId: string,
@@ -117,24 +133,40 @@ export class SocialService {
   }
 
   private async checkFriendshipStatus(
-    tx: TransactionClient,
-    senderId: string,
-    recieverId: string,
+    client: PrismaClient | TransactionClient,
+    user1Id: string,
+    user2Id: string,
   ) {
-    const existingFriendship = await tx.friendship.findFirst({
+    const existingFriendship = await client.friendship.findFirst({
       where: {
         OR: [
-          { AND: [{ userId: senderId }, { friendId: recieverId }] },
-          { AND: [{ userId: recieverId }, { friendId: senderId }] },
+          { AND: [{ userId: user1Id }, { friendId: user2Id }] },
+          { AND: [{ userId: user2Id }, { friendId: user1Id }] },
         ],
       },
       select: { status: true },
     });
 
     if (existingFriendship && existingFriendship.status === "PENDING") {
-      throw new ConflictException("Friend request already sent");
+      return this.FriendshipStatus.pending;
     } else if (existingFriendship && existingFriendship.status === "ACCEPTED") {
-      throw new ConflictException("Users are already friends");
+      return this.FriendshipStatus.accepted;
+    } else {
+      return this.FriendshipStatus.none;
+    }
+  }
+
+  private async enforceNoFriendshipOrRequest(
+    tx: TransactionClient,
+    senderId: string,
+    recieverId: string,
+  ) {
+    const status = await this.checkFriendshipStatus(tx, senderId, recieverId);
+    switch (status) {
+      case this.FriendshipStatus.accepted:
+        throw new ConflictException("Users are already friends");
+      case this.FriendshipStatus.pending:
+        throw new ConflictException("Friend request already sent");
     }
   }
 }
