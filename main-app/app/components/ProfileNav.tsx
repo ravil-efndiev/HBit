@@ -19,6 +19,7 @@ const ProfileNav = ({ user }: Props) => {
     Dashboard: "/dashboard",
     Activities: "/dashboard/activities",
     Friends: `/dashboard/friends/${user.username}`,
+    "Public profile": `/dashboard/user/${user.username}`,
   } as const;
 
   useClickAwayListener(navRef, () => {

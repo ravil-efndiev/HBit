@@ -1,14 +1,16 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
+  Patch,
   Post,
   Query,
   UseInterceptors,
 } from "@nestjs/common";
 import { PublicActivitiesService } from "./public-activities.service";
-import { type ActivityPostRequestBody } from "src/lib/types";
+import type { ActivityPatchRequestBody, ActivityPostRequestBody } from "src/lib/types";
 import { CacheInterceptor } from "@nestjs/cache-manager";
 import { CacheTTL } from "@nestjs/cache-manager";
 
@@ -35,4 +37,14 @@ export class PublicActivitiesController {
   postActivity(@Body() body: ActivityPostRequestBody) {
     return this.publicActivitiesService.createActivity(body);
   }
+
+  @Patch()
+  updateActivity(@Body() body: ActivityPatchRequestBody) {
+    return this.publicActivitiesService.updateActivity(body);
+  }
+
+  @Delete()
+  deleteActivity(@Body() { privateId }: { privateId: string }) {
+    return this.publicActivitiesService.deleteActivity(privateId);
+  } 
 }

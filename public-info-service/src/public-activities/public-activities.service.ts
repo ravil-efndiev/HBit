@@ -1,5 +1,8 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { ActivityPostRequestBody } from "src/lib/types";
+import {
+  ActivityPatchRequestBody,
+  ActivityPostRequestBody,
+} from "src/lib/types";
 import { PrismaService } from "src/prisma/prisma.service";
 
 @Injectable()
@@ -50,5 +53,41 @@ export class PublicActivitiesService {
       return activity;
     });
     return { activity };
+  }
+
+  async updateActivity(body: ActivityPatchRequestBody) {
+    const {
+      activityTypePrivateId,
+      name,
+      details,
+      iconPath,
+      color,
+      lastEntryTime,
+      totalEntries,
+      lastWeekEntries,
+    } = body;
+
+    const updateData = Object.fromEntries(
+      Object.entries({
+        name,
+        details,
+        iconPath,
+        color,
+        lastEntryTime,
+        totalEntries,
+        lastWeekEntries,
+      }).filter(([_, v]) => v !== undefined),
+    );
+
+    const activity = await this.prisma.publicActivity.update({
+      where: { privateId: activityTypePrivateId },
+      data: updateData,
+    });
+
+    return { activity };
+  }
+
+  async deleteActivity(privateId: string) {
+    return this.prisma.publicActivity.delete({ where: { privateId } });
   }
 }

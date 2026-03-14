@@ -7,11 +7,7 @@ import ActivityTypeFormInputs from "./ActivityTypeFormInputs";
 import { createActivityType } from "@/actions/activityType.action";
 import { UserWithPublicId } from "@/lib/types";
 
-interface Props {
-  user: UserWithPublicId;
-}
-
-const AddActivityType = ({ user }: Props) => {
+const AddActivityType = () => {
   const defaultIconPath = useIconPaths()[0];
   const [name, setName] = useState("");
   const [details, setDetails] = useState("");
@@ -26,7 +22,6 @@ const AddActivityType = ({ user }: Props) => {
     if (details.length > 80) return setError("Details are too long");
 
     const res = await createActivityType({
-      userPublicId: user.publicId,
       name,
       details,
       iconPath,

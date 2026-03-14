@@ -1,8 +1,10 @@
 import ProfilePicture from "@/components/ProfilePicture";
+import BookmarkIcon from "@/dashboard/activities/components/BookmarkIcon";
 import { requestErrorWrapper } from "@/lib/misc";
 import { publicServiceRequest } from "@/lib/requests";
 import { PublicActivity, PublicUser } from "@/lib/types";
 import { Metadata } from "next";
+import Image from "next/image";
 
 interface Props {
   params: Promise<{ username: string }>;
@@ -52,7 +54,49 @@ const UserPage = async ({ params }: Props) => {
               {activities.length > 0 ? (
                 <ul className="">
                   {activities.map((activity) => (
-                    <li key={activity.publicId}>{activity.name}</li>
+                    <li
+                      className="display flex flex-col py-7 font-light relative"
+                      key={activity.publicId}
+                    >
+                      <div className="absolute top-0 left-3">
+                        <BookmarkIcon color={activity.color} />
+                      </div>
+                      <div className="flex gap-4 my-auto items-center">
+                        <Image
+                          src={activity.iconPath}
+                          alt="icon"
+                          width={40}
+                          height={40}
+                        />
+                        <h4 className="text-2xl font-normal">
+                          {activity.name}
+                        </h4>
+                      </div>
+                      <p>
+                        total entries:{" "}
+                        <span className="text-(--col-primary-dark)">
+                          {activity.totalEntries}
+                        </span>
+                      </p>
+                      <p>
+                        last week entries:{" "}
+                        <span className="text-(--col-primary-dark)">
+                          {activity.lastWeekEntries}
+                        </span>
+                      </p>
+                      <p>
+                        {activity.lastEntryTime && (
+                          <>
+                            Last entry:{" "}
+                            <span className="text-(--col-primary-dark)">
+                              {new Date(
+                                activity.lastEntryTime,
+                              ).toLocaleDateString("cs-CZ")}
+                            </span>
+                          </>
+                        )}
+                      </p>
+                    </li>
                   ))}
                 </ul>
               ) : (

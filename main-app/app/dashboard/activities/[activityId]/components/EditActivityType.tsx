@@ -28,7 +28,7 @@ const EditActivityType = ({ initialActivityType }: Props) => {
     if (name.length > 20) return setError("Name is too long");
     if (details.length > 80) return setError("Details are too long");
 
-    const fields = { name, details, iconPath, color };
+    const fields = { name, details, iconPath, color, isPublic };
     const toUpdate = Object.fromEntries(
       Object.entries(fields).filter(
         ([key, value]) =>

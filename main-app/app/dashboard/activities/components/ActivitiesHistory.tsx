@@ -19,7 +19,7 @@ const ActivitiesHistory = () => {
       return newEntries.sort((a, b) => b.date.getTime() - a.date.getTime());
     });
 
-    const res = await deleteActivityEntry(entry.id);
+    const res = await deleteActivityEntry(entry.id, entry.type.id);
     if (!res.ok) {
       console.error(res.error);
     }

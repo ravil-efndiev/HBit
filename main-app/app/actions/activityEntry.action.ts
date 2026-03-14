@@ -6,7 +6,9 @@ import {
   actionResultActivityEntry,
   ActivityEntryActionResult,
 } from "./actionResult";
-import { getGenericDeleteAction } from "@/api/genericDelete";
+import { getActivityEntryData } from "./activityEntryData";
+import { updatePublicActivityData } from "./activityEntryData";
+import { ActionResult, actionSucess } from "./actionResult";
 
 interface CreateActivityEntryArgs {
   typeId: string;
@@ -22,10 +24,35 @@ export const createActivityEntry = async ({
   try {
     const date = new Date(dateStr);
 
+    const activityType = await prisma.activityType.findUnique({
+      where: { id: typeId },
+    });
+
+    if (!activityType) {
+      return actionInternalError(
+        "Activity type doesnt exits",
+      ) as ActivityEntryActionResult;
+    }
+
     const newActivityEntry = await prisma.activityEntry.create({
       data: { typeId, date, note },
       include: { type: true },
     });
+
+    if (activityType.isPublic) {
+      try {
+        const entryData = await getActivityEntryData(
+          activityType,
+          newActivityEntry.date,
+        );
+        await updatePublicActivityData(activityType.id, entryData);
+      } catch (err) {
+        console.error(err);
+        await prisma.activityEntry.delete({
+          where: { id: newActivityEntry.id },
+        });
+      }
+    }
 
     return actionResultActivityEntry(newActivityEntry);
   } catch (err) {
@@ -48,7 +75,7 @@ export const updateActivityEntry = async ({
     const date = dateStr ? new Date(dateStr) : undefined;
 
     const updateData = Object.fromEntries(
-      Object.entries({ date, note }).filter(([_, v]) => v !== undefined)
+      Object.entries({ date, note }).filter(([_, v]) => v !== undefined),
     );
 
     const updatedActivityEntry = await prisma.activityEntry.update({
@@ -63,4 +90,26 @@ export const updateActivityEntry = async ({
   }
 };
 
-export const deleteActivityEntry = getGenericDeleteAction(prisma.activityEntry);
+export const deleteActivityEntry = async (
+  id: number,
+  typeId: string,
+): Promise<ActionResult> => {
+  try {
+    await prisma.activityEntry.delete({ where: { id } });
+
+    const activityType = await prisma.activityType.findUnique({
+      where: { id: typeId },
+    });
+
+    if (!activityType) {
+      return actionInternalError("Activity type doesnt exits");
+    }
+
+    const entryData = await getActivityEntryData(activityType);
+    await updatePublicActivityData(activityType.id, entryData);
+
+    return actionSucess();
+  } catch (err) {
+    return actionInternalError(err);
+  }
+};

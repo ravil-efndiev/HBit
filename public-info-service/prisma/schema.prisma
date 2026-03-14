@@ -21,7 +21,7 @@ model PublicUser {
 
 model PublicActivity {
   publicId        String      @id @default(cuid())
-  privateId       String
+  privateId       String      @unique
   userId          String
   user            PublicUser  @relation(fields: [userId], references: [publicId])
   name            String

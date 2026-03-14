@@ -52,7 +52,7 @@ const ActivitiesPage = async () => {
         <div className="max-w-[96%] flex mx-auto">
           <IconPathsProvider iconPaths={habitIconPaths}>
             <EntriesProvider initialEntries={allEntries}>
-              <AddActivityType user={user} />
+              <AddActivityType />
               <div className="w-3/4 mx-auto flex flex-col gap-6">
                 <ActivityTypeList
                   activityTypes={activityTypes}

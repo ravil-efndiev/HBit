@@ -10,6 +10,17 @@ export interface ActivityPostRequestBody {
   lastWeekEntries: number;
 }
 
+export interface ActivityPatchRequestBody {
+  activityTypePrivateId: string;
+  name?: string;
+  details?: string;
+  iconPath?: string;
+  color?: string;
+  lastEntryTime?: string;
+  totalEntries?: number;
+  lastWeekEntries?: number;
+}
+
 export interface UserPostRequestBody {
   privateId: string;
   username: string;

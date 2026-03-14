@@ -34,7 +34,7 @@ const DaysHistory = ({ statsByDate }: Props) => {
                   <p>Longest Streak: {stat.streakL}</p>
                 </div>
                 <div className="flex-1">
-                  {stat.streakC === stat.streakL && (
+                  {stat.streakC === stat.streakL && stat.streakL > 0 && (
                     <Image
                       src="/fire.svg"
                       width={30}
