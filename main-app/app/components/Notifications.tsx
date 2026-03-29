@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useClickAwayListener from "../hooks/useClickAwayListener";
 import { UserWithPublicId } from "@/lib/types";
 import {
@@ -24,6 +24,29 @@ const Notifications = ({ user, friendRequests }: Props) => {
     setOpen(false);
   });
 
+  useEffect(() => {
+    const eventSrc = new EventSource(
+      `/api/events?userPublicId=${user.publicId}`,
+      {
+        withCredentials: true,
+      },
+    );
+
+    eventSrc.onopen = () => console.log("connect");
+
+    eventSrc.addEventListener("FRIEND_REQUEST_SENT", (event) => {
+      const message = JSON.parse(event.data);
+      setDispFriendRequests((prev) => [...prev, message]);
+    });
+
+    eventSrc.addEventListener("FRIEND_REQUEST_ACCEPTED", (event) => {
+      const message = JSON.parse(event.data);
+      console.log(message);
+    });
+
+    return () => eventSrc.close();
+  }, []);
+
   const removeDispRequest = (index: number) =>
     setDispFriendRequests((prev) => {
       const newArr = [...prev];
@@ -33,7 +56,7 @@ const Notifications = ({ user, friendRequests }: Props) => {
 
   const handleFriendRequestAccept = async (
     requesterPubId: string,
-    dispIndex: number
+    dispIndex: number,
   ) => {
     const res = await acceptFriendRequest(requesterPubId, user.publicId);
     if (!res.ok) {
@@ -44,7 +67,7 @@ const Notifications = ({ user, friendRequests }: Props) => {
 
   const handleFriendRequestReject = async (
     requesterPubId: string,
-    dispIndex: number
+    dispIndex: number,
   ) => {
     const res = await rejectFriendRequest(requesterPubId, user.publicId);
     if (!res.ok) {

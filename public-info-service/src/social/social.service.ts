@@ -6,20 +6,24 @@ import {
 import { PrismaClient } from "src/generated/prisma/client";
 import { TransactionClient } from "src/generated/prisma/internal/prismaNamespace";
 import { PrismaService } from "src/prisma/prisma.service";
+import { RedisPubSubService } from "src/redis-pub-sub/redis-pub-sub.service";
 
 @Injectable()
 export class SocialService {
-  private FriendshipStatus = {
+  private readonly FriendshipStatus = {
     pending: "pending",
     accepted: "accepted",
     none: "none",
   } as const;
 
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly redisEventService: RedisPubSubService,
+  ) {}
 
   async createFriendRequest(senderId: string, recieverId: string) {
-    await this.prisma.$transaction(async (tx) => {
-      await this.checkIfUsersExist(tx, senderId, recieverId);
+    const { sender } = await this.prisma.$transaction(async (tx) => {
+      const users = await this.requireUsers(tx, senderId, recieverId);
       await this.enforceNoFriendshipOrRequest(tx, senderId, recieverId);
 
       await tx.friendship.create({
@@ -29,6 +33,14 @@ export class SocialService {
           status: "PENDING",
         },
       });
+
+      return users;
+    });
+
+    this.redisEventService.emitSocialEvent({
+      userId: recieverId,
+      data: sender,
+      type: "FRIEND_REQUEST_SENT",
     });
 
     return {
@@ -37,8 +49,8 @@ export class SocialService {
   }
 
   async acceptFriendRequest(senderId: string, recieverId: string) {
-    await this.prisma.$transaction(async (tx) => {
-      await this.checkIfUsersExist(tx, senderId, recieverId);
+    const { reciever } = await this.prisma.$transaction(async (tx) => {
+      const users = await this.requireUsers(tx, senderId, recieverId);
 
       await tx.friendship.update({
         where: {
@@ -47,6 +59,14 @@ export class SocialService {
         },
         data: { status: "ACCEPTED" },
       });
+
+      return users;
+    });
+
+    this.redisEventService.emitSocialEvent({
+      userId: senderId,
+      data: reciever,
+      type: "FRIEND_REQUEST_ACCEPTED",
     });
 
     return {
@@ -60,7 +80,7 @@ export class SocialService {
     message: string,
   ) {
     await this.prisma.$transaction(async (tx) => {
-      await this.checkIfUsersExist(tx, senderId, recieverId);
+      await this.requireUsers(tx, senderId, recieverId);
 
       await tx.friendship.delete({
         where: { userId_friendId: { userId: senderId, friendId: recieverId } },
@@ -108,28 +128,30 @@ export class SocialService {
     return { areFriends: status == this.FriendshipStatus.accepted };
   }
 
-  private async checkIfUsersExist(
+  private async requireUsers(
     tx: TransactionClient,
     senderId: string,
     recieverId: string,
   ) {
-    const senderExists = await tx.publicUser.findUnique({
+    const sender = await tx.publicUser.findUnique({
       where: { publicId: senderId },
-      select: { publicId: true },
+      omit: { privateId: true },
     });
 
-    if (!senderExists) {
+    if (!sender) {
       throw new NotFoundException("Friend request sender not found");
     }
 
-    const recieverExists = await tx.publicUser.findUnique({
+    const reciever = await tx.publicUser.findUnique({
       where: { publicId: recieverId },
-      select: { publicId: true },
+      omit: { privateId: true },
     });
 
-    if (!recieverExists) {
+    if (!reciever) {
       throw new NotFoundException("Friend request reciever not found");
     }
+
+    return { sender, reciever }; // return both users to use in event emmission to omit extra db calls
   }
 
   private async checkFriendshipStatus(

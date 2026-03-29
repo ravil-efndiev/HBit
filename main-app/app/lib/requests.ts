@@ -56,6 +56,7 @@ interface PublicServiceRequestArgs {
   method: string;
   body?: Object;
   params?: { [key: string]: string };
+  headers?: { [key: string]: string };
 }
 
 export const publicServiceRequest = async ({
@@ -63,10 +64,14 @@ export const publicServiceRequest = async ({
   method,
   body,
   params,
+  headers,
 }: PublicServiceRequestArgs) => {
   return request({
     endpoint: `${process.env.PUBLIC_SERVICE_URL}${endpoint}`,
-    headers: { "x-api-key": process.env.PUBLIC_SERVICE_API_KEY || "" },
+    headers: {
+      "x-api-key": process.env.PUBLIC_SERVICE_API_KEY || "",
+      ...headers,
+    },
     method,
     body,
     params,
@@ -82,7 +87,7 @@ const genericReq =
     endpoint: string,
     body: Object,
     headers?: Object,
-    stringifyBody?: boolean
+    stringifyBody?: boolean,
   ) => {
     return request({ endpoint, method, body, headers, stringifyBody });
   };
@@ -93,7 +98,7 @@ export const reqPatch = genericReq("PATCH");
 export const reqDelete = genericReq("DELETE");
 
 export const habitCreate = async (
-  body: DailyHabitCreateRequestBody | WeeklyHabitCreateRequestBody
+  body: DailyHabitCreateRequestBody | WeeklyHabitCreateRequestBody,
 ) => {
   try {
     const resData = await reqPost(chooseHabitEndpoint(body), body);
@@ -106,7 +111,7 @@ export const habitCreate = async (
 
 export const habitUpdate = async (
   body: DailyHabitUpdateRequestBody | WeeklyHabitUpdateRequestBody,
-  reloadPage: boolean = true
+  reloadPage: boolean = true,
 ) => {
   try {
     const resData = await reqPatch(chooseHabitEndpoint(body), body);
@@ -122,7 +127,7 @@ export const habitUpdate = async (
 
 export const habitDelete = async (
   habitId: number,
-  type: "daily" | "weekly"
+  type: "daily" | "weekly",
 ) => {
   try {
     const data = await reqDelete(`/api/habits/${type}`, { id: habitId });

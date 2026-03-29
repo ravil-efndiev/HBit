@@ -1,3 +1,5 @@
+import { PublicUser } from "src/generated/prisma/client";
+
 export interface ActivityPostRequestBody {
   userPublicId: string;
   activityTypePrivateId: string;
@@ -38,4 +40,16 @@ export interface UserPatchRequestBody {
 export interface FriendRequestBody {
   senderId: string;
   recieverId: string;
+}
+
+interface Event {
+  userId: string;
+  type: string;
+  data: object;
+}
+
+export interface SocialEvent extends Event {
+  userId: string;
+  type: "FRIEND_REQUEST_SENT" | "FRIEND_REQUEST_ACCEPTED";
+  data: Omit<PublicUser, "privateId">;
 }
