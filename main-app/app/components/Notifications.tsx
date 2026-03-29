@@ -8,72 +8,53 @@ import {
   acceptFriendRequest,
   rejectFriendRequest,
 } from "@/actions/friendRequest.action";
+import { eventTypes, useNotifications } from "./context/NotificationsProvider";
+import FriendRequestRecievedNotification from "./FriendRequestRecievedNotification";
+import { deleteNotification } from "@/actions/notification.action";
+import FriendRequestAcceptedNotification from "./FriendRequestAcceptedNotification";
 
 interface Props {
   user: UserWithPublicId;
-  friendRequests: UserWithPublicId[];
 }
 
-const Notifications = ({ user, friendRequests }: Props) => {
+const Notifications = ({ user }: Props) => {
   const [open, setOpen] = useState(false);
   const notifsRef = useRef<HTMLDivElement>(null);
 
-  const [dispFriendRequests, setDispFriendRequests] = useState(friendRequests);
+  const { notificaitons, setNotifications } = useNotifications();
 
   useClickAwayListener(notifsRef, () => {
     setOpen(false);
   });
 
-  useEffect(() => {
-    const eventSrc = new EventSource(
-      `/api/events?userPublicId=${user.publicId}`,
-      {
-        withCredentials: true,
-      },
-    );
-
-    eventSrc.onopen = () => console.log("connect");
-
-    eventSrc.addEventListener("FRIEND_REQUEST_SENT", (event) => {
-      const message = JSON.parse(event.data);
-      setDispFriendRequests((prev) => [...prev, message]);
-    });
-
-    eventSrc.addEventListener("FRIEND_REQUEST_ACCEPTED", (event) => {
-      const message = JSON.parse(event.data);
-      console.log(message);
-    });
-
-    return () => eventSrc.close();
-  }, []);
-
-  const removeDispRequest = (index: number) =>
-    setDispFriendRequests((prev) => {
-      const newArr = [...prev];
-      newArr.splice(index, 1);
-      return newArr;
-    });
+  const removeNotification = async (notificationId: string) => {
+    const res = await deleteNotification(notificationId);
+    if (!res.ok) {
+      return console.error(res.error);
+    }
+    setNotifications((prev) => prev.filter((n) => n.id !== notificationId));
+  };
 
   const handleFriendRequestAccept = async (
     requesterPubId: string,
-    dispIndex: number,
+    notificationId: string,
   ) => {
     const res = await acceptFriendRequest(requesterPubId, user.publicId);
     if (!res.ok) {
       return console.error(res.error);
     }
-    removeDispRequest(dispIndex);
+    removeNotification(notificationId);
   };
 
   const handleFriendRequestReject = async (
     requesterPubId: string,
-    dispIndex: number,
+    notificationId: string,
   ) => {
     const res = await rejectFriendRequest(requesterPubId, user.publicId);
     if (!res.ok) {
       return console.error(res.error);
     }
-    removeDispRequest(dispIndex);
+    removeNotification(notificationId);
   };
 
   return (
@@ -95,28 +76,25 @@ const Notifications = ({ user, friendRequests }: Props) => {
           </button>
           <p className="w-full text-center text-xl">Notifications</p>
           <ul className="my-3">
-            {dispFriendRequests.map((requester, index) => (
-              <li key={requester.publicId} className="flex items-center gap-3">
-                <p className="flex-1">
-                  <span className="font-bold">{requester.name}</span> (@
-                  {requester.username}) has sent you a friend request
+            {notificaitons.map((notificaiton, index) => (
+              <li key={notificaiton.id} className="">
+                <div className="flex items-center gap-3">
+                  {notificaiton.type === eventTypes.friendRequestSent ? (
+                    <FriendRequestRecievedNotification
+                      notification={notificaiton}
+                      onFriendRequestAccept={handleFriendRequestAccept}
+                      onFriendRequestReject={handleFriendRequestReject}
+                    />
+                  ) : notificaiton.type === eventTypes.friendRequestAccepted ? (
+                    <FriendRequestAcceptedNotification
+                      notification={notificaiton}
+                      onNotificationClear={removeNotification}
+                    />
+                  ) : null}
+                </div>
+                <p className="text-(--text-secondary) font-light text-sm">
+                  {notificaiton.recievedAt.toLocaleDateString("cs-CZ")}
                 </p>
-                <button
-                  className="btn btn-ghost btn-primary btn-circle text-lg"
-                  onClick={() =>
-                    handleFriendRequestAccept(requester.publicId, index)
-                  }
-                >
-                  ✓
-                </button>
-                <button
-                  className="btn btn-ghost btn-warning btn-circle text-lg"
-                  onClick={() =>
-                    handleFriendRequestReject(requester.publicId, index)
-                  }
-                >
-                  ✕
-                </button>
               </li>
             ))}
           </ul>

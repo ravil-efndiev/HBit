@@ -40,3 +40,10 @@ export interface PublicActivity {
   lastWeekEntries: number;
   userId: string;
 }
+
+export interface ParsedNotification {
+  id: string;
+  type: string;
+  recievedAt: Date;
+  payload: object;
+}
