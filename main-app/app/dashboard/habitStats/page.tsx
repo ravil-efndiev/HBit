@@ -58,7 +58,7 @@ const StatisticsPage = async () => {
     <div className="w-full">
       <Breadcrumbs subpage="statistics" />
       <main>
-        <div className="max-w-[96%] mx-auto">
+        <div className="mx-auto w-full max-w-7xl p-4 sm:p-6 lg:p-8">
           <DaysHistory statsByDate={statsByDate} />
         </div>
       </main>

@@ -18,7 +18,7 @@ const ProfilePage = async () => {
     <div className="bg-gray-100 flex-1">
       <Breadcrumbs subpage="Profile" />
       <main>
-        <section className="panel max-w-1/2 mx-auto flex flex-col items-center">
+        <section className="panel mx-auto flex w-full max-w-2xl flex-col items-center">
           <h1 className="panel-title">Your profile</h1>
           <div className="flex mx-auto justify-center gap-7 my-4">
             <ProfilePicture size={100} url={user.pfpUrl} />

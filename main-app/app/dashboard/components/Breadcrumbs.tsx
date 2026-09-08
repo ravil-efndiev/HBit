@@ -8,7 +8,7 @@ interface Props {
 
 const Breadcrumbs = ({ subpage, extra }: Props) => {
   return (
-    <div className="breadcrumbs text-lg max-w-[96%] mx-auto">
+    <div className="breadcrumbs mx-auto w-full max-w-7xl px-4 text-lg sm:px-6 lg:px-8">
       <ul>
         <li>
           <Link href="/dashboard">Home</Link>

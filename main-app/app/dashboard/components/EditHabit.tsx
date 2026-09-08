@@ -38,10 +38,16 @@ const EditHabit = ({ type, initialHabit }: Props) => {
       />
       <div className="ml-auto flex">
         <button
-          className="btn btn-ghost"
+          className="btn btn-sm btn-ghost p-0 min-[1200px]:btn-md min-[1200px]:p-2"
           onClick={() => setOpenTrigger((prev) => prev + 1)}
         >
-          <Image src="/three-dots.svg" alt="edit" width={30} height={30} />
+          <Image
+            src="/three-dots.svg"
+            alt="edit"
+            width={18}
+            height={18}
+            className="min-[1200px]:h-[30px] min-[1200px]:w-[30px]"
+          />
         </button>
       </div>
     </>

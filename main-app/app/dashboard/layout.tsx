@@ -1,5 +1,7 @@
 import ProtectedRoute from "@/components/ProtectedRoute";
 import TopBar from "../components/TopBar";
+import DashboardShell from "./components/DashboardShell";
+import Sidebar from "./components/Sidebar";
 
 const DashboardLayout = ({
   children,
@@ -8,9 +10,10 @@ const DashboardLayout = ({
 }>) => {
   return (
     <ProtectedRoute>
-      <div className="flex flex-col h-screen">
-        <TopBar />
-        {children}
+      <div className="flex min-h-screen flex-col bg-background">
+        <DashboardShell header={<TopBar />} sidebar={<Sidebar />}>
+          {children}
+        </DashboardShell>
       </div>
     </ProtectedRoute>
   );

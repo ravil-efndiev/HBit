@@ -21,41 +21,57 @@ const DailyHabitDisplay = ({ habit }: Props) => {
   const streak = habit.stats[0].streakC;
 
   return (
-    <div className="display">
-      <Image src={habit.iconPath} alt="icon" width={50} height={50} />
-      <div className="flex-2 ml-5 pr-2">
-        <div className="text-lg flex">
-          {habit.name}{" "}
-          {streak > 0 && (
-            <>
-              <Image
-                src="/fire.svg"
-                width={25}
-                height={25}
-                alt="fire"
-                className="ml-2"
-              />
-              <p className="text-(--col-text-secondary)">{streak}</p>
-            </>
-          )}
+    <div
+      className="display grid grid-cols-[minmax(0,1fr)_auto_auto] gap-2 min-[1200px]:flex min-[1200px]:flex-row min-[1200px]:gap-0!"
+      id={habit.id.toString()}
+    >
+      <div className="col-span-3 row-start-1 flex w-fit max-w-full items-center justify-center gap-1 justify-self-center min-[1200px]:contents">
+        <Image
+          src={habit.iconPath}
+          alt="icon"
+          width={50}
+          height={50}
+          className="h-10 w-10 sm:h-12 sm:w-12 min-[1200px]:h-[50px] min-[1200px]:w-[50px]"
+        />
+        <div className="flex-2 ml-0 pr-2 text-center sm:ml-2 min-[1200px]:ml-5 min-[1200px]:text-left!">
+          <div className="flex justify-center text-lg min-[1200px]:justify-start!">
+            {habit.name}{" "}
+            {streak > 0 && (
+              <>
+                <Image
+                  src="/fire.svg"
+                  width={25}
+                  height={25}
+                  alt="fire"
+                  className="ml-2"
+                />
+                <p className="text-(--col-text-secondary)">{streak}</p>
+              </>
+            )}
+          </div>
+          <p className="mx-auto max-w-[85%] text-(--col-text-secondary) min-[1200px]:mx-0!">
+            {habit.details}
+          </p>
         </div>
-        <p className="text-(--col-text-secondary) max-w-[85%]">
-          {habit.details}
-        </p>
       </div>
-      <ProgressBar
-        habitId={habit.id}
-        timeGoalMs={habit.timeGoal}
-        initialTimeSpentMs={habit.timeSpent}
-      />
-      <div className="ml-10 text-[1rem] flex-1 font-light">
+      <div className="col-start-1 row-start-2 w-full max-[999px]:col-span-2 min-[1200px]:w-auto min-[1200px]:min-w-0 min-[1200px]:flex-5">
+        <ProgressBar
+          habitId={habit.id}
+          timeGoalMs={habit.timeGoal}
+          initialTimeSpentMs={habit.timeSpent}
+          goal={`${parseInt(timeGoal.hours) > 0 ? `${timeGoal.hours}h ` : ""}${parseInt(timeGoal.minutes) > 0 ? `${timeGoal.minutes}m` : ""}`}
+        />
+      </div>
+      <div className="col-start-2 row-start-2 ml-0 flex-1 text-[1rem] font-light max-[999px]:hidden min-[1200px]:ml-4">
         goal:{" "}
         <span className="text-(--col-text-secondary)">
           {parseInt(timeGoal.hours) > 0 && `${timeGoal.hours}h `}
           {parseInt(timeGoal.minutes) > 0 && `${timeGoal.minutes}m`}
         </span>
       </div>
-      <EditHabit type="daily" initialHabit={habit} />
+      <div className="col-start-3 row-start-2 justify-self-end min-[1200px]:shrink-0">
+        <EditHabit type="daily" initialHabit={habit} />
+      </div>
     </div>
   );
 };

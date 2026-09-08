@@ -28,3 +28,4 @@ const FriendRequestAcceptedNotification = ({
 };
 
 export default FriendRequestAcceptedNotification;
+ 
