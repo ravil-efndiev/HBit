@@ -14,6 +14,18 @@ import { SheetTrigger } from "@/components/ui/sheet";
 
 const font = Allerta_Stencil({ weight: ["400"] });
 
+const topBarStyles = {
+  wrapper: "sticky top-0 z-40 flex h-16 w-full items-center border-b border-gray-300 bg-background/95 px-4 shadow-sm backdrop-blur md:px-6",
+  inner: "mx-auto flex w-full max-w-7xl items-center justify-between gap-3",
+  leftSection: "flex min-w-0 items-center gap-3",
+  brand: "flex items-center gap-2",
+  brandText: `text-2xl text-(--col-primary-dark) ${font.className}`,
+  rightSection: "flex shrink-0 items-center gap-3",
+  authInner: "mx-auto flex w-full max-w-7xl items-center justify-between",
+  authBrand: "flex items-center gap-3",
+  authButton: "btn btn-primary text-(--col-background)!",
+} as const;
+
 const TopBar = async () => {
   const user = await getSessionUser();
 
@@ -34,9 +46,9 @@ const TopBar = async () => {
         initialNotifications={notificaitons}
         userPublicId={user.publicId}
       >
-        <header className="sticky top-0 z-40 flex h-16 w-full items-center border-b border-gray-300 bg-background/95 px-4 shadow-sm backdrop-blur md:px-6">
-          <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3">
-            <div className="flex min-w-0 items-center gap-3">
+        <header className={topBarStyles.wrapper}>
+          <div className={topBarStyles.inner}>
+            <div className={topBarStyles.leftSection}>
               <SheetTrigger
                 render={
                   <Button
@@ -50,17 +62,18 @@ const TopBar = async () => {
                 <Menu />
               </SheetTrigger>
               <Link className="shrink-0" href="/dashboard">
-                <div className="flex items-center gap-2">
-                <Image src="/logo.png" width={40} height={40} alt="logo" />
-                <h1
-                  className={`text-2xl text-(--col-primary-dark) ${font.className}`}
-                >
-                  HBit
-                </h1>
+                <div className={topBarStyles.brand}>
+                  <Image
+                    src="/logo.png"
+                    width={40}
+                    height={40}
+                    alt="logo"
+                  />
+                  <h1 className={topBarStyles.brandText}>HBit</h1>
                 </div>
               </Link>
             </div>
-            <div className="flex shrink-0 items-center gap-3">
+            <div className={topBarStyles.rightSection}>
               <SearchPanel user={user} />
               <Notifications user={user} />
               <ProfileNav user={user} />
@@ -71,22 +84,15 @@ const TopBar = async () => {
     );
   } else {
     return (
-      <header className="sticky top-0 z-40 flex h-16 w-full items-center border-b border-gray-300 bg-background/95 px-4 shadow-sm backdrop-blur md:px-6">
-        <div className="mx-auto flex w-full max-w-7xl items-center justify-between">
+      <header className={topBarStyles.wrapper}>
+        <div className={topBarStyles.authInner}>
           <Link href="/dashboard">
-            <div className="flex gap-3 items-center">
+            <div className={topBarStyles.authBrand}>
               <Image src="/logo.png" width={40} height={40} alt="logo" />
-              <h1
-                className={`text-2xl text-(--col-primary-dark) ${font.className}`}
-              >
-                HBit
-              </h1>
+              <h1 className={topBarStyles.brandText}>HBit</h1>
             </div>
           </Link>
-          <Link
-            className="btn btn-primary text-(--col-background)!"
-            href="/auth/signin"
-          >
+          <Link className={topBarStyles.authButton} href="/auth/signin">
             Sing In
           </Link>
         </div>

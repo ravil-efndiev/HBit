@@ -3,6 +3,7 @@ import Image from "next/image";
 import ProgressBar from "./ProgressBar";
 import EditHabit from "../EditHabit";
 import { DailyHabitWithStreak } from "@/lib/types";
+import { habitDisplayStyles } from "@/dashboard/habitDisplayStyles";
 
 interface Props {
   habit: DailyHabitWithStreak;
@@ -22,18 +23,18 @@ const DailyHabitDisplay = ({ habit }: Props) => {
 
   return (
     <div
-      className="display grid grid-cols-[minmax(0,1fr)_auto_auto] gap-2 min-[1200px]:flex min-[1200px]:flex-row min-[1200px]:gap-0!"
+      className={`${habitDisplayStyles.wrapper} gap-2`}
       id={habit.id.toString()}
     >
-      <div className="col-span-3 row-start-1 flex w-fit max-w-full items-center justify-center gap-1 justify-self-center min-[1200px]:contents">
+      <div className={habitDisplayStyles.iconTitleBlock}>
         <Image
           src={habit.iconPath}
           alt="icon"
           width={50}
           height={50}
-          className="h-10 w-10 sm:h-12 sm:w-12 min-[1200px]:h-[50px] min-[1200px]:w-[50px]"
+          className={habitDisplayStyles.icon}
         />
-        <div className="flex-2 ml-0 pr-2 text-center sm:ml-2 min-[1200px]:ml-5 min-[1200px]:text-left!">
+        <div className={habitDisplayStyles.textBlock}>
           <div className="flex justify-center text-lg min-[1200px]:justify-start!">
             {habit.name}{" "}
             {streak > 0 && (
@@ -45,13 +46,11 @@ const DailyHabitDisplay = ({ habit }: Props) => {
                   alt="fire"
                   className="ml-2"
                 />
-                <p className="text-(--col-text-secondary)">{streak}</p>
+                <p className={habitDisplayStyles.mutedText}>{streak}</p>
               </>
             )}
           </div>
-          <p className="mx-auto max-w-[85%] text-(--col-text-secondary) min-[1200px]:mx-0!">
-            {habit.details}
-          </p>
+          <p className={habitDisplayStyles.detailsText}>{habit.details}</p>
         </div>
       </div>
       <div className="col-start-1 row-start-2 w-full max-[999px]:col-span-2 min-[1200px]:w-auto min-[1200px]:min-w-0 min-[1200px]:flex-5">
@@ -64,12 +63,12 @@ const DailyHabitDisplay = ({ habit }: Props) => {
       </div>
       <div className="col-start-2 row-start-2 ml-0 flex-1 text-[1rem] font-light max-[999px]:hidden min-[1200px]:ml-4">
         goal:{" "}
-        <span className="text-(--col-text-secondary)">
+        <span className={habitDisplayStyles.mutedText}>
           {parseInt(timeGoal.hours) > 0 && `${timeGoal.hours}h `}
           {parseInt(timeGoal.minutes) > 0 && `${timeGoal.minutes}m`}
         </span>
       </div>
-      <div className="col-start-3 row-start-2 justify-self-end min-[1200px]:shrink-0">
+      <div className={habitDisplayStyles.actionCell}>
         <EditHabit type="daily" initialHabit={habit} />
       </div>
     </div>
