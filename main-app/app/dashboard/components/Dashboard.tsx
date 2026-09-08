@@ -8,9 +8,9 @@ const Dashboard = async () => {
   const habitIconPaths = getHabitIconPaths();
 
   return (
-    <main className="flex-7 overflow-y-auto bg-gray-100">
+    <main className="w-full bg-gray-100">
       <IconPathsProvider iconPaths={habitIconPaths}>
-        <div className="max-w-[90%] mx-auto min-h-screen flex flex-col gap-12">
+        <div className="mx-auto flex min-h-screen w-full max-w-7xl flex-col gap-12 p-4 sm:p-6 lg:p-8">
           <DailyHabitsPanel />
           <ActivityCalendar />
           <WeeklyHabitsPanel />

@@ -2,12 +2,15 @@ import Image from "next/image";
 import { Allerta_Stencil } from "next/font/google";
 import Link from "next/link";
 import Notifications from "./Notifications";
-import { getSessionUser, requireSessionUser } from "@/lib/session";
+import { getSessionUser } from "@/lib/session";
 import ProfileNav from "./ProfileNav";
 import SearchPanel from "./SearchPanel";
 import { ParsedNotification } from "@/lib/types";
 import { prisma } from "@/lib/prisma";
 import NotificationsProvider from "./context/NotificationsProvider";
+import { Menu } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { SheetTrigger } from "@/components/ui/sheet";
 
 const font = Allerta_Stencil({ weight: ["400"] });
 
@@ -31,33 +34,45 @@ const TopBar = async () => {
         initialNotifications={notificaitons}
         userPublicId={user.publicId}
       >
-        <div
-          className={`w-full py-3 shadow-sm border-b border-b-gray-300 z-20`}
-        >
-          <div className="max-w-[96%] mx-auto flex items-center justify-between">
-            <Link href="/dashboard">
-              <div className="flex gap-3 items-center">
+        <header className="sticky top-0 z-40 flex h-16 w-full items-center border-b border-gray-300 bg-background/95 px-4 shadow-sm backdrop-blur md:px-6">
+          <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3">
+            <div className="flex min-w-0 items-center gap-3">
+              <SheetTrigger
+                render={
+                  <Button
+                    className="md:hidden"
+                    variant="ghost"
+                    size="icon"
+                    aria-label="Open navigation menu"
+                  />
+                }
+              >
+                <Menu />
+              </SheetTrigger>
+              <Link className="shrink-0" href="/dashboard">
+                <div className="flex items-center gap-2">
                 <Image src="/logo.png" width={40} height={40} alt="logo" />
                 <h1
                   className={`text-2xl text-(--col-primary-dark) ${font.className}`}
                 >
                   HBit
                 </h1>
-              </div>
-            </Link>
-            <div className="flex gap-3 items-center">
+                </div>
+              </Link>
+            </div>
+            <div className="flex shrink-0 items-center gap-3">
               <SearchPanel user={user} />
               <Notifications user={user} />
               <ProfileNav user={user} />
             </div>
           </div>
-        </div>
+        </header>
       </NotificationsProvider>
     );
   } else {
     return (
-      <div className={`w-full py-3 shadow-sm border-b border-b-gray-300 z-20`}>
-        <div className="max-w-[96%] mx-auto flex items-center justify-between">
+      <header className="sticky top-0 z-40 flex h-16 w-full items-center border-b border-gray-300 bg-background/95 px-4 shadow-sm backdrop-blur md:px-6">
+        <div className="mx-auto flex w-full max-w-7xl items-center justify-between">
           <Link href="/dashboard">
             <div className="flex gap-3 items-center">
               <Image src="/logo.png" width={40} height={40} alt="logo" />
@@ -75,7 +90,7 @@ const TopBar = async () => {
             Sing In
           </Link>
         </div>
-      </div>
+      </header>
     );
   }
 };

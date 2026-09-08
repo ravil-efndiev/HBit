@@ -39,9 +39,9 @@ const UserPage = async ({ params }: Props) => {
 
       return (
         <main className="content">
-          <div className="w-[96%] flex mx-auto gap-5 my-6">
-            <section className="panel flex-1 flex flex-col items-center my-0!">
-              <div className="flex mx-auto justify-center gap-7 my-4">
+          <div className="mx-auto grid w-full max-w-7xl gap-5 p-4 sm:p-6 lg:grid-cols-3 lg:p-8">
+            <section className="panel my-0! flex flex-col items-center lg:col-span-1">
+              <div className="my-4 flex justify-center gap-7">
                 <ProfilePicture size={100} url={user.pfpUrl} />
                 <div className="my-auto">
                   <h2 className="text-3xl font-semibold">{user.name}</h2>
@@ -49,7 +49,7 @@ const UserPage = async ({ params }: Props) => {
                 </div>
               </div>
             </section>
-            <section className="panel flex flex-col flex-3 items-center my-0!">
+            <section className="panel my-0! flex flex-col items-center lg:col-span-2">
               <h1 className="panel-title">Public activities</h1>
               {activities.length > 0 ? (
                 <ul className="">
@@ -100,7 +100,7 @@ const UserPage = async ({ params }: Props) => {
                   ))}
                 </ul>
               ) : (
-                <h3>User isn't sharing any activities</h3>
+                <h3>User isn&apos;t sharing any activities</h3>
               )}
             </section>
           </div>

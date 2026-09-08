@@ -1,7 +1,7 @@
 export const formStyles = {
-  content: "form w-[60%] max-md:w-3/4 max-sm:w-[90%]",
-  title: "text-3xl font-semibold mb-5",
-  button: "btn btn-primary w-[min(75%,200px)] mb-4",
+  content: "w-full max-w-md",
+  title: "mb-5 text-2xl font-semibold sm:text-3xl",
+  button: "btn btn-primary mb-4 w-full",
 };
 
 const FormLayout = async ({
@@ -10,13 +10,8 @@ const FormLayout = async ({
   children: React.ReactNode;
 }>) => {
   return (
-    <div className="absolute left-0 top-0 w-full h-full bg-linear-to-tl from-(--col-primary-muted) to-(--col-primary-light)">
-      <div
-        className="
-          bg-(--col-background) w-1/2 h-3/4 absolute left-1/2 top-1/2 rounded-xl
-          shadow-xl transform -translate-1/2 flex items-center justify-center
-          max-md:w-[80%] max-sm:w-[90%]"
-      >
+    <div className="flex min-h-screen items-center justify-center bg-linear-to-tl from-(--col-primary-muted) to-(--col-primary-light) p-4">
+      <div className="flex w-full max-w-lg items-center justify-center rounded-xl bg-(--col-background) p-6 shadow-xl sm:p-8">
         {children}
       </div>
     </div>

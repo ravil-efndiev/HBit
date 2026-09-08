@@ -6,8 +6,8 @@ import { SocialEvent } from "src/lib/types";
 
 @Injectable()
 export class RedisPubSubService implements OnModuleInit, OnModuleDestroy {
-  private pub: Redis;
-  private sub: Redis;
+  private pub!: Redis;
+  private sub!: Redis;
   private messages$ = new Subject<{ channel: string; message: string }>();
   private readonly socialChannel = "events:social";
 

@@ -10,9 +10,15 @@ interface Props {
   habitId: number;
   timeGoalMs: number;
   initialTimeSpentMs: number;
+  goal: string;
 }
 
-const ProgressBar = ({ habitId, timeGoalMs, initialTimeSpentMs }: Props) => {
+const ProgressBar = ({
+  habitId,
+  timeGoalMs,
+  initialTimeSpentMs,
+  goal,
+}: Props) => {
   const [timeSpentMs, setTimeSpentMs] = useState(initialTimeSpentMs);
 
   const handleIncrement = async (newValue: number) => {
@@ -33,17 +39,22 @@ const ProgressBar = ({ habitId, timeGoalMs, initialTimeSpentMs }: Props) => {
 
   return (
     <div className="flex-5">
-      <p className="text-[1rem] font-light">
-        <span className="">Current progress{" "}</span>
-        <span className="text-(--col-text-secondary)">
-          {timeSpentMs < timeGoalMs ? (
-            <>
-              ({parseInt(timeSpent.hours) > 0 && `${timeSpent.hours}h `}
-              {timeSpent.minutes}m)
-            </>
-          ) : (
-            "(Done)"
-          )}
+      <p className="flex justify-between text-[1rem] font-light max-[449px]:flex-col max-[449px]:items-start max-[449px]:text-sm">
+        <span className="flex gap-1">
+          <span>Current progress</span>
+          <span className="text-(--col-text-secondary)">
+            {timeSpentMs < timeGoalMs ? (
+              <>
+                ({parseInt(timeSpent.hours) > 0 && `${timeSpent.hours}h `}
+                {timeSpent.minutes}m)
+              </>
+            ) : (
+              "(Done)"
+            )}
+          </span>
+        </span>
+        <span className="max-[999px]:inline min-[1000px]:hidden">
+          goal: <span className="text-(--col-text-secondary)">{goal}</span>
         </span>
       </p>
       <progress

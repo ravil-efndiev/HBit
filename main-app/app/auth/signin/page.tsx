@@ -19,13 +19,15 @@ const Signin = async ({ searchParams }: Props) => {
 
   return (
     <form className={formStyles.content} action={signin}>
-      <h2 className={formStyles.title}>Wellcome Back</h2>
+      <h2 className={formStyles.title}>Welcome Back</h2>
       <input
+        id="emailOrUsername"
         required
-        className="input input-secondary mb-3"
+        className="input input-secondary mb-3 w-full"
         type="text"
         name="emailOrUsername"
         placeholder="Email or username"
+        aria-label="Email or username"
       />
       <FormInput name="password" />
       <input className={formStyles.button} type="submit" value="Sign In" />

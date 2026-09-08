@@ -49,11 +49,11 @@ const ActivitiesPage = async () => {
     <>
       <Breadcrumbs subpage="activities" />
       <main className="flex-1">
-        <div className="max-w-[96%] flex mx-auto">
+        <div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-start gap-6 p-4 sm:p-6 lg:grid-cols-[minmax(15rem,20rem)_minmax(0,1fr)] lg:p-8">
           <IconPathsProvider iconPaths={habitIconPaths}>
             <EntriesProvider initialEntries={allEntries}>
               <AddActivityType />
-              <div className="w-3/4 mx-auto flex flex-col gap-6">
+              <div className="flex min-w-0 w-full flex-col gap-6">
                 <ActivityTypeList
                   activityTypes={activityTypes}
                   latestEntries={latestEntries}

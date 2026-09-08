@@ -1,20 +1,33 @@
 "use client";
 
 import { useIconPaths } from "@/dashboard/components/context/IconPathsContext";
-import { reqPost } from "@/lib/requests";
-import { useState } from "react";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 import ActivityTypeFormInputs from "./ActivityTypeFormInputs";
 import { createActivityType } from "@/actions/activityType.action";
-import { UserWithPublicId } from "@/lib/types";
 
 const AddActivityType = () => {
   const defaultIconPath = useIconPaths()[0];
+  const dialogRef = useRef<HTMLDialogElement>(null);
   const [name, setName] = useState("");
   const [details, setDetails] = useState("");
   const [iconPath, setIconPath] = useState(defaultIconPath);
   const [color, setColor] = useState("#7ab5fc");
   const [error, setError] = useState<string | null>(null);
   const [isPublic, setIsPublic] = useState(false);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+
+    const handleClose = () => setError(null);
+    dialog.addEventListener("close", handleClose);
+
+    return () => dialog.removeEventListener("close", handleClose);
+  }, []);
+
+  const openDialog = () => dialogRef.current?.showModal();
+  const closeDialog = () => dialogRef.current?.close();
 
   const handleAddBtnClick = async () => {
     if (!name) return setError("Please enter an activity name");
@@ -30,15 +43,14 @@ const AddActivityType = () => {
     });
 
     if (!res.ok) {
-      return console.error(res.error);
+      return setError(res.error);
     }
 
     window.location.reload();
   };
 
-  return (
-    <div className="panel mt-0! max-w-1/5 max-h-[35vh] sticky top-5">
-      <p className="mb-3">Add a new activity</p>
+  const renderForm = () => (
+    <>
       <ActivityTypeFormInputs
         name={name}
         details={details}
@@ -51,8 +63,6 @@ const AddActivityType = () => {
         setColor={setColor}
         setIsPublic={setIsPublic}
         iconSelectClasses="mb-0! mr-2"
-        iconSelectLeft="2%"
-        iconSelectTop="32%"
       />
       <button
         className="btn btn-outline btn-primary mt-3"
@@ -61,7 +71,46 @@ const AddActivityType = () => {
         Add
       </button>
       {error && <p className="text-(--col-peach) mt-1">{error}</p>}
-    </div>
+    </>
+  );
+
+  return (
+    <>
+      <section className="panel m-0! hidden h-fit w-full lg:sticky lg:top-20 lg:block">
+        <h2 className="mb-3 text-lg font-medium">Add a new activity</h2>
+        {renderForm()}
+      </section>
+
+      <button
+        type="button"
+        className="btn btn-primary fixed bottom-5 right-5 z-30 h-15 w-15 px-2 py-2 shadow-lg lg:hidden"
+        onClick={openDialog}
+        aria-label="Add a new activity"
+      >
+        <Image src="/plus.svg" alt="" width={40} height={40} />
+      </button>
+
+      <dialog
+        ref={dialogRef}
+        className="modal px-4"
+        onClick={(event) => {
+          if (event.target === event.currentTarget) closeDialog();
+        }}
+      >
+        <div className="modal-box max-h-[calc(100vh-2rem)] w-full max-w-lg overflow-y-auto">
+          <button
+            type="button"
+            className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-lg"
+            onClick={closeDialog}
+            aria-label="Close add activity dialog"
+          >
+            x
+          </button>
+          <h2 className="mb-3 pr-8 text-xl font-medium">Add a new activity</h2>
+          {renderForm()}
+        </div>
+      </dialog>
+    </>
   );
 };
 
