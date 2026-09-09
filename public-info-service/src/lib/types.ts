@@ -1,4 +1,4 @@
-import { PublicUser } from "src/generated/prisma/client";
+import { ActivityVisibility, PublicUser } from "src/generated/prisma/client";
 
 export interface ActivityPostRequestBody {
   userPublicId: string;
@@ -10,6 +10,7 @@ export interface ActivityPostRequestBody {
   lastEntryTime?: string;
   totalEntries: number;
   lastWeekEntries: number;
+  visibility: ActivityVisibility;
 }
 
 export interface ActivityPatchRequestBody {
@@ -21,6 +22,7 @@ export interface ActivityPatchRequestBody {
   lastEntryTime?: string;
   totalEntries?: number;
   lastWeekEntries?: number;
+  visibility?: ActivityVisibility;
 }
 
 export interface UserPostRequestBody {

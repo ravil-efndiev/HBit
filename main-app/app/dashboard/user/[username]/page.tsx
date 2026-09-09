@@ -1,10 +1,13 @@
 import ProfilePicture from "@/components/ProfilePicture";
+import { areUsersFriends } from "@/actions/friendRequest.action";
 import BookmarkIcon from "@/dashboard/activities/components/BookmarkIcon";
 import { requestErrorWrapper } from "@/lib/misc";
 import { publicServiceRequest } from "@/lib/requests";
+import { getSessionUser } from "@/lib/session";
 import { PublicActivity, PublicUser } from "@/lib/types";
 import { Metadata } from "next";
 import Image from "next/image";
+import { ActivityVisibility } from "@prisma/client";
 
 interface Props {
   params: Promise<{ username: string }>;
@@ -31,11 +34,41 @@ const UserPage = async ({ params }: Props) => {
         params: { username },
       })) as { publicUser: PublicUser };
 
-      const { activities } = (await publicServiceRequest({
+      const { activities: userActivities } = (await publicServiceRequest({
         endpoint: "/public-activities/user",
         method: "GET",
         params: { publicId: user.publicId },
-      })) as { activities: PublicActivity[] };
+      })) as {
+        activities: (PublicActivity & {
+          visibility?: "PUBLIC" | "FRIENDS_ONLY";
+        })[];
+      };
+
+      const hasFriendsOnlyActivities = userActivities.some(
+        (activity) => activity.visibility === "FRIENDS_ONLY",
+      );
+      let areFriends = false;
+
+      if (hasFriendsOnlyActivities) {
+        const viewer = await getSessionUser();
+        areFriends =
+          viewer?.publicId === user.publicId
+            ? true
+            : viewer
+              ? await areUsersFriends(viewer.publicId, user.publicId).then(
+                  (result) => {
+                    if (!result.ok) throw new Error(result.error);
+                    return result.areFriends;
+                  },
+                )
+              : false;
+      }
+
+      const activities = userActivities.filter(
+        (activity) =>
+          activity.visibility !== ActivityVisibility.FRIENDS_ONLY ||
+          areFriends,
+      );
 
       return (
         <main className="content">
@@ -50,7 +83,7 @@ const UserPage = async ({ params }: Props) => {
               </div>
             </section>
             <section className="panel my-0! flex flex-col items-center lg:col-span-2">
-              <h1 className="panel-title">Public activities</h1>
+              <h1 className="panel-title">Shared activities</h1>
               {activities.length > 0 ? (
                 <ul className="">
                   {activities.map((activity) => (
@@ -68,8 +101,17 @@ const UserPage = async ({ params }: Props) => {
                           width={40}
                           height={40}
                         />
-                        <h4 className="text-2xl font-normal">
+                        <h4 className="text-2xl font-normal flex">
                           {activity.name}
+                          {activity.visibility ===
+                            ActivityVisibility.FRIENDS_ONLY && (
+                            <Image
+                              src="/star.svg"
+                              width={20}
+                              height={20}
+                              alt="friends-only"
+                            />
+                          )}
                         </h4>
                       </div>
                       <p>

@@ -1,5 +1,6 @@
 "use client";
 
+import { ActivityVisibility } from "@prisma/client";
 import { useIconPaths } from "@/dashboard/components/context/IconPathsContext";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
@@ -14,7 +15,9 @@ const AddActivityType = () => {
   const [iconPath, setIconPath] = useState(defaultIconPath);
   const [color, setColor] = useState("#7ab5fc");
   const [error, setError] = useState<string | null>(null);
-  const [isPublic, setIsPublic] = useState(false);
+  const [visibility, setVisibility] = useState<ActivityVisibility>(
+    ActivityVisibility.PRIVATE,
+  );
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -39,7 +42,7 @@ const AddActivityType = () => {
       details,
       iconPath,
       color,
-      isPublic,
+      visibility,
     });
 
     if (!res.ok) {
@@ -56,12 +59,12 @@ const AddActivityType = () => {
         details={details}
         iconPath={iconPath}
         color={color}
-        isPublic={isPublic}
+        visibility={visibility}
         setName={setName}
         setDetails={setDetails}
         setIconPath={setIconPath}
         setColor={setColor}
-        setIsPublic={setIsPublic}
+        setVisibility={setVisibility}
         iconSelectClasses="mb-0! mr-2"
       />
       <button

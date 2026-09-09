@@ -65,6 +65,7 @@ export class PublicActivitiesService {
       lastEntryTime,
       totalEntries,
       lastWeekEntries,
+      visibility,
     } = body;
 
     const updateData = Object.fromEntries(
@@ -76,6 +77,7 @@ export class PublicActivitiesService {
         lastEntryTime,
         totalEntries,
         lastWeekEntries,
+        visibility,
       }).filter(([_, v]) => v !== undefined),
     );
 

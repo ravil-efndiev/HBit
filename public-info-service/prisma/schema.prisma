@@ -31,6 +31,7 @@ model PublicActivity {
   lastEntryTime   DateTime?
   totalEntries    Int
   lastWeekEntries Int
+  visibility      ActivityVisibility @default(PUBLIC)
 }
 
 model Friendship {
@@ -47,4 +48,9 @@ model Friendship {
 enum FriendshipStatus {
   PENDING
   ACCEPTED
+}
+
+enum ActivityVisibility {
+  PUBLIC
+  FRIENDS_ONLY
 }

@@ -55,15 +55,15 @@ model WeeklyHabit {
 }
 
 model ActivityType {
-  id         String    @id @default(cuid())
+  id         String             @id @default(cuid())
   name       String
   details    String
   color      String
   iconPath   String
-  isPublic   Boolean   @default(false)
+  visibility ActivityVisibility @default(PRIVATE)
   userId     String
-  user       User      @relation(fields: [userId], references: [id])
-  createdAt  DateTime  @default(now())
+  user       User               @relation(fields: [userId], references: [id])
+  createdAt  DateTime           @default(now())
   entries    ActivityEntry[]
 }
 
@@ -95,4 +95,10 @@ model Notification {
   type      String
   userId    String
   user      User       @relation(fields: [userId], references: [id])
+}
+
+enum ActivityVisibility {
+  PUBLIC
+  PRIVATE
+  FRIENDS_ONLY
 }

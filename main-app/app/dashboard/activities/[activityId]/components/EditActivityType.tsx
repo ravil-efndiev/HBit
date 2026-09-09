@@ -21,14 +21,14 @@ const EditActivityType = ({ initialActivityType }: Props) => {
   const [iconPath, setIconPath] = useState(initialActivityType.iconPath);
   const [color, setColor] = useState(initialActivityType.color);
   const [error, setError] = useState<string | null>(null);
-  const [isPublic, setIsPublic] = useState(initialActivityType.isPublic);
+  const [visibility, setVisibility] = useState(initialActivityType.visibility);
 
   const handleEditBtnClick = async () => {
     if (!name) return setError("Please enter an activity name");
     if (name.length > 20) return setError("Name is too long");
     if (details.length > 80) return setError("Details are too long");
 
-    const fields = { name, details, iconPath, color, isPublic };
+    const fields = { name, details, iconPath, color, visibility };
     const toUpdate = Object.fromEntries(
       Object.entries(fields).filter(
         ([key, value]) =>
@@ -66,12 +66,12 @@ const EditActivityType = ({ initialActivityType }: Props) => {
           details={details}
           iconPath={iconPath}
           color={color}
-          isPublic={isPublic}
+          visibility={visibility}
           setName={setName}
           setDetails={setDetails}
           setIconPath={setIconPath}
           setColor={setColor}
-          setIsPublic={setIsPublic}
+          setVisibility={setVisibility}
           iconSelectClasses="mb-0! mr-2"
         />
         <div className="w-full flex justify-start mt-5">

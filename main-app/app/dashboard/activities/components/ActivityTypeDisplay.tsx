@@ -1,9 +1,9 @@
 "use client";
 
-import { ActivityEntry, ActivityType } from "@prisma/client";
+import { ActivityEntry, ActivityType, ActivityVisibility } from "@prisma/client";
 import Image from "next/image";
 import LogEntryButton from "./LogEntryButton";
-import { PropsWithChildren, useState } from "react";
+import { useState } from "react";
 import { useEntries } from "./context/EntriesProvider";
 import { EntryWithType } from "@/lib/types";
 import BookmarkIcon from "./BookmarkIcon";
@@ -39,8 +39,11 @@ const ActivityTypeDisplay = ({ activityType, latestEntry }: Props) => {
         <div className="flex-3 ml-5 my-auto">
           <p className="text-lg flex gap-3">
             {activityType.name}
-            {activityType.isPublic && (
+            {activityType.visibility == ActivityVisibility.PUBLIC && (
               <Image src="/globe.svg" width={20} height={20} alt="public" />
+            )}
+            {activityType.visibility == ActivityVisibility.FRIENDS_ONLY && (
+              <Image src="/star.svg" width={20} height={20} alt="friends-only" />
             )}
           </p>
           <p className="text-(--col-text-secondary) max-w-3/4">

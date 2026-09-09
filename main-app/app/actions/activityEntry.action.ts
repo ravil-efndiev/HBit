@@ -9,6 +9,7 @@ import {
 import { getActivityEntryData } from "./activityEntryData";
 import { updatePublicActivityData } from "./activityEntryData";
 import { ActionResult, actionSucess } from "./actionResult";
+import { ActivityVisibility } from "@prisma/client";
 
 interface CreateActivityEntryArgs {
   typeId: string;
@@ -39,7 +40,11 @@ export const createActivityEntry = async ({
       include: { type: true },
     });
 
-    if (activityType.isPublic) {
+    const activityTypeInPublicService = 
+      activityType.visibility === ActivityVisibility.PUBLIC || 
+      activityType.visibility === ActivityVisibility.FRIENDS_ONLY;
+      
+    if (activityTypeInPublicService) {
       try {
         const entryData = await getActivityEntryData(
           activityType,

@@ -8,7 +8,7 @@ import {
   actionSucess,
 } from "./actionResult";
 import { publicServiceRequest } from "@/lib/requests";
-import { ActivityType } from "@prisma/client";
+import { ActivityType, ActivityVisibility } from "@prisma/client";
 import { getActivityEntryData } from "./activityEntryData";
 
 interface CreateActivityTypeArgs {
@@ -16,13 +16,14 @@ interface CreateActivityTypeArgs {
   details: string;
   iconPath: string;
   color: string;
-  isPublic: boolean;
+  visibility: ActivityVisibility;
 }
 
 const createPublicActivity = async (
   userPublicId: string,
   activityType: ActivityType,
   isNew: boolean,
+  visibility?: string,
 ) => {
   let entryData = {
     totalEntries: 0,
@@ -43,6 +44,7 @@ const createPublicActivity = async (
       details: activityType.details,
       iconPath: activityType.iconPath,
       color: activityType.color,
+      visibility: visibility || activityType.visibility,
       ...entryData,
     },
   });
@@ -63,18 +65,18 @@ export const createActivityType = async ({
   details,
   iconPath,
   color,
-  isPublic,
+  visibility,
 }: CreateActivityTypeArgs) => {
   try {
     const user = await requireSessionUser();
 
     const newActivity = await prisma.activityType.create({
-      data: { userId: user.id, name, details, iconPath, color, isPublic },
+      data: { userId: user.id, name, details, iconPath, color, visibility },
     });
 
-    if (isPublic) {
+    if (visibility === ActivityVisibility.PUBLIC || visibility === ActivityVisibility.FRIENDS_ONLY) {
       try {
-        await createPublicActivity(user.publicId, newActivity, true);
+        await createPublicActivity(user.publicId, newActivity, true, visibility);
       } catch (err) {
         console.error(err);
         await prisma.activityType.delete({ where: { id: newActivity.id } });
@@ -93,7 +95,7 @@ interface UpdateActivityTypeArgs {
   details?: string;
   iconPath?: string;
   color?: string;
-  isPublic?: boolean;
+  visibility?: ActivityVisibility;
 }
 
 export const updateActivityType = async ({
@@ -102,7 +104,7 @@ export const updateActivityType = async ({
   details,
   iconPath,
   color,
-  isPublic,
+  visibility,
 }: UpdateActivityTypeArgs) => {
   try {
     const user = await requireSessionUser();
@@ -113,7 +115,7 @@ export const updateActivityType = async ({
         details,
         iconPath,
         color,
-        isPublic,
+        visibility,
       }).filter(([_, v]) => v !== undefined),
     );
 
@@ -125,19 +127,24 @@ export const updateActivityType = async ({
       return actionInternalError("Activity type doesnt exits");
     }
 
-    if (activityType.isPublic && updateData.isPublic === false) {
+    const activityTypeInPublicService = 
+      activityType.visibility === ActivityVisibility.PUBLIC || 
+      activityType.visibility === ActivityVisibility.FRIENDS_ONLY;
+
+    if (activityTypeInPublicService && updateData.visibility === ActivityVisibility.PRIVATE
+    ) {
       await deletePublicActivity(activityType.id);
-    } else if (activityType.isPublic) {
+    } else if (activityTypeInPublicService) {
       await publicServiceRequest({
         endpoint: "/public-activities",
         method: "PATCH",
         body: {
           activityTypePrivateId: typeId,
-          ...updateData,
+          visibility: updateData.visibility,
         },
       });
     } else {
-      await createPublicActivity(user.publicId, activityType, false);
+      await createPublicActivity(user.publicId, activityType, false, updateData.visibility);
     }
 
     await prisma.activityType.update({
