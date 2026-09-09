@@ -83,7 +83,7 @@ const UserPage = async ({ params }: Props) => {
               </div>
             </section>
             <section className="panel my-0! flex flex-col items-center lg:col-span-2">
-              <h1 className="panel-title">Shared activities</h1>
+              <h1 className="panel-title">Public activities</h1>
               {activities.length > 0 ? (
                 <ul className="">
                   {activities.map((activity) => (
