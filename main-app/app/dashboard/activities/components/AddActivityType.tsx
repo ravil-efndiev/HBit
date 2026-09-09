@@ -32,19 +32,6 @@ const AddActivityType = () => {
   const openDialog = () => dialogRef.current?.showModal();
   const closeDialog = () => dialogRef.current?.close();
 
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return;
-
-    const handleClose = () => setError(null);
-    dialog.addEventListener("close", handleClose);
-
-    return () => dialog.removeEventListener("close", handleClose);
-  }, []);
-
-  const openDialog = () => dialogRef.current?.showModal();
-  const closeDialog = () => dialogRef.current?.close();
-
   const handleAddBtnClick = async () => {
     if (!name) return setError("Please enter an activity name");
     if (name.length > 20) return setError("Name is too long");
