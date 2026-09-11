@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import LayoutControl from "./LayoutControl";
+import Loading from "@/components/Loading";
 import {
   Layout,
   LayoutPanelId,
@@ -17,15 +17,27 @@ const panelLabels: Record<LayoutPanelId, string> = {
 const SidebarLayoutControls = () => {
   const { layout, setLayout } = useLayout();
 
+  const saveLayoutToLocalStorage = (newLayout: Layout) => {
+    localStorage.setItem("layout", JSON.stringify(newLayout));
+  }
+
   const toggleVisibility = (id: LayoutPanelId) => {
-    setLayout((previous) =>
-      previous.map((item) =>
+    setLayout((previous) => {
+      if (!previous) {
+        return previous;
+      }
+
+      const newLayout = previous.map((item) =>
         item.id === id ? { ...item, visible: !item.visible } : item,
-      ),
-    );
+      );
+      saveLayoutToLocalStorage(newLayout);
+      return newLayout;
+    });
   };
 
   const movePanel = (id: LayoutPanelId, direction: "up" | "down") => {
+    if (!layout) return;
+
     const index = layout.findIndex((item) => item.id === id);
     const targetIndex = direction === "up" ? index - 1 : index + 1;
 
@@ -34,11 +46,21 @@ const SidebarLayoutControls = () => {
     }
 
     setLayout((previous) => {
+      if (!previous) {
+        return previous;
+      }
+
       const next = previous.slice();
       [next[index], next[targetIndex]] = [next[targetIndex], next[index]];
-      return next.map((item, order) => ({ ...item, order }));
+      const newLayout = next.map((item, order) => ({ ...item, order }));
+      saveLayoutToLocalStorage(newLayout);
+      return newLayout;
     });
   };
+
+  if (!layout) {
+    return <Loading label="Loading layout controls" className="min-h-24" />;
+  }
 
   return (
     <div className="flex flex-col gap-2 p-3">

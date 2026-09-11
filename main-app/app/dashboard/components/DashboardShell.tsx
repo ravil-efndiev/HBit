@@ -2,23 +2,43 @@
 
 import { usePathname } from "next/navigation";
 import MobileSidebar from "./MobileSidebar";
-import { PropsWithChildren, useState } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 import LayoutProvider, { Layout, layoutPanelIds } from "./context/LayoutContext";
 
-interface DashboardShellProps extends PropsWithChildren {
+interface Props extends PropsWithChildren {
   header: React.ReactNode;
   sidebar: React.ReactNode;
 }
 
-const DashboardShell = ({ children, header, sidebar }: DashboardShellProps) => {
+const validateJSONLayoutEl = (el: any) => 
+    el !== null && typeof el === "object" &&
+    "id" in el && "order" in el && "visible" in el;
+
+const defaultLayout: Layout = [
+  { id: layoutPanelIds.dailyHabits, order: 0, visible: true },
+  { id: layoutPanelIds.activityCallendar, order: 1, visible: true },
+  { id: layoutPanelIds.weeklyHabits, order: 2, visible: true },
+];
+
+const DashboardShell = ({ children, header, sidebar }: Props) => {
   const pathname = usePathname();
   const showSidebar = pathname === "/dashboard";
 
-  const [layout, setLayout] = useState<Layout>([
-    { id: layoutPanelIds.dailyHabits, order: 0, visible: true },
-    { id: layoutPanelIds.activityCallendar, order: 1, visible: true },
-    { id: layoutPanelIds.weeklyHabits, order: 2, visible: true },
-  ]);
+  const [layout, setLayout] = useState<Layout>();
+
+  useEffect(() => {
+    const layout = localStorage.getItem("layout");
+    const defaultLayoutCpy = defaultLayout.map((el) => ({ ...el }));
+    if (!layout) 
+      return setLayout(defaultLayoutCpy);
+
+    const parsed = JSON.parse(layout);
+    if (!Array.isArray(parsed) || !parsed.every(validateJSONLayoutEl)) 
+      return setLayout(defaultLayoutCpy);
+
+    setLayout(parsed as Layout);
+
+  }, [validateJSONLayoutEl]);
 
   return (
     <LayoutProvider layout={layout} setLayout={setLayout}>

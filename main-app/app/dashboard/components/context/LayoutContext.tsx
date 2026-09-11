@@ -19,8 +19,8 @@ interface LayoutItem {
 export type Layout = LayoutItem[];
 
 interface LayoutContextType {
-  layout: Layout;
-  setLayout: Dispatch<SetStateAction<Layout>>;
+  layout?: Layout;
+  setLayout: Dispatch<SetStateAction<Layout | undefined>>;
 }
 
 const LayoutContext = createContext<LayoutContextType | null>(null);

@@ -35,7 +35,7 @@ const LayoutControl = ({
         title={visible ? `Hide ${label}` : `Show ${label}`}
       >
         {visible ? <Eye size={16} /> : <EyeOff size={16} />}
-        <span >{label}</span>
+        <span>{label}</span>
       </button>
       <div className="flex shrink-0 gap-1">
         <button
