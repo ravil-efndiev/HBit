@@ -1,0 +1,65 @@
+import { dailyHabitPresets, weeklyHabitPresets } from "@/lib/habitPresets";
+import Image from "next/image";
+import SidebarButton from "./SidebarButton";
+import { getHabitIconPaths } from "@/lib/iconPaths";
+import IconPathsProvider from "./context/IconPathsContext";
+import { requireSessionUser } from "@/lib/session";
+import { prisma } from "@/lib/prisma";
+
+const SidebarHabits = async () => {
+    const habitIconPaths = getHabitIconPaths();
+
+  const user = await requireSessionUser();
+  const dailyAll = await prisma.dailyHabit.findMany({
+    where: { userId: user.id },
+  });
+
+  const dailyNotDone = dailyAll.filter(
+    (habit) => habit.timeSpent < habit.timeGoal
+  );
+
+  return (
+    <IconPathsProvider iconPaths={habitIconPaths}>
+      <div className="w-full p-3">
+        <h3 className="sidebar-title bg-(--col-accent-sky)">
+          {dailyNotDone.length > 0
+            ? "Not yet finished"
+            : "All today's goals done!"}
+        </h3>
+        <ul className="mb-8">
+          {dailyNotDone.slice(0, 3).map((habit) => (
+            <li key={habit.id} className="sidebar-li border-b-0">
+              <Image src={habit.iconPath} alt="icon" width={30} height={30} />
+              <p className="sidebar-li-text">{habit.name}</p>
+            </li>
+          ))}
+          {dailyNotDone.length > 3 && (
+            <p className="text-(--col-peach)">And more</p>
+          )}
+        </ul>
+        <h3 className="sidebar-title">Any daily habit you'd like to add?</h3>
+        <ul className="mb-8">
+          {dailyHabitPresets.map((preset, index) => (
+            <li key={index} className="sidebar-li">
+              <Image src={preset.iconPath} alt="icon" width={30} height={30} />
+              <p className="sidebar-li-text">{preset.name}</p>
+              <SidebarButton type="daily" preset={preset} />
+            </li>
+          ))}
+        </ul>
+        <h3 className="sidebar-title">Any weekly habit you'd like to add?</h3>
+        <ul>
+          {weeklyHabitPresets.map((preset, index) => (
+            <li key={index} className="sidebar-li">
+              <Image src={preset.iconPath} alt="icon" width={30} height={30} />
+              <p className="sidebar-li-text">{preset.name}</p>
+              <SidebarButton type="weekly" preset={preset} />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </IconPathsProvider>
+  );
+}
+
+export default SidebarHabits;
