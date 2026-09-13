@@ -10,6 +10,7 @@ import EntriesProvider from "./components/context/EntriesProvider";
 import ActivityPieChart from "./components/ActivityPieChart";
 import { getPieData } from "./math/pieData";
 import { Metadata } from "next";
+import { fetchEntriesChunk } from "./action";
 
 export const metadata: Metadata = {
   title: "Activities - HBit",
@@ -26,11 +27,7 @@ const ActivitiesPage = async () => {
     include: { entries: true },
   });
 
-  const allEntries = await prisma.activityEntry.findMany({
-    where: { type: { userId: user.id } },
-    orderBy: { date: "desc" },
-    include: { type: true },
-  });
+  const { chunk: firstLoadedEntries } = await fetchEntriesChunk(15);
 
   const latestEntries = (
     await Promise.all(
@@ -38,8 +35,8 @@ const ActivitiesPage = async () => {
         prisma.activityEntry.findFirst({
           where: { typeId: type.id },
           orderBy: { date: "desc" },
-        })
-      )
+        }),
+      ),
     )
   ).filter((entry) => entry !== null);
 
@@ -51,7 +48,7 @@ const ActivitiesPage = async () => {
       <main className="flex-1">
         <div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-start gap-6 p-4 sm:p-6 lg:grid-cols-[minmax(15rem,20rem)_minmax(0,1fr)] lg:p-8">
           <IconPathsProvider iconPaths={habitIconPaths}>
-            <EntriesProvider initialEntries={allEntries}>
+            <EntriesProvider initialEntries={firstLoadedEntries}>
               <AddActivityType />
               <div className="flex min-w-0 w-full flex-col gap-6">
                 <ActivityTypeList

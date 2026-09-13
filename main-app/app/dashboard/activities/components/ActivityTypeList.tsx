@@ -12,7 +12,7 @@ const ActivityTypeList = async ({ activityTypes, latestEntries }: Props) => {
       <h1 className="panel-title">Your activities</h1>
       {activityTypes.length !== 0 ? (
         <div className="p-1 bg-gray-100 rounded-sm">
-          <ul className="max-h-[90vh] overflow-auto">
+          <ul className="max-h-[90vh] overflow-y-auto">
             {activityTypes.map((actType, index) => (
               <li className="display flex-col items-start" key={actType.id}>
                 <ActivityTypeDisplay

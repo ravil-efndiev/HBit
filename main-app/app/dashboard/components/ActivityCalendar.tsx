@@ -42,7 +42,7 @@ const ActivityCalendar = async () => {
   return (
     <section className="panel">
       <h1 className="panel-title">Activity calendar</h1>
-      <div className="display w-fit mx-auto px-12 flex-col my-5">
+      <div className="display w-fit mx-auto px-12 max-md:px-5 flex-col my-5">
         <CalendarDisplay datesByMonth={datesByMonth} entries={entries} />
       </div>
       <Link href="/dashboard/activities">

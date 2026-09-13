@@ -32,11 +32,11 @@ const WeeklyHabitDisplay = ({ habit }: Props) => {
         {habit.days.length}{" "}
         <span className={habitDisplayStyles.mutedText}>times a week</span>
       </p>
-      <ul className="col-start-1 row-start-2 col-span-2 flex justify-around w-full gap-1 overflow-hidden rounded-full bg-sky-100 py-2 shadow-sm sm:gap-2 sm:px-4 min-[1200px]:order-2 min-[1200px]:w-auto min-[1200px]:flex-5 min-[1200px]:ml-5 px-2">
+      <ul className="col-start-1 row-start-2 col-span-3 flex w-full justify-around gap-1 overflow-hidden rounded-full bg-sky-100 px-2 py-2 shadow-sm sm:gap-2 sm:px-4 min-[1200px]:order-2 min-[1200px]:w-auto min-[1200px]:flex-5 min-[1200px]:ml-5">
         {formatDays(dayNames)?.map((day, index) => (
           <li
             key={index}
-            className={`min-w-0 flex-1 rounded-full px-1 py-2 text-center text-xs sm:min-w-15 sm:flex-none sm:p-2 sm:text-base ${
+            className={`min-w-0 flex-1 rounded-full px-1 py-2 text-center text-xs sm:p-2 sm:text-base ${
               habit.days.includes(day) ? "bg-sky-200" : "bg-inherit"
             }`}
           >
@@ -44,7 +44,7 @@ const WeeklyHabitDisplay = ({ habit }: Props) => {
           </li>
         ))}
       </ul>
-      <div className={habitDisplayStyles.actionCell}>
+      <div className={`${habitDisplayStyles.actionCell} row-start-3 self-center`}>
         <EditHabit type="weekly" initialHabit={habit} />
       </div>
     </div>

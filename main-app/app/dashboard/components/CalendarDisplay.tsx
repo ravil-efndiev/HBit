@@ -40,7 +40,7 @@ const CalendarDisplay = ({ datesByMonth, entries }: Props) => {
 
   return (
     <>
-      <div className="min-h-80 mt-3">
+      <div className="min-h-80 max-[840]:min-h-60 mt-3">
         <div className="grid grid-cols-7 gap-3">
           {dayLabels.map((label) => (
             <p key={label} className="text-center text-sm">
@@ -61,7 +61,7 @@ const CalendarDisplay = ({ datesByMonth, entries }: Props) => {
                 return (
                   <div key={date.getTime()} className="relative">
                     <div
-                      className="rounded-lg w-14 h-12 flex justify-center items-center hover-master"
+                      className="rounded-lg w-14 h-12 max-[840]:w-10 max-sm:w-8 max-[840]:h-9 max-sm:h-8 max-sm:text-xs flex justify-center items-center hover-master"
                       style={{
                         backgroundColor:
                           thisDayEntries.length > 0
@@ -88,7 +88,7 @@ const CalendarDisplay = ({ datesByMonth, entries }: Props) => {
         <button className="btn btn-ghost" onClick={handleMonthDec}>
           <ArrowIcon size={20} direction="left" />
         </button>
-        <h2 className="text-xl">
+        <h2 className="text-xl max-md:text-[1rem]">
           {getMonthName(month)} {year}
         </h2>
         <button className="btn btn-ghost" onClick={handleMonthInc}>
