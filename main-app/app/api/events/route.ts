@@ -2,6 +2,7 @@ import { routeError } from "../routeError";
 import { NextResponse } from "next/server";
 import http, { IncomingMessage } from "http";
 import https from "https";
+import { publicServiceUrl } from "@/lib/publicService";
 
 export const dynamic = "force-dynamic";
 
@@ -19,7 +20,7 @@ export const GET = async (req: Request) => {
       );
     }
 
-    const url = new URL(`${process.env.PUBLIC_SERVICE_URL}/social/events`);
+    const url = new URL(`${publicServiceUrl()}/social/events`);
     url.searchParams.set("userPublicId", userPublicId);
 
     const client = url.protocol === "https:" ? https : http;

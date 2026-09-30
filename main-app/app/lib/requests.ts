@@ -1,3 +1,4 @@
+import { publicServiceUrl } from "./publicService";
 import {
   DailyHabitCreateRequestBody,
   WeeklyHabitCreateRequestBody,
@@ -65,9 +66,9 @@ export const publicServiceRequest = async ({
   body,
   params,
   headers,
-}: PublicServiceRequestArgs) => {
-  return request({
-    endpoint: `${process.env.PUBLIC_SERVICE_URL}${endpoint}`,
+}: PublicServiceRequestArgs) =>
+  request({
+    endpoint: `${publicServiceUrl()}${endpoint}`,
     headers: {
       "x-api-key": process.env.PUBLIC_SERVICE_API_KEY || "",
       ...headers,
@@ -76,21 +77,20 @@ export const publicServiceRequest = async ({
     body,
     params,
   });
-};
 
 export const reqGet = async (endpoint: string) =>
   request({ endpoint, method: "GET" });
 
 const genericReq =
   (method: string) =>
-  async (
-    endpoint: string,
-    body: Object,
-    headers?: Object,
-    stringifyBody?: boolean,
-  ) => {
-    return request({ endpoint, method, body, headers, stringifyBody });
-  };
+    async (
+      endpoint: string,
+      body: Object,
+      headers?: Object,
+      stringifyBody?: boolean,
+    ) => {
+      return request({ endpoint, method, body, headers, stringifyBody });
+    };
 
 export const reqPost = genericReq("POST");
 export const reqPut = genericReq("PUT");
