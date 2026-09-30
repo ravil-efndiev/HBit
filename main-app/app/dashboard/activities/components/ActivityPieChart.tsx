@@ -45,19 +45,9 @@ const ActivityPieChart = ({ data }: Props) => {
     data !== null && (
       <section className="panel">
         <h1 className="panel-title">Activities in the last 7 days</h1>
-        <div className="flex items-center justify-center">
-          <ul>
-            {dataHalf1.map((entry, index) => (
-              <li key={index} className="flex items-center gap-3 text-lg justify-end">
-                <p>{entry.name}</p>
-                <div
-                  className="rounded-full w-4 h-4 border"
-                  style={{ backgroundColor: entry.color }}
-                ></div>
-              </li>
-            ))}
-          </ul>
+        <div className="flex items-center justify-center max-sm:grid max-sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] max-sm:gap-2">
           <PieChart
+            className="order-2 max-sm:order-1 max-sm:col-start-1 max-sm:row-start-1"
             style={{
               width: "100%",
               height: "100%",
@@ -84,17 +74,30 @@ const ActivityPieChart = ({ data }: Props) => {
               ))}
             </Pie>
           </PieChart>
-          <ul>
-            {dataHalf2.map((entry, index) => (
-              <li key={index} className="flex items-center gap-3 text-lg">
-                <div
-                  className="rounded-full w-4 h-4 border"
-                  style={{ backgroundColor: entry.color }}
-                ></div>
-                <p>{entry.name}</p>
-              </li>
-            ))}
-          </ul>
+          <div className="contents max-sm:order-2 max-sm:col-start-2 max-sm:row-start-1 max-sm:flex max-sm:flex-col max-sm:gap-0">
+            <ul className="order-1">
+              {dataHalf1.map((entry, index) => (
+                <li key={index} className="flex items-center gap-3 text-lg justify-end max-sm:flex-row-reverse">
+                  <p className="text-md max-sm:text-sm">{entry.name}</p>
+                  <div
+                    className="rounded-full w-4 h-4 border"
+                    style={{ backgroundColor: entry.color }}
+                  ></div>
+                </li>
+              ))}
+            </ul>
+            <ul className="order-3">
+              {dataHalf2.map((entry, index) => (
+                <li key={index} className="flex items-center gap-3 text-lg">
+                  <div
+                    className="rounded-full w-4 h-4 border"
+                    style={{ backgroundColor: entry.color }}
+                  ></div>
+                  <p className="text-md max-sm:text-sm">{entry.name}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </section>
     )

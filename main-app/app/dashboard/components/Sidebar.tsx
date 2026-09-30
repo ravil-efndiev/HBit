@@ -5,7 +5,7 @@ import Collapse from "./Collapse";
 const Sidebar = async () => {
   return (
     <div className="flex min-h-0 h-full flex-col overflow-y-auto">
-      <Collapse title={<p>Habits</p>}>
+      <Collapse title={<p>Habits</p>} defaultOpen={true}>
         <SidebarHabits />
       </Collapse>
       <Collapse title={<p>Layout</p>}>

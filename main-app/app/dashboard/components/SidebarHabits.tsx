@@ -7,7 +7,7 @@ import { requireSessionUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 
 const SidebarHabits = async () => {
-    const habitIconPaths = getHabitIconPaths();
+  const habitIconPaths = getHabitIconPaths();
 
   const user = await requireSessionUser();
   const dailyAll = await prisma.dailyHabit.findMany({

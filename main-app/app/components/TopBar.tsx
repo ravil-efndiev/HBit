@@ -8,9 +8,7 @@ import SearchPanel from "./SearchPanel";
 import { ParsedNotification } from "@/lib/types";
 import { prisma } from "@/lib/prisma";
 import NotificationsProvider from "./context/NotificationsProvider";
-import { Menu } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { SheetTrigger } from "@/components/ui/sheet";
+import { TopBarSheetTrigger } from "./TopBarSheetTrigger";
 
 const font = Allerta_Stencil({ weight: ["400"] });
 
@@ -49,18 +47,7 @@ const TopBar = async () => {
         <header className={topBarStyles.wrapper}>
           <div className={topBarStyles.inner}>
             <div className={topBarStyles.leftSection}>
-              <SheetTrigger
-                render={
-                  <Button
-                    className="md:hidden"
-                    variant="ghost"
-                    size="icon"
-                    aria-label="Open navigation menu"
-                  />
-                }
-              >
-                <Menu />
-              </SheetTrigger>
+              <TopBarSheetTrigger />
               <Link className="shrink-0" href="/dashboard">
                 <div className={topBarStyles.brand}>
                   <Image
