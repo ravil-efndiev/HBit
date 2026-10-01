@@ -6,7 +6,7 @@ import { NextResponse } from "next/server";
 
 export const GET = async (
   _: Request,
-  { params }: { params: Promise<{ usernamePart: "string" }> }
+  { params }: { params: Promise<{ usernamePart: string }> }
 ) => {
   try {
     const user = await requireSessionUser();
