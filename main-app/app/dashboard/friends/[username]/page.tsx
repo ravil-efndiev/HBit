@@ -1,6 +1,7 @@
 import ProfilePicture from "@/components/ProfilePicture";
 import { requestErrorWrapper } from "@/lib/misc";
 import { publicServiceRequest } from "@/lib/requests";
+import { getSessionUser } from "@/lib/session";
 import { PublicUser } from "@/lib/types";
 import { ArrowRight, Search, Users } from "lucide-react";
 import { type Metadata } from "next";
@@ -22,6 +23,8 @@ export const generateMetadata = async ({
 
 const FriendsPage = async ({ params }: Props) => {
   const { username } = await params;
+  const sessionUser = await getSessionUser();
+  const isOwnFriendsPage = sessionUser?.username === username;
 
   return requestErrorWrapper(
     [404],
@@ -46,10 +49,10 @@ const FriendsPage = async ({ params }: Props) => {
                   Community
                 </p>
                 <h1 className="text-3xl font-semibold text-(--col-text-primary)">
-                  {user.name}&apos;s friends
+                  {isOwnFriendsPage ? "Your friends" : `${user.name}'s friends`}
                 </h1>
                 <p className="mt-1 text-(--col-text-secondary)">
-                  {friends.length} {friends.length === 1 ? "friend" : "friends"} in this network
+                  {friends.length} {friends.length === 1 ? "friend" : "friends"} in {isOwnFriendsPage ? "your" : "this"} network
                 </p>
               </div>
               <label className="input input-bordered flex w-full items-center gap-2 bg-(--col-background) sm:max-w-xs">
@@ -68,7 +71,9 @@ const FriendsPage = async ({ params }: Props) => {
                   <h2 id="friends-heading" className="text-xl font-medium text-(--col-text-primary)">
                     Friends
                   </h2>
-                  <p className="text-sm text-(--col-text-secondary)">People connected with {user.name}</p>
+                  <p className="text-sm text-(--col-text-secondary)">
+                    People connected with {isOwnFriendsPage ? "you" : user.name}
+                  </p>
                 </div>
               </div>
 
@@ -100,7 +105,7 @@ const FriendsPage = async ({ params }: Props) => {
                   <Users size={30} className="mb-3 text-(--col-text-secondary)" aria-hidden="true" />
                   <h3 className="font-medium text-(--col-text-primary)">No friends yet</h3>
                   <p className="mt-1 max-w-sm text-sm text-(--col-text-secondary)">
-                    When {user.name} connects with people, they&apos;ll appear here.
+                    When {isOwnFriendsPage ? "you connect" : `${user.name} connects`} with people, they&apos;ll appear here.
                   </p>
                 </div>
               )}
