@@ -41,7 +41,7 @@ const FriendsPage = async ({ params }: Props) => {
       })) as { friends: PublicUser[] };
 
       return (
-        <main className="content">
+        <main className="content bg-gray-100">
           <div className="mx-auto flex w-full max-w-5xl flex-col gap-5 p-4 sm:p-6 lg:p-8">
             <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div>
