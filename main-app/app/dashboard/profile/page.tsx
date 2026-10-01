@@ -15,7 +15,7 @@ const ProfilePage = async () => {
   const publicServiceOnline = await isPublicServiceOnline();
 
   return (
-    <div className="bg-gray-100 flex-1">
+    <div className="bg-gray-100 flex-1 h-full">
       <Breadcrumbs subpage="Profile" />
       <main>
         <section className="panel mx-auto flex w-full max-w-2xl flex-col items-center">

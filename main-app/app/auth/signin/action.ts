@@ -8,6 +8,7 @@ import { redirectWithError } from "@/lib/misc";
 import { emailRegex, usernameRegex } from "@/lib/validation";
 
 export const signin = async (formData: FormData) => {
+  try {
   const emailOrUsername = formData.get("emailOrUsername") as string;
   const password = formData.get("password") as string;
 
@@ -43,4 +44,9 @@ export const signin = async (formData: FormData) => {
   await setSessionCookie(session.id);
 
   redirect("/dashboard");
+
+  } catch (error) {
+    console.error("Error during signin:", error);
+    redirectWithError("/auth/signin", "An unexpected error occurred, please try again later.");
+  }
 };
