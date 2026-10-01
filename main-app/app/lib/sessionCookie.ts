@@ -5,9 +5,9 @@ export const sessionMaxAge = 1000 * 60 * 60 * 24 * 5;
 export const setSessionCookie = async (sessionId: string) => {
   const cookieStorage = await cookies();
   cookieStorage.set("session", sessionId, {
-    sameSite: "lax",
+    sameSite: process.env.USE_V0 === "true" ? "none" : "lax",
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: process.env.USE_V0 === "true" || process.env.NODE_ENV === "production",
     maxAge: sessionMaxAge,
     path: "/",
   });
