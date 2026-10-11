@@ -4,43 +4,49 @@ import { prisma } from "@/lib/prisma";
 import { sessionMaxAge, setSessionCookie } from "@/lib/sessionCookie";
 import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
-import { redirectWithError } from "@/lib/misc";
+import { forwardNextRedirects, redirectWithError } from "@/lib/misc";
 import { emailRegex, usernameRegex } from "@/lib/validation";
 
 export const signin = async (formData: FormData) => {
-  const emailOrUsername = formData.get("emailOrUsername") as string;
-  const password = formData.get("password") as string;
+  try {
+    const emailOrUsername = formData.get("emailOrUsername") as string;
+    const password = formData.get("password") as string;
 
-  const isUsername = usernameRegex.test(emailOrUsername);
-  const isEmail = emailRegex.test(emailOrUsername);
+    const isUsername = usernameRegex.test(emailOrUsername);
+    const isEmail = emailRegex.test(emailOrUsername);
 
-  if (!isEmail && !isUsername) {
-    return redirectWithError("/auth/signin", "Invalid email or username");
+    if (!isEmail && !isUsername) {
+      return redirectWithError("/auth/signin", "Invalid email or username");
+    }
+
+    const user = await prisma.user.findUnique({
+      where: isUsername
+        ? { username: emailOrUsername }
+        : { email: emailOrUsername },
+    });
+    if (!user) {
+      return redirectWithError("/auth/signin", "Account doesn't exist");
+    }
+
+    const passHashed = user.password;
+    const match = await bcrypt.compare(password, passHashed);
+    if (!match) {
+      return redirectWithError("/auth/signin", "Incorrect password");
+    }
+
+    const session = await prisma.session.create({
+      data: {
+        userId: user.id,
+        expiresAt: new Date(Date.now() + sessionMaxAge),
+      },
+    });
+
+    await setSessionCookie(session.id);
+  } catch (error) {
+    forwardNextRedirects(error);
+    console.error("Error during signin:", error);
+    redirectWithError("/auth/signin", "An unexpected error occurred, please try again later.");
   }
-
-  const user = await prisma.user.findUnique({
-    where: isUsername
-      ? { username: emailOrUsername }
-      : { email: emailOrUsername },
-  });
-  if (!user) {
-    return redirectWithError("/auth/signin", "Account doesn't exist");
-  }
-
-  const passHashed = user.password;
-  const match = await bcrypt.compare(password, passHashed);
-  if (!match) {
-    return redirectWithError("/auth/signin", "Incorrect password");
-  }
-
-  const session = await prisma.session.create({
-    data: {
-      userId: user.id,
-      expiresAt: new Date(Date.now() + sessionMaxAge),
-    },
-  });
-
-  await setSessionCookie(session.id);
 
   redirect("/dashboard");
 };

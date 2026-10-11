@@ -56,3 +56,9 @@ export const requestErrorWrapper = async (
     }
   }
 };
+
+export const forwardNextRedirects = (error: unknown) => {
+  if (error instanceof Error && error.message === "NEXT_REDIRECT") {
+    throw error;
+  }
+}
