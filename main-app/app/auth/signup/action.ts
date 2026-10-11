@@ -10,7 +10,7 @@ import {
 } from "@/lib/validation";
 import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
-import { redirectWithError } from "@/lib/misc";
+import { forwardNextRedirects, redirectWithError } from "@/lib/misc";
 import { createPublicUser, isPublicServiceOnline } from "@/lib/publicService";
 
 export const signup = async (formData: FormData) => {
@@ -76,6 +76,7 @@ export const signup = async (formData: FormData) => {
 
     redirect("/dashboard");
   } catch (error) {
+    forwardNextRedirects(error);
     console.error("Error during signup:", error);
     redirectWithError("/auth/signup", "An unexpected error occurred, please try again later.");
   }
