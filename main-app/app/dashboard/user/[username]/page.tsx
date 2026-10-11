@@ -75,7 +75,7 @@ const UserPage = async ({ params }: Props) => {
       return (
         <main className="content h-full bg-gray-100">
           <div className="mx-auto grid w-full max-w-6xl gap-5 p-4 sm:p-6 lg:grid-cols-3 lg:p-8">
-            <section className="panel my-0! overflow-hidden p-0 lg:col-span-1">
+            <section className="panel my-0! h-fit overflow-hidden p-0 lg:col-span-1 lg:self-start">
               <div className="flex flex-col items-center px-6 py-8 text-center">
                 <div className="mb-4 flex size-24 items-center justify-center rounded-full bg-(--col-primary-muted) ring-4 ring-white/70">
                   <ProfilePicture size={88} url={user.pfpUrl} />
@@ -116,7 +116,7 @@ const UserPage = async ({ params }: Props) => {
                 <ul className="grid gap-3">
                   {activities.map((activity) => (
                     <li className="group relative rounded-lg border border-gray-200 bg-(--col-background) p-4 transition hover:border-(--col-primary-main) hover:shadow-sm dark:border-gray-700" key={activity.publicId}>
-                      <div className="absolute left-3 top-3"><BookmarkIcon color={activity.color} /></div>
+                      <div className="absolute -left-2 top-4 z-10"><BookmarkIcon color={activity.color} /></div>
                       <div className="flex items-start gap-4 pl-8">
                         <Image src={activity.iconPath} alt="" width={40} height={40} className="shrink-0" />
                         <div className="min-w-0 flex-1">
@@ -129,10 +129,21 @@ const UserPage = async ({ params }: Props) => {
                             </h3>
                             <ArrowRight size={18} className="shrink-0 text-(--col-text-secondary) transition group-hover:translate-x-0.5 group-hover:text-(--col-primary-dark)" aria-hidden="true" />
                           </div>
-                          <div className="mt-3 grid gap-2 text-sm text-(--col-text-secondary) sm:grid-cols-3">
-                            <p>Total entries <span className="block font-medium text-(--col-primary-dark)">{activity.totalEntries}</span></p>
-                            <p>Last week <span className="block font-medium text-(--col-primary-dark)">{activity.lastWeekEntries}</span></p>
-                            {activity.lastEntryTime && <p>Last entry <span className="block font-medium text-(--col-primary-dark)">{new Date(activity.lastEntryTime).toLocaleDateString("cs-CZ")}</span></p>}
+                          <div className="mt-4 grid grid-cols-1 gap-2 border-t border-gray-200 pt-3 text-sm dark:border-gray-700 sm:grid-cols-3">
+                            <div className="rounded-md bg-gray-100/70 px-3 py-2 dark:bg-gray-800/60">
+                              <p className="text-xs font-medium uppercase tracking-wide text-(--col-text-secondary)">Total entries</p>
+                              <p className="mt-1 text-lg font-semibold leading-none text-(--col-primary-dark)">{activity.totalEntries}</p>
+                            </div>
+                            <div className="rounded-md bg-gray-100/70 px-3 py-2 dark:bg-gray-800/60">
+                              <p className="text-xs font-medium uppercase tracking-wide text-(--col-text-secondary)">Last week</p>
+                              <p className="mt-1 text-lg font-semibold leading-none text-(--col-primary-dark)">{activity.lastWeekEntries}</p>
+                            </div>
+                            {activity.lastEntryTime && (
+                              <div className="rounded-md bg-gray-100/70 px-3 py-2 dark:bg-gray-800/60">
+                                <p className="text-xs font-medium uppercase tracking-wide text-(--col-text-secondary)">Last entry</p>
+                                <p className="mt-1 text-sm font-semibold leading-tight text-(--col-primary-dark)">{new Date(activity.lastEntryTime).toLocaleDateString("cs-CZ")}</p>
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
