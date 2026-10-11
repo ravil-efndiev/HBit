@@ -10,7 +10,6 @@ import Image from "next/image";
 import { ActivityVisibility } from "@prisma/client";
 import { ArrowRight, Activity as ActivityIcon, UserRound } from "lucide-react";
 
-
 interface Props {
   params: Promise<{ username: string }>;
 }
@@ -116,10 +115,11 @@ const UserPage = async ({ params }: Props) => {
                 <ul className="grid gap-3">
                   {activities.map((activity) => (
                     <li className="group relative rounded-lg border border-gray-200 bg-(--col-background) p-4 transition hover:border-(--col-primary-main) hover:shadow-sm dark:border-gray-700" key={activity.publicId}>
-                      <div className="absolute -left-2 top-4 z-10"><BookmarkIcon color={activity.color} /></div>
-                      <div className="flex items-start gap-4 pl-8">
-                        <Image src={activity.iconPath} alt="" width={40} height={40} className="shrink-0" />
-                        <div className="min-w-0 flex-1">
+                      <div className="absolute -top-[1px] z-10"><BookmarkIcon color={activity.color} /></div>
+                      <div className="pt-8 sm:pl-8 sm:pt-0">
+                        <div className="flex items-start gap-4">
+                          <Image src={activity.iconPath} alt="" width={40} height={40} className="shrink-0" />
+                          <div className="min-w-0 flex-1">
                           <div className="flex items-center justify-between gap-3">
                             <h3 className="truncate text-lg font-medium text-(--col-text-primary)">
                               {activity.name}
@@ -129,7 +129,9 @@ const UserPage = async ({ params }: Props) => {
                             </h3>
                             <ArrowRight size={18} className="shrink-0 text-(--col-text-secondary) transition group-hover:translate-x-0.5 group-hover:text-(--col-primary-dark)" aria-hidden="true" />
                           </div>
-                          <div className="mt-4 grid grid-cols-1 gap-2 border-t border-gray-200 pt-3 text-sm dark:border-gray-700 sm:grid-cols-3">
+                          </div>
+                        </div>
+                        <div className="mt-4 grid grid-cols-1 gap-2 border-t border-gray-200 pt-3 text-sm dark:border-gray-700 sm:grid-cols-3">
                             <div className="rounded-md bg-gray-100/70 px-3 py-2 dark:bg-gray-800/60">
                               <p className="text-xs font-medium uppercase tracking-wide text-(--col-text-secondary)">Total entries</p>
                               <p className="mt-1 text-lg font-semibold leading-none text-(--col-primary-dark)">{activity.totalEntries}</p>
@@ -144,7 +146,6 @@ const UserPage = async ({ params }: Props) => {
                                 <p className="mt-1 text-sm font-semibold leading-tight text-(--col-primary-dark)">{new Date(activity.lastEntryTime).toLocaleDateString("cs-CZ")}</p>
                               </div>
                             )}
-                          </div>
                         </div>
                       </div>
                     </li>
