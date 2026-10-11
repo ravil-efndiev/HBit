@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { sessionMaxAge, setSessionCookie } from "@/lib/sessionCookie";
 import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
-import { redirectWithError } from "@/lib/misc";
+import { forwardNextRedirects, redirectWithError } from "@/lib/misc";
 import { emailRegex, usernameRegex } from "@/lib/validation";
 
 export const signin = async (formData: FormData) => {
@@ -43,10 +43,7 @@ export const signin = async (formData: FormData) => {
 
     await setSessionCookie(session.id);
   } catch (error) {
-    if (error instanceof Error && error.message === "NEXT_REDIRECT") {
-      throw error;
-    }
-    
+    forwardNextRedirects(error);
     console.error("Error during signin:", error);
     redirectWithError("/auth/signin", "An unexpected error occurred, please try again later.");
   }
