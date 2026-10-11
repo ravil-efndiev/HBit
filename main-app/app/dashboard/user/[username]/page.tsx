@@ -8,6 +8,8 @@ import { PublicActivity, PublicUser } from "@/lib/types";
 import { Metadata } from "next";
 import Image from "next/image";
 import { ActivityVisibility } from "@prisma/client";
+import { ArrowRight, Activity as ActivityIcon, UserRound } from "lucide-react";
+
 
 interface Props {
   params: Promise<{ username: string }>;
@@ -71,78 +73,78 @@ const UserPage = async ({ params }: Props) => {
       );
 
       return (
-        <main className="content">
-          <div className="mx-auto grid w-full max-w-7xl gap-5 p-4 sm:p-6 lg:grid-cols-3 lg:p-8">
-            <section className="panel my-0! flex flex-col items-center lg:col-span-1">
-              <div className="my-4 flex justify-center gap-7">
-                <ProfilePicture size={100} url={user.pfpUrl} />
-                <div className="my-auto">
-                  <h2 className="text-3xl font-semibold">{user.name}</h2>
-                  <h3 className="text-xl">@{user.username}</h3>
+        <main className="content h-full bg-gray-100">
+          <div className="mx-auto grid w-full max-w-6xl gap-5 p-4 sm:p-6 lg:grid-cols-3 lg:p-8">
+            <section className="panel my-0! overflow-hidden p-0 lg:col-span-1">
+              <div className="flex flex-col items-center px-6 py-8 text-center">
+                <div className="mb-4 flex size-24 items-center justify-center rounded-full bg-(--col-primary-muted) ring-4 ring-white/70">
+                  <ProfilePicture size={88} url={user.pfpUrl} />
+                </div>
+                <p className="mb-1 text-sm font-medium uppercase tracking-wider text-(--col-primary-dark)">
+                  Profile
+                </p>
+                <h1 className="text-2xl font-semibold text-(--col-text-primary)">
+                  {user.name}
+                </h1>
+                <p className="mt-1 text-(--col-text-secondary)">@{user.username}</p>
+              </div>
+              <div className="border-t border-gray-200 bg-(--col-background)/70 px-6 py-4 dark:border-gray-700">
+                <div className="flex items-center gap-3">
+                  <div className="flex size-9 items-center justify-center rounded-full bg-(--col-primary-muted) text-(--col-primary-dark)">
+                    <UserRound size={18} aria-hidden="true" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-(--col-text-primary)">Activity profile</p>
+                    <p className="text-xs text-(--col-text-secondary)">Public progress and habits</p>
+                  </div>
                 </div>
               </div>
             </section>
-            <section className="panel my-0! flex flex-col items-center lg:col-span-2">
-              <h1 className="panel-title">Public activities</h1>
+            <section className="panel my-0! p-4 sm:p-6 lg:col-span-2">
+              <div className="mb-5 flex items-center gap-3 border-b border-gray-200 pb-4 dark:border-gray-700">
+                <div className="flex size-10 items-center justify-center rounded-full bg-(--col-primary-muted) text-(--col-primary-dark)">
+                  <ActivityIcon size={20} aria-hidden="true" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-medium text-(--col-text-primary)">Public activities</h2>
+                  <p className="text-sm text-(--col-text-secondary)">
+                    {activities.length} {activities.length === 1 ? "activity" : "activities"} shared
+                  </p>
+                </div>
+              </div>
               {activities.length > 0 ? (
-                <ul className="">
+                <ul className="grid gap-3">
                   {activities.map((activity) => (
-                    <li
-                      className="display flex flex-col py-7 font-light relative"
-                      key={activity.publicId}
-                    >
-                      <div className="absolute top-0 left-3">
-                        <BookmarkIcon color={activity.color} />
+                    <li className="group relative rounded-lg border border-gray-200 bg-(--col-background) p-4 transition hover:border-(--col-primary-main) hover:shadow-sm dark:border-gray-700" key={activity.publicId}>
+                      <div className="absolute left-3 top-3"><BookmarkIcon color={activity.color} /></div>
+                      <div className="flex items-start gap-4 pl-8">
+                        <Image src={activity.iconPath} alt="" width={40} height={40} className="shrink-0" />
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center justify-between gap-3">
+                            <h3 className="truncate text-lg font-medium text-(--col-text-primary)">
+                              {activity.name}
+                              {activity.visibility === ActivityVisibility.FRIENDS_ONLY && (
+                                <Image src="/star.svg" width={18} height={18} alt="Friends-only activity" className="ml-2 inline-block" />
+                              )}
+                            </h3>
+                            <ArrowRight size={18} className="shrink-0 text-(--col-text-secondary) transition group-hover:translate-x-0.5 group-hover:text-(--col-primary-dark)" aria-hidden="true" />
+                          </div>
+                          <div className="mt-3 grid gap-2 text-sm text-(--col-text-secondary) sm:grid-cols-3">
+                            <p>Total entries <span className="block font-medium text-(--col-primary-dark)">{activity.totalEntries}</span></p>
+                            <p>Last week <span className="block font-medium text-(--col-primary-dark)">{activity.lastWeekEntries}</span></p>
+                            {activity.lastEntryTime && <p>Last entry <span className="block font-medium text-(--col-primary-dark)">{new Date(activity.lastEntryTime).toLocaleDateString("cs-CZ")}</span></p>}
+                          </div>
+                        </div>
                       </div>
-                      <div className="flex gap-4 my-auto items-center">
-                        <Image
-                          src={activity.iconPath}
-                          alt="icon"
-                          width={40}
-                          height={40}
-                        />
-                        <h4 className="text-2xl font-normal flex">
-                          {activity.name}
-                          {activity.visibility ===
-                            ActivityVisibility.FRIENDS_ONLY && (
-                            <Image
-                              src="/star.svg"
-                              width={20}
-                              height={20}
-                              alt="friends-only"
-                            />
-                          )}
-                        </h4>
-                      </div>
-                      <p>
-                        total entries:{" "}
-                        <span className="text-(--col-primary-dark)">
-                          {activity.totalEntries}
-                        </span>
-                      </p>
-                      <p>
-                        last week entries:{" "}
-                        <span className="text-(--col-primary-dark)">
-                          {activity.lastWeekEntries}
-                        </span>
-                      </p>
-                      <p>
-                        {activity.lastEntryTime && (
-                          <>
-                            Last entry:{" "}
-                            <span className="text-(--col-primary-dark)">
-                              {new Date(
-                                activity.lastEntryTime,
-                              ).toLocaleDateString("cs-CZ")}
-                            </span>
-                          </>
-                        )}
-                      </p>
                     </li>
                   ))}
                 </ul>
               ) : (
-                <h3>User isn&apos;t sharing any activities</h3>
+                <div className="rounded-lg border border-dashed border-gray-300 px-6 py-12 text-center dark:border-gray-700">
+                  <ActivityIcon size={30} className="mx-auto mb-3 text-(--col-text-secondary)" aria-hidden="true" />
+                  <h3 className="font-medium text-(--col-text-primary)">No public activities</h3>
+                  <p className="mt-1 text-sm text-(--col-text-secondary)">User isn&apos;t sharing any activities</p>
+                </div>
               )}
             </section>
           </div>
