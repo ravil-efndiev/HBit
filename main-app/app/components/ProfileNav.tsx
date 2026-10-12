@@ -5,6 +5,7 @@ import useClickAwayListener from "@/hooks/useClickAwayListener";
 import ProfilePicture from "./ProfilePicture";
 import { User } from "@prisma/client";
 import Link from "next/link";
+import SignoutButton from "./SignoutButton";
 
 interface Props {
   user: User;
@@ -61,6 +62,7 @@ const ProfileNav = ({ user }: Props) => {
                 {name}
               </Link>
             ))}
+            <SignoutButton className="w-24 h-8 mx-auto" />
           </nav>
         </div>
       )}

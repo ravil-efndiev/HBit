@@ -3,7 +3,11 @@
 import { reqPost } from "@/lib/requests";
 import { useRouter } from "next/navigation";
 
-const SignoutButton = () => {
+interface Props {
+  className?: string;
+}
+
+const SignoutButton = ({ className }: Props) => {
   const router = useRouter();
 
   const handleClick = async () => {
@@ -16,7 +20,7 @@ const SignoutButton = () => {
   }
      
   return (
-    <button className="btn btn-error" onClick={handleClick}>Sign out</button>
+    <button className={`btn btn-error ${className}`} onClick={handleClick}>Sign out</button>
   )
 }
 
