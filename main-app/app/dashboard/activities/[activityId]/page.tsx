@@ -42,7 +42,7 @@ const ActivityTypePage = async ({ params }: Props) => {
   return (
     <>
       <Breadcrumbs subpage="activities" extra={activityType.name} />
-      <main className="max-w-3/4 mx-auto flex flex-col gap-10">
+      <main className="max-w-3/4 max-md:max-w-7xl max-md:p-4 mx-auto flex flex-col gap-10">
         <ActivityHeading activityType={activityType} />
         <ActivityLineChart data={data} color={activityType.color} />
         <EntriesProvider initialEntries={entriesWithTypeInfo}>

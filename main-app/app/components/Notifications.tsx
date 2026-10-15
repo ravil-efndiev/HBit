@@ -58,7 +58,7 @@ const Notifications = ({ user }: Props) => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative max-sm:static">
       <button
         className="btn btn-ghost"
         onClick={() => setOpen(true)}
@@ -67,7 +67,7 @@ const Notifications = ({ user }: Props) => {
         <Image src="/bell.svg" alt="notifications" width={25} height={25} />
       </button>
       {open && (
-        <div className="panel absolute w-sm h-72 right-0" ref={notifsRef}>
+        <div className="panel absolute w-sm max-sm:w-3/4 h-72 sm:right-0 max-sm:left-[calc(50%-(75%/2))]" ref={notifsRef}>
           <button
             className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-lg"
             onClick={() => setOpen(false)}
